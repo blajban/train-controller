@@ -1,5 +1,18 @@
 # Train controller
 DV1677 JavaScript-baserade webbramverk.
+
+## Installera och kör igång
+Att få igång appen krävde i princip fyra saker: installera alla paket, fixa en .env-fil med en api-nyckel, ordna databasen genom reset-scriptet och köra igång båda apparna. 
+
+Vi förenklade stegen något genom ett installationsscript. De steg som krävs nu är:
+
+1. Klona repot
+2. `./install.bash`
+3. Ändra api-nyckel i `backend/.env`
+3. I backend-mappen: `nodemon app.js`
+4. I frontend-mappen: `python3 -m http.server 9000`
+5. Gå till `localhost:9000`
+
 ## Säkerhetsgranskning och Åtgärder
 Under granskning av koden kom vi fram till att det fanns ett antal säkerhetsbrister. Dessa är listade nedan tillsammans med åtgärder som vidtagits för att åtgärda dem.
 
