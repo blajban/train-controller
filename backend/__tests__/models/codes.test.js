@@ -1,6 +1,6 @@
 
 const fetch = require('node-fetch');
-const codes = require('../models/codes');
+const codes = require('../../models/codes');
 
 jest.mock('node-fetch');
 
@@ -26,6 +26,5 @@ describe('getCodes', () => {
         expect(mockRes.json).toHaveBeenCalledWith({
             data: [{ Code: '1', Level1Description: 'Test' }],
         });
-
     });
 });
