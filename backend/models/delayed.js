@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 
 const delayed = {
-  getDelayedTrains: async function getDelayedTrains(req, res) {
+  getDelayedTrains: async function getDelayedTrains(req, res, next) {
     const query = `<REQUEST>
                 <LOGIN authenticationkey="${process.env.TRAFIKVERKET_API_KEY}" />
                 <QUERY objecttype="TrainAnnouncement" orderby='AdvertisedTimeAtLocation' schemaversion="1.8">
@@ -46,7 +46,7 @@ const delayed = {
     });
 
     } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+      next(error);
     }
   }
 };
