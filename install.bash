@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Needs to be updated!
-
 DIR="$(dirname "$0")"
 
 echo "--- Installing... ---"
