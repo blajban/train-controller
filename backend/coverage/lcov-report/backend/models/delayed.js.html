@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
@@ -113,7 +113,11 @@
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -145,7 +149,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -153,11 +157,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -166,50 +174,54 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const fetch = <span class="cstat-no" title="statement not covered" >require('node-fetch')</span>
 &nbsp;
 const delayed = <span class="cstat-no" title="statement not covered" >{</span>
-    getDelayedTrains: function <span class="fstat-no" title="function not covered" >getDelayedTrains(</span>req, res) {
-        const query = <span class="cstat-no" title="statement not covered" >`&lt;REQUEST&gt;</span>
-                  &lt;LOGIN authenticationkey="${process.env.TRAFIKVERKET_API_KEY}" /&gt;
-                  &lt;QUERY objecttype="TrainAnnouncement" orderby='AdvertisedTimeAtLocation' schemaversion="1.8"&gt;
-                        &lt;FILTER&gt;
-                        &lt;AND&gt;
-                            &lt;EQ name="ActivityType" value="Avgang" /&gt;
-                            &lt;GT name="EstimatedTimeAtLocation" value="$now" /&gt;
-                            &lt;AND&gt;
-                                &lt;GT name='AdvertisedTimeAtLocation' value='$dateadd(-00:15:00)' /&gt;
-                                &lt;LT name='AdvertisedTimeAtLocation'                   value='$dateadd(02:00:00)' /&gt;
-                            &lt;/AND&gt;
-                        &lt;/AND&gt;
-                        &lt;/FILTER&gt;
-                        &lt;INCLUDE&gt;ActivityId&lt;/INCLUDE&gt;
-                        &lt;INCLUDE&gt;ActivityType&lt;/INCLUDE&gt;
-                        &lt;INCLUDE&gt;AdvertisedTimeAtLocation&lt;/INCLUDE&gt;
-                        &lt;INCLUDE&gt;EstimatedTimeAtLocation&lt;/INCLUDE&gt;
-                        &lt;INCLUDE&gt;AdvertisedTrainIdent&lt;/INCLUDE&gt;
-                        &lt;INCLUDE&gt;OperationalTrainNumber&lt;/INCLUDE&gt;
-                        &lt;INCLUDE&gt;Canceled&lt;/INCLUDE&gt;
-                        &lt;INCLUDE&gt;FromLocation&lt;/INCLUDE&gt;
-                        &lt;INCLUDE&gt;ToLocation&lt;/INCLUDE&gt;
-                        &lt;INCLUDE&gt;LocationSignature&lt;/INCLUDE&gt;
-                        &lt;INCLUDE&gt;TimeAtLocation&lt;/INCLUDE&gt;
-                        &lt;INCLUDE&gt;TrainOwner&lt;/INCLUDE&gt;
-                  &lt;/QUERY&gt;
+  getDelayedTrains: async function <span class="fstat-no" title="function not covered" >getDelayedTrains(</span>req, res) {
+    const query = <span class="cstat-no" title="statement not covered" >`&lt;REQUEST&gt;</span>
+                &lt;LOGIN authenticationkey="${process.env.TRAFIKVERKET_API_KEY}" /&gt;
+                &lt;QUERY objecttype="TrainAnnouncement" orderby='AdvertisedTimeAtLocation' schemaversion="1.8"&gt;
+                      &lt;FILTER&gt;
+                      &lt;AND&gt;
+                          &lt;EQ name="ActivityType" value="Avgang" /&gt;
+                          &lt;GT name="EstimatedTimeAtLocation" value="$now" /&gt;
+                          &lt;AND&gt;
+                              &lt;GT name='AdvertisedTimeAtLocation' value='$dateadd(-00:15:00)' /&gt;
+                              &lt;LT name='AdvertisedTimeAtLocation'                   value='$dateadd(02:00:00)' /&gt;
+                          &lt;/AND&gt;
+                      &lt;/AND&gt;
+                      &lt;/FILTER&gt;
+                      &lt;INCLUDE&gt;ActivityId&lt;/INCLUDE&gt;
+                      &lt;INCLUDE&gt;ActivityType&lt;/INCLUDE&gt;
+                      &lt;INCLUDE&gt;AdvertisedTimeAtLocation&lt;/INCLUDE&gt;
+                      &lt;INCLUDE&gt;EstimatedTimeAtLocation&lt;/INCLUDE&gt;
+                      &lt;INCLUDE&gt;AdvertisedTrainIdent&lt;/INCLUDE&gt;
+                      &lt;INCLUDE&gt;OperationalTrainNumber&lt;/INCLUDE&gt;
+                      &lt;INCLUDE&gt;Canceled&lt;/INCLUDE&gt;
+                      &lt;INCLUDE&gt;FromLocation&lt;/INCLUDE&gt;
+                      &lt;INCLUDE&gt;ToLocation&lt;/INCLUDE&gt;
+                      &lt;INCLUDE&gt;LocationSignature&lt;/INCLUDE&gt;
+                      &lt;INCLUDE&gt;TimeAtLocation&lt;/INCLUDE&gt;
+                      &lt;INCLUDE&gt;TrainOwner&lt;/INCLUDE&gt;
+                &lt;/QUERY&gt;
             &lt;/REQUEST&gt;`;
 &nbsp;
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      const response = <span class="cstat-no" title="statement not covered" >await fetch(</span>
+        "https://api.trafikinfo.trafikverket.se/v2/data.json", {
+            method: "POST",
+            body: query,
+            headers: { "Content-Type": "text/xml" }
+        }
+    )
 &nbsp;
-            const response = <span class="cstat-no" title="statement not covered" >fetch(</span>
-                "https://api.trafikinfo.trafikverket.se/v2/data.json", {
-                    method: "POST",
-                    body: query,
-                    headers: { "Content-Type": "text/xml" }
-                }
-            ).then(<span class="fstat-no" title="function not covered" >fu</span>nction(response) {
-<span class="cstat-no" title="statement not covered" >                return response.json()</span>
-            }).then(<span class="fstat-no" title="function not covered" >fu</span>nction(result) {
-<span class="cstat-no" title="statement not covered" >                return res.json({</span>
-                    data: result.RESPONSE.RESULT[0].TrainAnnouncement
-                });
-            })
+    const result = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    res.json({</span>
+      data: result.RESPONSE.RESULT[0].TrainAnnouncement
+    });
+&nbsp;
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      res.status(500).json({ error: "Internal Server Error" });</span>
     }
+  }
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >module.exports = delayed;</span>
@@ -220,7 +232,7 @@ const delayed = <span class="cstat-no" title="statement not covered" >{</span>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-09-06T11:17:20.564Z
+                at 2023-09-06T20:15:13.396Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
