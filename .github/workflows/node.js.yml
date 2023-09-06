@@ -28,26 +28,10 @@ jobs:
         cache: 'npm'
         cache-dependency-path: './backend/package-lock.json'
         
-    
     - name: Install backend dependencies
       working-directory: ./backend
       run: npm ci
 
-    #- name: Install frontend dependencies
-    #  working-directory: ./frontend
-    #  run: npm ci
-
-    - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.7.0
-      with:
-        mongodb-version: ${{ matrix.mongodb-version }}
-
-    # backend tests
     - name: Run backend tests
       working-directory: ./backend
       run: npm test
-
-    # frontend tests
-    # - name: Run frontend tests
-    #   working-directory: ./frontend
-    #   run: npm test
