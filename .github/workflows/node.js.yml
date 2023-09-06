@@ -11,7 +11,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -21,18 +20,32 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm install
+
+    - name: Install frontend dependencies
+      working-directory: ./frontend
+      run: npm install
+
     - name: Start MongoDB
       uses: supercharge/mongodb-github-action@1.7.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
 
-    - name: npm install and build
-      working-directory: ./path-to-folder
-      run: |
-        npm install
-        npm test
+    # backend tests
+    - name: Run backend tests
+      working-directory: ./backend
+      run: npm test
+
+    # frontend tests
+    # - name: Run frontend tests
+    #   working-directory: ./frontend
+    #   run: npm test
