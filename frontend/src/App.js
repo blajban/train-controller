@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import Style from './Style';
 import ExampleComponent from './components/ExampleComponent';
-import Delayed from "./components/Delayed";
+import DelayedTrains from "./components/DelayedTrains";
 
 const AppContainer = styled.nav`
   height: 100vh;
@@ -31,7 +31,7 @@ function App() {
       <Style />
       <AppContainer>
         <DelayedContainer>
-          <Delayed />
+          <DelayedTrains />
         </DelayedContainer>
         <MapContainer>
           Här ska kartan in
