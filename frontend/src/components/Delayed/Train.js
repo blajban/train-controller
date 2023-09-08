@@ -1,18 +1,6 @@
 import styled from "styled-components";
 
-function Delay({ train }) {
-    const advertised = new Date(train.AdvertisedTimeAtLocation);
-    const estimated = new Date(train.EstimatedTimeAtLocation);
-
-    const diff = Math.abs(estimated - advertised);
-
-    const delay = Math.floor(diff / (1000 * 60));
-    return (
-        <div>
-            {delay} minuter
-        </div>
-    )
-}
+import Delay from "./Delay";
 
 const TrainNumber = styled.div`
     font-size: 2rem;
@@ -51,9 +39,10 @@ const StyledTrain = styled(TrainItem)`
   }
 `;
 
-function Train({ train }) {
+function Train({ train, onClick }) {
   return (
     <StyledTrain 
+        onClick={onClick}
         train={train}
     />
   );

@@ -3,14 +3,28 @@ import { useState, useEffect } from 'react'
 import styled from "styled-components";
 
 import Train from './Train';
+import Ticket from '../Ticket/Ticket';
 
 const DelayedTrainsList = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
+
 function DelayedTrains() {
   const [delayedTrains, setDelayedTrains] = useState(null);
+  const [isTicketOpen, setIsTicketOpen] = useState(false);
+  const [currentTrain, setCurrentTrain] = useState(null);
+
+  const handleTrainClick = (trainData) => {
+    setCurrentTrain(trainData);
+    setIsTicketOpen(true);
+  };
+
+  const handleCloseTicket = () => {
+    setIsTicketOpen(false);
+    setCurrentTrain(null);
+  };
 
   useEffect(() => {
     const fetchDelayedTrains = async () => {
@@ -29,14 +43,26 @@ function DelayedTrains() {
   if (!delayedTrains) return "Loading...";
 
   return (
-    <div class="delayed">
+    <>
+      {isTicketOpen && 
+        <Ticket
+          isOpen={isTicketOpen}
+          onClose={handleCloseTicket}
+          trainData={currentTrain}
+      />}
+
       <h1>Försenade tåg</h1>
       <DelayedTrainsList>
         {delayedTrains.map((train, index) => (
-          <Train train={train} />
+          <Train 
+            key={index}
+            train={train}
+            onClick={() => handleTrainClick(train)}
+          />
         ))}
+        
       </DelayedTrainsList>
-  </div>
+  </>
   );
 }
 
