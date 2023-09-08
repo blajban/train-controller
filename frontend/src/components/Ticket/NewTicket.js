@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 
-import styled from "styled-components";
 import Delay from '../Delayed/Delay';
 
 function LocationString({trainData}) {
@@ -14,26 +13,7 @@ function LocationString({trainData}) {
 }
 
 
-function NewTicketForm() {
-  /*
-  var newTicket = {
-            code: reasonCodeSelect.value,
-            trainnumber: item.OperationalTrainNumber,
-            traindate: item.EstimatedTimeAtLocation.substring(0, 10),
-        };
-
-        fetch("http://localhost:1337/tickets", {
-            body: JSON.stringify(newTicket),
-            headers: {
-              'content-type': 'application/json'
-            },
-            method: 'POST'
-        })
-            .then((response) => response.json())
-            .then((result) => {
-                renderTicketView(item);
-            });
-  */
+function NewTicketForm({ onAddNewTicket }) {
   const [reasonCode, setReasonCode] = useState('');
   const [reasonCodes, setReasonCodes] = useState(null);
 
@@ -43,6 +23,7 @@ function NewTicketForm() {
         const response = await fetch('http://localhost:1337/codes');
         const result = await response.json();
         setReasonCodes(result.data);
+        setReasonCode(result.data[0].Code);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -53,16 +34,10 @@ function NewTicketForm() {
 
   if (!reasonCodes) return "Loading reason codes...";
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Selected reason code:', reasonCode);
+    onAddNewTicket(reasonCode);
   };
-
-  const reasonOptions = [
-    { value: '1', label: 'Reason 1' },
-    { value: '2', label: 'Reason 2' },
-    { value: '3', label: 'Reason 3' },
-  ];
 
   return (
     <form onSubmit={handleSubmit}>
@@ -71,8 +46,8 @@ function NewTicketForm() {
         value={reasonCode}
         onChange={e => setReasonCode(e.target.value)}
       >
-        {reasonCodes.map(code => (
-          <option key={code.value} value={code.Code}>
+        {reasonCodes.map((code, index) => (
+          <option key={index} value={code.Code}>
             {code.Code} - {code.Level3Description}
           </option>
         ))}
@@ -83,16 +58,14 @@ function NewTicketForm() {
 
 }
 
-function NewTicket({trainData}) {
+function NewTicket({trainData, newTicketId, onAddNewTicket}) {
   return (
-    <div class="ticket">
-        
-        <h1>Nytt ärende #3</h1>
-        <LocationString trainData={trainData} />
-        <p><strong>Försenad:</strong> <Delay train={trainData}/></p>
-        <NewTicketForm />
-        
-      </div>
+    <div>
+      <h1>Nytt ärende {newTicketId}</h1>
+      <LocationString trainData={trainData} />
+      <div><strong>Försenad:</strong> <Delay train={trainData}/></div>
+      <NewTicketForm trainData={trainData} onAddNewTicket={onAddNewTicket}/>
+    </div>
   )
 }
 
