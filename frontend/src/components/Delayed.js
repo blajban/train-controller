@@ -13,28 +13,6 @@ fetch("http://localhost:1337/delayed")
         });
 
 
-        function renderDelayedTable(data, table) {
-    data.forEach((item) => {
-        let element = document.createElement("div");
-
-        element.innerHTML = `
-            <div class="train-number">
-                ${item.OperationalTrainNumber}
-            </div>
-            <div class="current-station">
-                <div>${item.LocationSignature}</div>
-                <div>${item.FromLocation ? item.FromLocation[0].LocationName + " -> " : ""} ${item.ToLocation ? item.ToLocation[0].LocationName : ""}</div>
-            </div>
-            <div class="delay">
-                ${outputDelay(item)}
-            </div>`;
-
-        element.addEventListener("click", function() {
-            renderTicketView(item);
-        });
-
-        table.appendChild(element);
-    });
 }
 */
 
@@ -92,20 +70,31 @@ const train3 = {
 };
 
 function Delayed() {
+  const [delayedTrains, setDelayedTrains] = useState(null);
+
+  useEffect(() => {
+    const fetchDelayedTrains = async () => {
+      try {
+        const response = await fetch('http://localhost:1337/delayed');
+        const result = await response.json();
+        setDelayedTrains(result.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchDelayedTrains();
+  }, []);
+
+  if (!delayedTrains) return "Loading...";
+
   return (
     <div class="delayed">
       <h1>Försenade tåg</h1>
       <DelayedTrains>
-        <Train
-          train={train1}
-        />
-        <Train
-          train={train2}
-        />
-        <Train
-          train={train3}
-        />
-
+        {delayedTrains.map((train, index) => (
+          <Train train={train} />
+        ))}
       </DelayedTrains>
   </div>
   );

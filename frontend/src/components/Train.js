@@ -13,15 +13,12 @@ const CurrentStation = styled.div`
 `;
 
 function outputDelay(item) {
-    /*
-        let advertised = new Date(item.AdvertisedTimeAtLocation);
-        let estimated = new Date(item.EstimatedTimeAtLocation);
+    const advertised = new Date(item.AdvertisedTimeAtLocation);
+    const estimated = new Date(item.EstimatedTimeAtLocation);
 
-        const diff = Math.abs(estimated - advertised);
+    const diff = Math.abs(estimated - advertised);
 
-        return Math.floor(diff / (1000 * 60)) + " minuter";
-    */
-   return "Försening";
+    return Math.floor(diff / (1000 * 60)) + " minuter";
 }
 
 function TrainItem({ train, ...restProps }) {

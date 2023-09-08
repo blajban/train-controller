@@ -32,7 +32,6 @@ function App() {
       <AppContainer>
         <DelayedContainer>
           <Delayed />
-          <ExampleComponent />
         </DelayedContainer>
         <MapContainer>
           Här ska kartan in
