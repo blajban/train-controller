@@ -1,6 +1,18 @@
-import { useState, useEffect } from 'react'
-
 import styled from "styled-components";
+
+function Delay({ train }) {
+    const advertised = new Date(train.AdvertisedTimeAtLocation);
+    const estimated = new Date(train.EstimatedTimeAtLocation);
+
+    const diff = Math.abs(estimated - advertised);
+
+    const delay = Math.floor(diff / (1000 * 60));
+    return (
+        <div>
+            {delay} minuter
+        </div>
+    )
+}
 
 const TrainNumber = styled.div`
     font-size: 2rem;
@@ -12,15 +24,6 @@ const CurrentStation = styled.div`
     width: 30%;
 `;
 
-function outputDelay(item) {
-    const advertised = new Date(item.AdvertisedTimeAtLocation);
-    const estimated = new Date(item.EstimatedTimeAtLocation);
-
-    const diff = Math.abs(estimated - advertised);
-
-    return Math.floor(diff / (1000 * 60)) + " minuter";
-}
-
 function TrainItem({ train, ...restProps }) {
   return (
     <div {...restProps}>
@@ -30,11 +33,7 @@ function TrainItem({ train, ...restProps }) {
                 <div>{train.FromLocation ? train.FromLocation[0].LocationName + " -> " : ""} {train.ToLocation ? train.ToLocation[0].LocationName : ""}</div>
       </CurrentStation>
 
-    <div>
-        {outputDelay(train)}
-    </div>
-      
-    
+    <Delay train={train} />
     </div>
     );
 }
