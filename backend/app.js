@@ -40,6 +40,24 @@ app.use("/delayed", delayed);
 app.use("/tickets", tickets);
 app.use("/codes", codes);
 
+// Handle not found
+app.use((req, res, next) => {
+  const error = new Error(`Not Found - ${req.originalUrl}`);
+  error.status = 404;
+  next(error);
+});
+
+// Handle all errors
+app.use((err, req, res, next) => {
+  const statusCode = err.status || 500;
+  res.status(statusCode);
+  res.json({
+    status: statusCode,
+    message: err.message,
+    stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack
+  });
+});
+
 httpServer.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

@@ -4,6 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "nodemon app.js",
+    "production": "NODE_ENV='production' node app.js",
     "test": "jest --verbose --coverage",
     "lint": "eslint . --ext .js --ignore-pattern node_modules/"
   },
