@@ -2,8 +2,7 @@
 import styled from "styled-components";
 
 import Style from './Style';
-import ExampleComponent from './components/ExampleComponent';
-import DelayedTrains from "./components/DelayedTrains";
+import DelayedTrains from "./components/Delayed/DelayedTrains";
 
 const AppContainer = styled.nav`
   height: 100vh;

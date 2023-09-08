@@ -7,7 +7,6 @@ import Train from './Train';
 const DelayedTrainsList = styled.div`
   display: flex;
   flex-direction: column;
-  }
 `;
 
 function DelayedTrains() {
