@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 
 import styled from "styled-components";
-import Delay from '../Delayed/Delay';
+import NewTicket from './NewTicket';
+import OldTickets from './OldTickets';
 
 /*
 function renderTicketView(item) {
@@ -126,67 +127,56 @@ const Content = styled.div`
   overflow-y: auto;
 `;
 
-function LocationString({trainData}) {
-  return (
-    <>
-      {trainData.FromLocation && 
-        <h3>Tåg från {trainData.FromLocation[0].LocationName} till {trainData.ToLocation[0].LocationName}. Just nu i {trainData.LocationSignature}.</h3>
-      }
-    </>
-  )
-}
-
-function NewTicket({trainData}) {
-  return (
-    <div class="ticket">
-        
-        <h1>Nytt ärende #3</h1>
-        <LocationString trainData={trainData} />
-        <p><strong>Försenad:</strong> <Delay train={trainData}/></p>
-        (FORM)
-        
-      </div>
-  )
-}
-
-function NewTicketForm() {
-  
-}
-
-function OldTickets() {
-  <div class="old-tickets">
-        <h2>Befintliga ärenden</h2>
-        (BEFINTLIGA ÄRENDEN)
-      </div>
-}
 
 function Ticket({isOpen, onClose, trainData}) {
-  /*
-  <div class="ticket-container">
-            <div class="ticket">
-                <a href="" id="back"><- Tillbaka</a>
-                <h1>Nytt ärende #<span id="new-ticket-id"></span></h1>
-                ${locationString}
-                <p><strong>Försenad:</strong> ${outputDelay(item)}</p>
-                <form id="new-ticket-form">
-                    <label>Orsakskod</label><br>
-                    <select id="reason-code"></select><br><br>
-                    <input type="submit" value="Skapa nytt ärende" />
-                </form>
-            </div>
-            <br>
-            <div class="old-tickets" id="old-tickets">
-                <h2>Befintliga ärenden</h2>
-            </div>
-        </div>
-  */
+    /**
+    fetch("http://localhost:1337/tickets")
+        .then((response) => response.json())
+        .then((result) => {
+            var lastId = result.data[1] ? result.data[1].id : 0;
+
+            newTicketId = lastId + 1;
+
+            let newTicketIdSpan = document.getElementById("new-ticket-id");
+
+            newTicketIdSpan.textContent = newTicketId;
+
+            result.data.forEach((ticket) => {
+                let element = document.createElement("div");
+
+                element.innerHTML = `${ticket.id} - ${ticket.code} - ${ticket.trainnumber} - ${ticket.traindate}`;
+
+                oldTickets.appendChild(element);
+            });
+        });
+   */
+  const [oldTickets, setOldTickets] = useState(null);
+  const [ticketId, setTicketId] = useState(null);
+
+  useEffect(() => {
+    const fetchOldTickets = async () => {
+      try {
+        const response = await fetch('http://localhost:1337/tickets');
+        const result = await response.json();
+        setOldTickets(result.data);
+        const newTickedId = oldTickets[1] ? oldTickets[1].id : 0;
+        setTicketId(newTickedId);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchOldTickets();
+  }, []);
 
   return (
     <Overlay>
       <Content>
-        <button onClick={onClose}>Tillbaka</button>
+        
+        <button onClick={onClose}>Stäng</button>
+        Nummer: {ticketId}
         <NewTicket trainData={trainData} />
-        <OldTickets/>
+        <OldTickets oldTickets={oldTickets}/>
     </Content>
     </Overlay>
   )
