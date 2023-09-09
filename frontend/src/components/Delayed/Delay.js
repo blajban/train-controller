@@ -1,5 +1,3 @@
-import styled from "styled-components";
-
 function Delay({ train }) {
     const advertised = new Date(train.AdvertisedTimeAtLocation);
     const estimated = new Date(train.EstimatedTimeAtLocation);
