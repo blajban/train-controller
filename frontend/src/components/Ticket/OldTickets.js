@@ -1,5 +1,5 @@
 function OldTickets({oldTickets}) {
-  if (!oldTickets) return "Loading reason codes...";
+  if (!oldTickets) return "Loading tickets...";
 
   return (
     <div>

@@ -41,8 +41,8 @@ function NewTicketForm({ onAddNewTicket }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>Orsakskod</label><br />
-      <select
+      <label htmlFor="reasonCode">Orsakskod</label><br />
+      <select id="reasonCode"
         value={reasonCode}
         onChange={e => setReasonCode(e.target.value)}
       >

@@ -187,7 +187,7 @@ describe("<DelayedTrains />", () => {
     await waitFor(() => expect(console.error).toHaveBeenCalledTimes(1));
 
     expect(console.error).toHaveBeenCalledWith("Error:", new Error("Mock fetch error"));
-});
+  });
 
 
 });
