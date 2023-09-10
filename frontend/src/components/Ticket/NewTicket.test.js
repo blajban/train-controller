@@ -163,5 +163,62 @@ describe('<NewTicket />', () => {
     expect(console.error).toHaveBeenCalledWith("Error:", new Error("Mock fetch error"));
   });
 
+  it('should call the submit callback correctly', async () => {
+    const mockTrainData = { 
+      OperationalTrainNumber: "12345",
+      LocationSignature: "AA", 
+      FromLocation: [
+        { LocationName: "Start" 
+      }],
+      ToLocation: [
+        { LocationName: "End" }
+      ] 
+    };
+
+    const mockTicketId = 1;
+    const mockOnAddNewTicket = jest.fn();
+
+    const mockCodesData = [
+      {
+        Code: "AA",
+        Level1Description: "A",
+        Level2Description: "B",
+        Level3Description: "C"
+      }
+    ];
+    
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({ data: mockCodesData }),
+      })
+    );
+
+
+    let getByText, getByLabelText;
+
+    await act(async () => {
+      const result = render(
+        <NewTicket 
+          trainData={mockTrainData}
+          newTicketId={mockTicketId}
+          onAddNewTicket={mockOnAddNewTicket}
+        />
+      );
+
+      getByText = result.getByText;
+      getByLabelText = result.getByLabelText;
+    });
+
+    await waitFor(() => expect(getByLabelText("Orsakskod")).toBeInTheDocument());
+
+    const selectControl = getByLabelText("Orsakskod");
+    fireEvent.change(selectControl, { target: { value: "AA" } });
+
+    const submitButton = getByText("Skapa nytt ärende");
+    fireEvent.click(submitButton);
+
+    expect(mockOnAddNewTicket).toHaveBeenCalledWith("AA");
+  });
+
 
 });

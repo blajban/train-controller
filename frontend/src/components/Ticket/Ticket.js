@@ -76,7 +76,7 @@ function Ticket({isOpen, onClose, trainData}) {
     <Overlay>
       <Content>
         <button onClick={onClose}>Stäng</button>
-        <NewTicket trainData={trainData} onAddNewTicket={addNewTicket}/>
+        <NewTicket trainData={trainData} newTicketId={ticketId} onAddNewTicket={addNewTicket}/>
         <OldTickets oldTickets={oldTickets}/>
     </Content>
     </Overlay>
