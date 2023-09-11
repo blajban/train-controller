@@ -27,8 +27,11 @@ describe('<Ticket />', () => {
   });
 
   afterEach(() => {
-      jest.clearAllMocks();
+    jest.resetAllMocks();
+    jest.clearAllTimers();
+    jest.restoreAllMocks();
   });
+  
 
   it('fetches old tickets and calculates new ticket id', async () => {
     const mockOldTickets = [
