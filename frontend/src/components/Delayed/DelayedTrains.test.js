@@ -1,7 +1,6 @@
 import { render, fireEvent, waitFor, act, queryByText } from "@testing-library/react";
 import DelayedTrains from "./DelayedTrains";
 
-jest.mock('node-fetch', () => jest.fn());
 global.fetch = jest.fn();
 
 
