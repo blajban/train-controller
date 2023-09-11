@@ -14,6 +14,13 @@ describe('<NewTicket />', () => {
     global.fetch.mockRestore();
   });
 
+  afterEach(() => {
+    jest.resetAllMocks();
+    jest.clearAllTimers();
+    jest.restoreAllMocks();
+  });
+  
+
   it('should render the new ticket id and location string correctly', async () => {
     const mockTrainData = { 
       OperationalTrainNumber: "12345",

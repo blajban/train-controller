@@ -7,6 +7,12 @@ jest.mock("./components/Delayed/DelayedTrains", () => {
   };
 });
 
+jest.mock("./components/Map/TrainMap", () => {
+  return function MockedTrainMap() {
+    return <div>TrainMap mock</div>;
+  };
+});
+
 describe('App', () => {
   it('renders DelayedTrains component', () => {
     const { getByText } = render(<App />);
@@ -15,7 +21,7 @@ describe('App', () => {
 
   it('renders map placeholder', () => {
     const { getByText } = render(<App />);
-    expect(getByText('Här ska kartan in')).toBeInTheDocument();
+    expect(getByText('TrainMap mock')).toBeInTheDocument();
   });
 
 });

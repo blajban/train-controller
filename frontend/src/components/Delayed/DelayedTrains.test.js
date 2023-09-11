@@ -11,7 +11,10 @@ describe("<DelayedTrains />", () => {
 
   afterEach(() => {
     jest.resetAllMocks();
+    jest.clearAllTimers();
+    jest.restoreAllMocks();
   });
+  
 
   it("displays delayed trains", async () => {
     const mockData = [

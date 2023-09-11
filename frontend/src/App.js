@@ -36,7 +36,6 @@ function App() {
         <MapContainer>
           <TrainMap />
         </MapContainer>
-        
       </AppContainer>
     </>
       
