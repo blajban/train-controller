@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import Style from './Style';
 import DelayedTrains from "./components/Delayed/DelayedTrains";
+import TrainMap from "./components/Map/TrainMap";
 
 const AppContainer = styled.nav`
   height: 100vh;
@@ -33,7 +34,7 @@ function App() {
           <DelayedTrains />
         </DelayedContainer>
         <MapContainer>
-          Här ska kartan in
+          <TrainMap />
         </MapContainer>
         
       </AppContainer>
