@@ -37,5 +37,5 @@ jobs:
       run: (cd ./frontend && exec npm install)
       
     - name: Run frontend tests
-      run: (cd ./frontend && exec CI=true npm test)
+      run: (cd ./frontend && CI=true exec npm test)
 
