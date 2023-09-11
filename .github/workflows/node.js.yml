@@ -32,3 +32,9 @@ jobs:
       
     - name: Run backend tests
       run: (cd ./backend && exec npm test)
+
+    - name: Install frontend dependencies
+      run: (cd ./frontend && exec npm install)
+      
+    - name: Run frontend tests
+      run: (cd ./backend && exec npm test)
