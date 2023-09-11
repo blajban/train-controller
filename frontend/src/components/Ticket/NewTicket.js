@@ -58,7 +58,7 @@ function NewTicketForm({ onAddNewTicket }) {
 
 }
 
-function NewTicket({trainData, newTicketId, onAddNewTicket}) {
+function NewTicket({invokeMock, trainData, newTicketId, onAddNewTicket}) {
   return (
     <div>
       <h1>Nytt ärende {newTicketId}</h1>

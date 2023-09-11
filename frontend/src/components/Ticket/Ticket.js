@@ -27,7 +27,7 @@ const Content = styled.div`
 `;
 
 
-function Ticket({isOpen, onClose, trainData}) {
+function Ticket({invokeMock, isOpen, onClose, trainData}) {
   const [oldTickets, setOldTickets] = useState(null);
   const [ticketId, setTicketId] = useState(null);
 
@@ -76,7 +76,7 @@ function Ticket({isOpen, onClose, trainData}) {
     <Overlay>
       <Content>
         <button onClick={onClose}>Stäng</button>
-        <NewTicket trainData={trainData} newTicketId={ticketId} onAddNewTicket={addNewTicket}/>
+        <NewTicket invokeMock={invokeMock} trainData={trainData} newTicketId={ticketId} onAddNewTicket={addNewTicket}/>
         <OldTickets oldTickets={oldTickets}/>
     </Content>
     </Overlay>
