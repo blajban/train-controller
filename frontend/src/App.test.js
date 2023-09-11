@@ -9,15 +9,13 @@ jest.mock("./components/Delayed/DelayedTrains", () => {
 
 describe('App', () => {
   it('renders DelayedTrains component', () => {
-    render(<App />);
-    const delayedTrainsElement = screen.getByText('DelayedTrains mock');
-    expect(delayedTrainsElement).toBeInTheDocument();
+    const { getByText } = render(<App />);
+    expect(getByText('DelayedTrains mock')).toBeInTheDocument();
   });
 
   it('renders map placeholder', () => {
-    render(<App />);
-    const mapPlaceholderElement = screen.getByText('Här ska kartan in');
-    expect(mapPlaceholderElement).toBeInTheDocument();
+    const { getByText } = render(<App />);
+    expect(getByText('Här ska kartan in')).toBeInTheDocument();
   });
 
 });
