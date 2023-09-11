@@ -41,8 +41,8 @@ function NewTicketForm({ onAddNewTicket }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>Orsakskod</label><br />
-      <select
+      <label htmlFor="reasonCode">Orsakskod</label><br />
+      <select id="reasonCode"
         value={reasonCode}
         onChange={e => setReasonCode(e.target.value)}
       >
@@ -58,7 +58,7 @@ function NewTicketForm({ onAddNewTicket }) {
 
 }
 
-function NewTicket({trainData, newTicketId, onAddNewTicket}) {
+function NewTicket({invokeMock, trainData, newTicketId, onAddNewTicket}) {
   return (
     <div>
       <h1>Nytt ärende {newTicketId}</h1>

@@ -1,8 +1,21 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
-  //render(<App />);
-  //const linkElement = screen.getByText(/learn react/i);
-  //expect(linkElement).toBeInTheDocument();
+jest.mock("./components/Delayed/DelayedTrains", () => {
+  return function MockedDelayedTrains() {
+    return <div>DelayedTrains mock</div>;
+  };
+});
+
+describe('App', () => {
+  it('renders DelayedTrains component', () => {
+    const { getByText } = render(<App />);
+    expect(getByText('DelayedTrains mock')).toBeInTheDocument();
+  });
+
+  it('renders map placeholder', () => {
+    const { getByText } = render(<App />);
+    expect(getByText('Här ska kartan in')).toBeInTheDocument();
+  });
+
 });
