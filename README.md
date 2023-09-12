@@ -9,9 +9,8 @@ Vi förenklade stegen något genom ett installationsscript. De steg som krävs n
 1. Klona repot
 2. `./install.bash`
 3. Ändra api-nyckel i `backend/.env`
-3. I backend-mappen: `nodemon app.js`
-4. I frontend-mappen: `python3 -m http.server 9000`
-5. Gå till `localhost:9000`
+3. I backend-mappen: `npm start`
+4. I frontend-mappen: `npm start`
 
 ## Säkerhetsgranskning och Åtgärder
 Under granskning av koden kom vi fram till att det fanns ett antal säkerhetsbrister. Dessa är listade nedan tillsammans med åtgärder som vidtagits för att åtgärda dem.
