@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import TrainMap from './TrainMap';
 
 jest.mock('react-leaflet', () => {
@@ -16,8 +16,8 @@ describe('TrainMap', () => {
   });
 
   it('renders the mocked MapContainer', () => {
-    const { getByText, debug } = render(<TrainMap />);
-    expect(getByText("Mocked MapContainer")).toBeInTheDocument();
+    render(<TrainMap />);
+    expect(screen.getByText("Mocked MapContainer")).toBeInTheDocument();
   });
 });
 

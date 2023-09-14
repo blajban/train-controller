@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import Train from './Train';
 
 jest.mock('./Delay', () => {
@@ -19,15 +19,15 @@ describe('<Train />', () => {
       ToLocation: [{ LocationName: 'End' }],
     };
 
-    const { getByText } = render(<Train train={mockTrainData} onClick={handleClick} />);
+    render(<Train train={mockTrainData} onClick={handleClick} />);
 
 
-    expect(getByText('12345')).toBeInTheDocument();
-    expect(getByText('Mocked Delay')).toBeInTheDocument();
-    expect(getByText('AA')).toBeInTheDocument();
-    expect(getByText('Start -> End')).toBeInTheDocument();
+    expect(screen.getByText('12345')).toBeInTheDocument();
+    expect(screen.getByText('Mocked Delay')).toBeInTheDocument();
+    expect(screen.getByText('AA')).toBeInTheDocument();
+    expect(screen.getByText('Start -> End')).toBeInTheDocument();
 
-    fireEvent.click(getByText('12345'));
+    fireEvent.click(screen.getByText('12345'));
     expect(handleClick).toHaveBeenCalled();
   });
 
@@ -37,9 +37,9 @@ describe('<Train />', () => {
       LocationSignature: 'AA'
     };
 
-    const { queryByText } = render(<Train train={mockTrainData} onClick={() => {}} />);
+    render(<Train train={mockTrainData} onClick={() => {}} />);
 
-    expect(queryByText('Start ->')).toBeNull();
-    expect(queryByText('End')).toBeNull();
+    expect(screen.queryByText('Start ->')).toBeNull();
+    expect(screen.queryByText('End')).toBeNull();
   });
 });

@@ -1,13 +1,12 @@
+import { render } from '@testing-library/react';
+import Markers from './Markers';
+import mapSocket from '../../utility/mapSocket';
+
 jest.mock('react-leaflet', () => ({
   useMap: jest.fn()
 }));
 
 jest.mock("../../utility/mapSocket");
-
-
-import { render } from '@testing-library/react';
-import Markers from './Markers';
-import mapSocket from '../../utility/mapSocket';
 
 describe('<Markers />', () => {
   afterEach(() => {

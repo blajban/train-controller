@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import OldTickets from './OldTickets';
 
 describe('<OldTickets />', () => {
@@ -14,18 +14,17 @@ describe('<OldTickets />', () => {
       }
     ];
 
-    const { getByText } = render(<OldTickets oldTickets={mockOldTickets}/>);
+    render(<OldTickets oldTickets={mockOldTickets}/>);
 
-    expect(getByText(/6789/)).toBeInTheDocument();
+    expect(screen.getByText(/6789/)).toBeInTheDocument();
   });
 
   it('should return early if no old tickets', () => {
-
     const mockOldTickets = null;
 
-    const { getByText } = render(<OldTickets oldTickets={mockOldTickets}/>);
+    render(<OldTickets oldTickets={mockOldTickets}/>);
 
-    expect(getByText("Loading tickets...")).toBeInTheDocument();
+    expect(screen.getByText("Loading tickets...")).toBeInTheDocument();
   });
 
 });

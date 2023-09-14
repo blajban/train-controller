@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor, act, queryByText } from "@testing-library/react";
+import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import DelayedTrains from "./DelayedTrains";
 
 global.fetch = jest.fn();
@@ -36,9 +36,9 @@ describe("<DelayedTrains />", () => {
       })
     );
 
-    const { getByText } = render(<DelayedTrains />);
+    render(<DelayedTrains />);
 
-    await waitFor(() => expect(getByText("Start -> End")).toBeInTheDocument());
+    await screen.findByText("Start -> End");
   });
 
   it("opens a ticket when a train is clicked", async () => {
@@ -94,15 +94,16 @@ describe("<DelayedTrains />", () => {
 
     });
 
-    const { findByText, getByText } = render(<DelayedTrains />);
 
-    const clickableElement = await findByText("Start -> End");
+    render(<DelayedTrains />);
 
-    await act(async () => {
-      fireEvent.click(clickableElement);
+    const clickableElement = await screen.findByText("Start -> End");
+
+    fireEvent.click(clickableElement);
+
+    await waitFor(async () => {
+      expect(screen.getByText(/6789/)).toBeInTheDocument()
     });
-
-    await waitFor(() => expect(getByText(/6789/)).toBeInTheDocument());
 
   });
 
@@ -159,23 +160,19 @@ describe("<DelayedTrains />", () => {
 
     });
 
-    const { findByText, getByText, queryByText } = render(<DelayedTrains />);
+    render(<DelayedTrains />);
 
-    const clickableElement = await findByText("Start -> End");
+    const clickableElement = await screen.findByText("Start -> End");
+    fireEvent.click(clickableElement);
 
-    await act(async () => {
-      fireEvent.click(clickableElement);
-    });
+    await waitFor(async () => {
+      expect(screen.getByText("Stäng")).toBeInTheDocument();
+    })
 
-    expect(getByText("Stäng")).toBeInTheDocument();
-
-    await act(async () => {
-      fireEvent.click(getByText("Stäng"));
-    });
-
+    fireEvent.click(screen.getByText("Stäng"));
 
     await waitFor(() => {
-      expect(queryByText("Stäng")).not.toBeInTheDocument();
+      expect(screen.queryByText("Stäng")).not.toBeInTheDocument();
     });
   });
 
@@ -186,7 +183,9 @@ describe("<DelayedTrains />", () => {
 
     render(<DelayedTrains />);
 
-    await waitFor(() => expect(console.error).toHaveBeenCalledTimes(1));
+    await waitFor(() => {
+      expect(console.error).toHaveBeenCalledTimes(1)
+    });
 
     expect(console.error).toHaveBeenCalledWith("Error:", new Error("Mock fetch error"));
   });

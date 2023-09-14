@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, act, waitFor, fireEvent } from '@testing-library/react';
+import { render, act, waitFor, fireEvent, screen } from '@testing-library/react';
 import NewTicket from './NewTicket';
 
 jest.mock('../Delayed/Delay', () => {
@@ -51,24 +51,23 @@ describe('<NewTicket />', () => {
       })
     );
 
-
-    let getByText;
-
+    // eslint-disable-next-line testing-library/no-unnecessary-act
     await act(async () => {
-      const result = render(
+      render(
         <NewTicket 
           trainData={mockTrainData}
           newTicketId={mockTicketId}
           onAddNewTicket={mockOnAddNewTicket}
         />
       );
-      
-      getByText = result.getByText;
     });
 
     await waitFor(() => {
-      expect(getByText(/Nytt ärende 1/)).toBeInTheDocument();
-      expect(getByText(/Tåg från Start till End. Just nu i AA/)).toBeInTheDocument();
+      expect(screen.getByText(/Nytt ärende 1/)).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Tåg från Start till End. Just nu i AA/)).toBeInTheDocument();
     });
   });
 
@@ -102,31 +101,26 @@ describe('<NewTicket />', () => {
       })
     );
 
+    render(
+      <NewTicket 
+        trainData={mockTrainData}
+        newTicketId={mockTicketId}
+        onAddNewTicket={mockOnAddNewTicket}
+      />
+    );
 
-    let getByText, getByLabelText, queryByText;
-
-    await act(async () => {
-      const result = render(
-        <NewTicket 
-          trainData={mockTrainData}
-          newTicketId={mockTicketId}
-          onAddNewTicket={mockOnAddNewTicket}
-        />
-      );
-
-      getByText = result.getByText;
-      getByLabelText = result.getByLabelText;
-      queryByText = result.queryByText;
+    await waitFor(() => {
+      expect(screen.getByText("AA - C")).toBeInTheDocument();
     });
 
-    expect(getByText("AA - C")).toBeInTheDocument();
-
-    const dropdown = getByLabelText("Orsakskod");
+    const dropdown = screen.getByLabelText("Orsakskod");
     fireEvent.change(dropdown, { target: { value: "AA" } });
 
     expect(dropdown.value).toBe("AA");
 
-    await waitFor(() => expect(queryByText("Loading reason codes...")).not.toBeInTheDocument());
+    await waitFor(() => {
+      expect(screen.queryByText("Loading reason codes...")).not.toBeInTheDocument()
+    });
   });
 
   it("test fetch error", async () => {
@@ -143,15 +137,6 @@ describe('<NewTicket />', () => {
 
     const mockTicketId = 1;
     const mockOnAddNewTicket = () => {};
-
-    const mockCodesData = [
-      {
-        Code: "AA",
-        Level1Description: "A",
-        Level2Description: "B",
-        Level3Description: "C"
-      }
-    ];
 
     global.fetch = jest.fn().mockRejectedValue(new Error("Mock fetch error"));
 
@@ -200,28 +185,22 @@ describe('<NewTicket />', () => {
       })
     );
 
+    render(
+      <NewTicket 
+        trainData={mockTrainData}
+        newTicketId={mockTicketId}
+        onAddNewTicket={mockOnAddNewTicket}
+      />
+    );
 
-    let getByText, getByLabelText;
-
-    await act(async () => {
-      const result = render(
-        <NewTicket 
-          trainData={mockTrainData}
-          newTicketId={mockTicketId}
-          onAddNewTicket={mockOnAddNewTicket}
-        />
-      );
-
-      getByText = result.getByText;
-      getByLabelText = result.getByLabelText;
+    await waitFor(() => {
+      expect(screen.getByLabelText("Orsakskod")).toBeInTheDocument()
     });
 
-    await waitFor(() => expect(getByLabelText("Orsakskod")).toBeInTheDocument());
-
-    const selectControl = getByLabelText("Orsakskod");
+    const selectControl = screen.getByLabelText("Orsakskod");
     fireEvent.change(selectControl, { target: { value: "AA" } });
 
-    const submitButton = getByText("Skapa nytt ärende");
+    const submitButton = screen.getByText("Skapa nytt ärende");
     fireEvent.click(submitButton);
 
     expect(mockOnAddNewTicket).toHaveBeenCalledWith("AA");
