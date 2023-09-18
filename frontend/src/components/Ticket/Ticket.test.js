@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import * as React from 'react';
 import Ticket from './Ticket';
 
@@ -48,18 +48,28 @@ describe('<Ticket />', () => {
     });
 
     jest.spyOn(React, 'createElement').mockImplementation((type, props) => {
+      // eslint-disable-next-line no-undef
       if (type === MockedNewTicket) {
           mockNewTicketProps = props;
       }
       return jest.requireActual('react').createElement(type, props);
     });
   
-    const { getByText } = render(<Ticket isOpen={true} onClose={jest.fn()} trainData={{}} />);
+    render(<Ticket isOpen={true} onClose={jest.fn()} trainData={{}} />);
 
     await waitFor(() => {
-      expect(getByText("OldTickets Mock")).toBeInTheDocument();
-      expect(getByText("NewTicket Mock")).toBeInTheDocument();
+      expect(screen.getByText("OldTickets Mock")).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText("NewTicket Mock")).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith('http://localhost:1337/tickets');
+    });
+
+    await waitFor(() => {
       expect(mockNewTicketProps.newTicketId).toBe(2);
     });
 
@@ -94,11 +104,17 @@ describe('<Ticket />', () => {
 
     const mockOnClose = jest.fn();
 
-    const { getByText } = render(<Ticket isOpen={true} onClose={mockOnClose} trainData={{}} />);
+    render(<Ticket isOpen={true} onClose={mockOnClose} trainData={{}} />);
     
+    await waitFor(() => {
+      expect(screen.getByText("Stäng")).toBeInTheDocument();
+    });
+
+
+    fireEvent.click(screen.getByText("Stäng"));
+
 
     await waitFor(() => {
-      fireEvent.click(getByText("Stäng"));
       expect(mockOnClose).toHaveBeenCalled();
     });
 
@@ -129,11 +145,14 @@ describe('<Ticket />', () => {
 
     const mockOnClose = jest.fn();
 
-    const { getByText } = render(<Ticket invokeMock={true} isOpen={true} onClose={mockOnClose} trainData={mockTrainData} />);
+    render(<Ticket invokeMock={true} isOpen={true} onClose={mockOnClose} trainData={mockTrainData} />);
     
 
     await waitFor(() => {
-      expect(getByText("NewTicket Mock")).toBeInTheDocument();
+      expect(screen.getByText("NewTicket Mock")).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
         'http://localhost:1337/tickets',
         expect.objectContaining({
@@ -148,7 +167,9 @@ describe('<Ticket />', () => {
           })
         })
       );
-      
+    });
+
+    await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith('http://localhost:1337/tickets');
     });
     
@@ -170,12 +191,16 @@ describe('<Ticket />', () => {
   
     const mockOnClose = jest.fn();
   
-    const { getByText } = render(<Ticket invokeMock={true} isOpen={true} onClose={mockOnClose} trainData={mockTrainData} />);
+    render(<Ticket invokeMock={true} isOpen={true} onClose={mockOnClose} trainData={mockTrainData} />);
   
     await waitFor(() => {
-      expect(getByText("NewTicket Mock")).toBeInTheDocument();
+      expect(screen.getByText("NewTicket Mock")).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
       expect(consoleErrorSpy).toHaveBeenCalledWith('Error:', new Error("Mock fetch error"));
     });
+    
     
     
   
