@@ -5,7 +5,7 @@ function OldTickets({oldTickets}) {
     <div>
       <h2>Befintliga ärenden</h2>
       {oldTickets.map((ticket, index) => (
-        <div key={index}>{ticket.id} - {ticket.code} - {ticket.trainnumber} - {ticket.traindate}</div>
+        <div key={index}>{ticket._id} - {ticket.code} - {ticket.trainnumber} - {ticket.traindate}</div>
       ))}
     </div>
   )

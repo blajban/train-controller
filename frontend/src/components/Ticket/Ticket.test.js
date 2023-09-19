@@ -33,7 +33,7 @@ describe('<Ticket />', () => {
   });
   
 
-  it('fetches old tickets and calculates new ticket id', async () => {
+  it('fetches old tickets', async () => {
     const mockOldTickets = [
       {
         code: "6789",
@@ -67,10 +67,6 @@ describe('<Ticket />', () => {
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith('http://localhost:1337/tickets');
-    });
-
-    await waitFor(() => {
-      expect(mockNewTicketProps.newTicketId).toBe(2);
     });
 
     

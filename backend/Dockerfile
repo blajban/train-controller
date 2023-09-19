@@ -1,9 +1,10 @@
 FROM node:alpine
 
-RUN mkdir -p /backend
 WORKDIR /backend
+
+ENV NODE_ENV=container
 
 RUN npm install -g nodemon
 
-COPY backend/package.json .
+COPY backend/package*.json .
 RUN npm install
