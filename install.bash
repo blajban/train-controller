@@ -8,7 +8,6 @@ echo
 # Change to backend directory
 cd "$DIR/backend/"
 npm install
-./db/reset_db.bash
 cp .env-example .env
 
 # Change to frontend directory

@@ -29,16 +29,12 @@ const Content = styled.div`
 
 function Ticket({invokeMock, isOpen, onClose, trainData}) {
   const [oldTickets, setOldTickets] = useState(null);
-  const [ticketId, setTicketId] = useState(null);
 
   const fetchOldTickets = async () => {
     try {
       const response = await fetch('http://localhost:1337/tickets');
       const result = await response.json();
       setOldTickets(result.data);
-      
-      const lastId = result.data && result.data[0] ? result.data[0].id : 0;
-      setTicketId(lastId + 1);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -52,15 +48,17 @@ function Ticket({invokeMock, isOpen, onClose, trainData}) {
     };
 
     try {
-      await fetch("http://localhost:1337/tickets", {
+      const response = await fetch("http://localhost:1337/tickets", {
         body: JSON.stringify(newTicket),
         headers: {
           'content-type': 'application/json'
         },
         method: 'POST'
       });
+
+      const addedTicket = await response.json();
       
-      fetchOldTickets();
+      setOldTickets(prevTickets => [...prevTickets, addedTicket.data]);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -76,7 +74,7 @@ function Ticket({invokeMock, isOpen, onClose, trainData}) {
     <Overlay>
       <Content>
         <button onClick={onClose}>Stäng</button>
-        <NewTicket invokeMock={invokeMock} trainData={trainData} newTicketId={ticketId} onAddNewTicket={addNewTicket}/>
+        <NewTicket invokeMock={invokeMock} trainData={trainData} onAddNewTicket={addNewTicket}/>
         <OldTickets oldTickets={oldTickets}/>
     </Content>
     </Overlay>

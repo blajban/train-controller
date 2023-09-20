@@ -21,7 +21,7 @@ describe('<NewTicket />', () => {
   });
   
 
-  it('should render the new ticket id and location string correctly', async () => {
+  it('should render location string correctly', async () => {
     const mockTrainData = { 
       OperationalTrainNumber: "12345",
       LocationSignature: "AA", 
@@ -33,7 +33,6 @@ describe('<NewTicket />', () => {
       ] 
     };
 
-    const mockTicketId = 1;
     const mockOnAddNewTicket = () => {};
 
     const mockCodesData = [
@@ -56,14 +55,13 @@ describe('<NewTicket />', () => {
       render(
         <NewTicket 
           trainData={mockTrainData}
-          newTicketId={mockTicketId}
           onAddNewTicket={mockOnAddNewTicket}
         />
       );
     });
 
     await waitFor(() => {
-      expect(screen.getByText(/Nytt ärende 1/)).toBeInTheDocument();
+      expect(screen.getByText(/Nytt ärende/)).toBeInTheDocument();
     });
 
     await waitFor(() => {
