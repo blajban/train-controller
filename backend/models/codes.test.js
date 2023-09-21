@@ -1,6 +1,6 @@
 
 const fetch = require('node-fetch');
-const codes = require('../../models/codes');
+const codes = require('./codes');
 
 jest.mock('node-fetch');
 

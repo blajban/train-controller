@@ -5,7 +5,7 @@ const cors = require('cors')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 
-const fetchTrainPositions = require('./models/trains.js')
+
 const delayed = require('./routes/delayed.js');
 const tickets = require('./routes/tickets.js');
 const codes = require('./routes/codes.js');
@@ -19,17 +19,9 @@ app.options('*', cors());
 
 app.disable('x-powered-by');
 
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const io = require("socket.io")(httpServer, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
-});
-
-const port = 1337
 
 app.get('/', (req, res) => {
   res.json({
@@ -60,8 +52,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-httpServer.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+module.exports = httpServer;
 
-fetchTrainPositions(io);
+
+
