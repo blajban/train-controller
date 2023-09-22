@@ -1,6 +1,7 @@
 const database = require('../db/db');
 
 const trains = {
+  // eslint-disable-next-line
   fetchAllDelayedTrains: async () => {
     let db;
 

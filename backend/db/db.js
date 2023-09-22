@@ -1,13 +1,13 @@
-const mongo = require("mongodb").MongoClient;
-
+const mongo = require('mongodb').MongoClient;
 
 let mongoServer;
 
 const database = {
   getDb: async (collectionName) => {
-    let dsn = `mongodb://localhost:27017/train-controller`;
-    
+    let dsn = 'mongodb://localhost:27017/train-controller';
+
     if (process.env.NODE_ENV === 'test') {
+      // eslint-disable-next-line
       const MongoMemoryServer = require('mongodb-memory-server').MongoMemoryServer;
       if (!mongoServer) {
         mongoServer = new MongoMemoryServer();
@@ -17,14 +17,13 @@ const database = {
         dsn = await mongoServer.getUri();
       }
     }
-    
 
     if (process.env.NODE_ENV === 'container') {
-      dsn = "mongodb://mongodb:27017/train-controller";
+      dsn = 'mongodb://mongodb:27017/train-controller';
     }
 
     try {
-      const client  = await mongo.connect(dsn);
+      const client = await mongo.connect(dsn);
       const db = client.db();
       const collection = db.collection(collectionName);
 
@@ -33,7 +32,7 @@ const database = {
         client: client,
       };
     } catch (err) {
-      new Error(err);
+      throw Error(err);
     }
   },
 

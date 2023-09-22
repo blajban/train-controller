@@ -1,5 +1,8 @@
-const httpServer = require('./app');
+const http = require('http');
+const app = require('./app');
 const { fetchTrainPositions } = require('./models/trains');
+
+const httpServer = http.createServer(app);
 
 // eslint-disable-next-line
 const io = require('socket.io')(httpServer, {

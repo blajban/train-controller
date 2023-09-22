@@ -9,6 +9,7 @@ const {
 
 jest.mock('node-fetch');
 
+// eslint-disable-next-line
 jest.mock('eventsource', () => {
   return jest.fn().mockImplementation(() => ({
     onopen: null,

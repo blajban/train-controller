@@ -1,7 +1,7 @@
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
 
 const codes = {
-  getCodes: async function getCodes(req, res, next) {
+  getCodes: async (req, res, next) => {
     const query = `<REQUEST>
               <LOGIN authenticationkey="${process.env.TRAFIKVERKET_API_KEY}" />
               <QUERY objecttype="ReasonCode" schemaversion="1">
@@ -13,25 +13,21 @@ const codes = {
         </REQUEST>`;
 
     try {
-      const response = await fetch(
-        "https://api.trafikinfo.trafikverket.se/v2/data.json", {
-          method: "POST",
-          body: query,
-          headers: { "Content-Type": "text/xml" }
-        }
-      );
+      const response = await fetch('https://api.trafikinfo.trafikverket.se/v2/data.json', {
+        method: 'POST',
+        body: query,
+        headers: { 'Content-Type': 'text/xml' }
+      });
 
       const result = await response.json();
 
       res.json({
         data: result.RESPONSE.RESULT[0].ReasonCode
       });
-
     } catch (error) {
       next(error);
     }
   }
 };
-
 
 module.exports = codes;
