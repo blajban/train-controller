@@ -2,14 +2,22 @@
     "env": {
         "browser": true,
         "commonjs": true,
-        "es2021": true
+        "es2021": true,
+        "jest/globals": true
     },
-    "extends": "airbnb-base",
-    "overrides": [
+    "extends": [
+        "airbnb-base",
+        "plugin:jest/recommended"
+    ],
+    "plugins": [
+        "jest"
     ],
     "parserOptions": {
         "ecmaVersion": "latest"
     },
     "rules": {
+        "comma-dangle": 0,
+        "no-console": 0,
+        "object-shorthand": 0
     }
 }

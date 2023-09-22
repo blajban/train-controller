@@ -1,7 +1,8 @@
 const express = require('express');
+
 const router = express.Router();
 
-const delayed = require("../models/delayed.js");
+const delayed = require('../models/delayed');
 
 router.get('/', (req, res, next) => delayed.getDelayedTrains(req, res, next));
 

@@ -48,29 +48,29 @@ function setupIo(io, eventSource) {
 }
 
 function getTrainObject(changedPosition) {
-    const matchCoords = /(\d*\.\d+|\d+),?/g
+  const matchCoords = /(\d*\.\d+|\d+),?/g
 
-    const position = changedPosition.Position.WGS84.match(matchCoords).map((t=>parseFloat(t))).reverse()
+  const position = changedPosition.Position.WGS84.match(matchCoords).map((t=>parseFloat(t))).reverse();
 
-    return {
-      trainnumber: changedPosition.Train.AdvertisedTrainNumber,
-      position: position,
-      timestamp: changedPosition.TimeStamp,
-      bearing: changedPosition.Bearing,
-      status: !changedPosition.Deleted,
-      speed: changedPosition.Speed,
-    };
+  return {
+    trainnumber: changedPosition.Train.AdvertisedTrainNumber,
+    position: position,
+    timestamp: changedPosition.TimeStamp,
+    bearing: changedPosition.Bearing,
+    status: !changedPosition.Deleted,
+    speed: changedPosition.Speed,
+  };
 }
 
 function setupEventSource(sseurl) {
-  const eventSource = new EventSource(sseurl)
-  eventSource.onopen = function() {
-    console.log("Connection to server opened.")
-  }
+  const eventSource = new EventSource(sseurl);
+  eventSource.onopen = () => {
+    console.log('Connection to server opened.');
+  };
 
-  eventSource.onerror = function(e) {
-    console.log("EventSource failed.")
-  }
+  eventSource.onerror = () => {
+    console.log('EventSource failed.');
+  };
 
   return eventSource;
 }
