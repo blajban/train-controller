@@ -12,7 +12,7 @@ const io = require('socket.io')(httpServer, {
   }
 });
 
-const port = 1337;
+const port = process.env.PORT || 1337;
 
 httpServer.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
