@@ -11,6 +11,11 @@ Kör igång:
 3. Ändra api-nyckel i `backend/.env`
 4. `docker-compose up --build` eller starta med `npm start` i respektive katalog.
 
+## Problem med backend-tester lokalt?
+`wget http://nz2.archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.19_amd64.deb`
+
+`sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2.19_amd64.deb`
+
 ## Säkerhetsgranskning och Åtgärder
 Under granskning av koden kom vi fram till att det fanns ett antal säkerhetsbrister. Dessa är listade nedan tillsammans med åtgärder som vidtagits för att åtgärda dem.
 

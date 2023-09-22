@@ -9,9 +9,11 @@ describe('GET /delayed', () => {
   it('should return 200 on success', async () => {
     const mockResponseData = [{ TrainAnnouncement: 'Mocked announcement' }];
     
-    fetch.mockResolvedValueOnce(
-      new Response(JSON.stringify({ RESPONSE: { RESULT: mockResponseData }}))
-    );
+    const mockResolvedData = {
+      json: async () => ({ RESPONSE: { RESULT: mockResponseData } })
+    };
+    
+    fetch.mockResolvedValueOnce(mockResolvedData);
 
     const res = await request(app).get('/delayed');
     expect(res.statusCode).toEqual(200);

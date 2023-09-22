@@ -1,12 +1,22 @@
 const mongo = require("mongodb").MongoClient;
+const MongoMemoryServer = require('mongodb-memory-server').MongoMemoryServer;
+
+let mongoServer;
 
 const database = {
   getDb: async (collectionName) => {
     let dsn = `mongodb://localhost:27017/train-controller`;
     
     if (process.env.NODE_ENV === 'test') {
-      dsn = "mongodb://localhost:27017/test";
+      if (!mongoServer) {
+        mongoServer = new MongoMemoryServer();
+        await mongoServer.start();
+        dsn = await mongoServer.getUri();
+      } else {
+        dsn = await mongoServer.getUri();
+      }
     }
+    
 
     if (process.env.NODE_ENV === 'container') {
       dsn = "mongodb://mongodb:27017/train-controller";
@@ -24,7 +34,14 @@ const database = {
     } catch (err) {
       new Error(err);
     }
+  },
+
+  closeDb: async () => {
+    if (mongoServer) {
+      await mongoServer.stop();
+    }
   }
+
 };
 
 module.exports = database;
