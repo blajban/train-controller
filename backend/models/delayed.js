@@ -1,7 +1,7 @@
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
 
 const delayed = {
-  getDelayedTrains: async function getDelayedTrains(req, res, next) {
+  getDelayedTrains: async (req, res, next) => {
     const query = `<REQUEST>
                 <LOGIN authenticationkey="${process.env.TRAFIKVERKET_API_KEY}" />
                 <QUERY objecttype="TrainAnnouncement" orderby='AdvertisedTimeAtLocation' schemaversion="1.8">
@@ -31,20 +31,17 @@ const delayed = {
             </REQUEST>`;
 
     try {
-      const response = await fetch(
-        "https://api.trafikinfo.trafikverket.se/v2/data.json", {
-            method: "POST",
-            body: query,
-            headers: { "Content-Type": "text/xml" }
-        }
-    )
+      const response = await fetch('https://api.trafikinfo.trafikverket.se/v2/data.json', {
+        method: 'POST',
+        body: query,
+        headers: { 'Content-Type': 'text/xml' }
+      });
 
-    const result = await response.json();
+      const result = await response.json();
 
-    res.json({
-      data: result.RESPONSE.RESULT[0].TrainAnnouncement
-    });
-
+      res.json({
+        data: result.RESPONSE.RESULT[0].TrainAnnouncement
+      });
     } catch (error) {
       next(error);
     }

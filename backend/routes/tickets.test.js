@@ -12,7 +12,7 @@ describe('/tickets', () => {
     jest.clearAllTimers();
     jest.restoreAllMocks();
   });
-  
+
   it('GET should return 200 on success', async () => {
     const res = await request(app).get('/tickets');
     expect(res.statusCode).toEqual(200);
@@ -58,4 +58,3 @@ describe('/tickets', () => {
     expect(res.statusCode).toEqual(500);
   });
 });
-
