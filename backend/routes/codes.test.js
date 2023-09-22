@@ -6,6 +6,12 @@ const fetch = require('node-fetch');
 jest.mock('node-fetch');
 
 describe('GET /codes', () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+    jest.clearAllTimers();
+    jest.restoreAllMocks();
+  });
+
   it('should return 200 on success', async () => {
     const mockResponseData = [{ ReasonCode: [{ Code: '1', Level1Description: 'Test' }]}];
     

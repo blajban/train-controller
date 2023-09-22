@@ -7,7 +7,7 @@
     "start": "nodemon server.js",
     "production": "NODE_ENV=production node server.js",
     "test": "NODE_ENV=test jest --verbose --coverage --watchAll --detectOpenHandles",
-    "test:actions": "NODE_ENV=test jest --forceExit",
+    "test:actions": "NODE_ENV=test jest",
     "lint": "eslint . --ext .js --ignore-pattern node_modules/"
   },
   "keywords": [],

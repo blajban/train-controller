@@ -28,6 +28,8 @@ const tickets = {
         traindate: req.body.traindate,
       });
   
+      await db.client.close();
+
       return res.json({
         data: {
           _id: result.insertedId,

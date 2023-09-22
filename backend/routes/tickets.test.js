@@ -2,12 +2,14 @@ const request = require('supertest');
 const app = require('../app');
 const database = require('../db/db');
 
-describe('/tickets', () => {
-  afterAll(async () => {
-    await database.closeDb();
-  });
+afterAll(async () => {
+  await database.closeDb();
+});
 
+describe('/tickets', () => {
   afterEach(() => {
+    jest.resetAllMocks();
+    jest.clearAllTimers();
     jest.restoreAllMocks();
   });
   
