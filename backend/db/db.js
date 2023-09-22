@@ -1,5 +1,5 @@
 const mongo = require("mongodb").MongoClient;
-const MongoMemoryServer = require('mongodb-memory-server').MongoMemoryServer;
+
 
 let mongoServer;
 
@@ -8,6 +8,7 @@ const database = {
     let dsn = `mongodb://localhost:27017/train-controller`;
     
     if (process.env.NODE_ENV === 'test') {
+      const MongoMemoryServer = require('mongodb-memory-server').MongoMemoryServer;
       if (!mongoServer) {
         mongoServer = new MongoMemoryServer();
         await mongoServer.start();

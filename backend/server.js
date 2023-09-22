@@ -1,5 +1,5 @@
 const httpServer = require('./app');
-const fetchTrainPositions = require('./models/trains.js')
+const { fetchTrainPositions } = require('./models/trains.js')
 
 const port = 1337;
 
