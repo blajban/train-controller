@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react'
 
 import Delay from '../Delayed/Delay';
 
+const API_URL = process.env.NODE_ENV === "development"
+  ? process.env.REACT_APP_API_URL_DEV
+  : process.env.REACT_APP_API_URL_PROD;
+
 function LocationString({trainData}) {
   return (
     <>
@@ -20,7 +24,7 @@ function NewTicketForm({ onAddNewTicket }) {
   useEffect(() => {
     const fetchReasonCodes = async () => {
       try {
-        const response = await fetch('http://localhost:1337/codes');
+        const response = await fetch(`${API_URL}/codes`);
         const result = await response.json();
         setReasonCodes(result.data);
         setReasonCode(result.data[0].Code);

@@ -5,6 +5,10 @@ import styled from "styled-components";
 import Train from './Train';
 import Ticket from '../Ticket/Ticket';
 
+const API_URL = process.env.NODE_ENV === "development"
+  ? process.env.REACT_APP_API_URL_DEV
+  : process.env.REACT_APP_API_URL_PROD;
+
 const DelayedTrainsList = styled.div`
   display: flex;
   flex-direction: column;
@@ -29,7 +33,7 @@ function DelayedTrains() {
   useEffect(() => {
     const fetchDelayedTrains = async () => {
       try {
-        const response = await fetch('http://localhost:1337/delayed');
+        const response = await fetch(`${API_URL}/delayed`);
         const result = await response.json();
         setDelayedTrains(result.data);
       } catch (error) {

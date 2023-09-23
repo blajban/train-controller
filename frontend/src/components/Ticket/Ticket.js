@@ -4,6 +4,10 @@ import styled from "styled-components";
 import NewTicket from './NewTicket';
 import OldTickets from './OldTickets';
 
+const API_URL = process.env.NODE_ENV === "development"
+  ? process.env.REACT_APP_API_URL_DEV
+  : process.env.REACT_APP_API_URL_PROD;
+
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -32,7 +36,7 @@ function Ticket({invokeMock, isOpen, onClose, trainData}) {
 
   const fetchOldTickets = async () => {
     try {
-      const response = await fetch('http://localhost:1337/tickets');
+      const response = await fetch(`${API_URL}/tickets`);
       const result = await response.json();
       setOldTickets(result.data);
     } catch (error) {
@@ -48,7 +52,7 @@ function Ticket({invokeMock, isOpen, onClose, trainData}) {
     };
 
     try {
-      const response = await fetch("http://localhost:1337/tickets", {
+      const response = await fetch(`${API_URL}/tickets`, {
         body: JSON.stringify(newTicket),
         headers: {
           'content-type': 'application/json'

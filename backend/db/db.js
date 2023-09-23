@@ -23,7 +23,6 @@ const database = {
     }
 
     try {
-      console.log(dsn);
       const client = await mongo.connect(dsn);
       const db = client.db();
       const collection = db.collection(collectionName);

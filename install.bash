@@ -13,6 +13,7 @@ cp .env-example .env
 # Change to frontend directory
 cd "$DIR/frontend/"
 npm install
+cp .env-example .env
 
 echo
-echo "--- Don't forget to change api key in /backend/.env ---"
+echo "--- Done! ---"

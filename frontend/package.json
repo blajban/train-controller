@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -21,7 +22,8 @@
     "test": "react-scripts test --coverage --watchAll --detectOpenHandles",
     "test:actions": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "deploy": "npm run build && rsync -av --delete build/ ersb21@ssh.student.bth.se:www/train-controller"
   },
   "eslintConfig": {
     "extends": [
