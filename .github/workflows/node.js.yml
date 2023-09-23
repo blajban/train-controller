@@ -38,4 +38,7 @@ jobs:
       
     - name: Run frontend tests
       run: (cd ./frontend && CI=true exec npm run test:actions)
+      env:
+        REACT_APP_API_URL_DEV: ${{ secrets.REACT_APP_API_URL_DEV }}
+        REACT_APP_API_URL_PROD: ${{ secrets.REACT_APP_API_URL_PROD }}
 
