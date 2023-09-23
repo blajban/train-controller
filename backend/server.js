@@ -7,7 +7,7 @@ const httpServer = http.createServer(app);
 // eslint-disable-next-line
 const io = require('socket.io')(httpServer, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://www.student.bth.se/~ersb21/train-controller/'],
     methods: ['GET', 'POST']
   }
 });
