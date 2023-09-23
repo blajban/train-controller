@@ -4,7 +4,7 @@ let mongoServer;
 
 const database = {
   getDb: async (collectionName) => {
-    let dsn = 'mongodb://localhost:27017/train-controller';
+    let dsn = `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@cluster0.jroihbh.mongodb.net/?retryWrites=true&w=majority`;
 
     if (process.env.NODE_ENV === 'test') {
       // eslint-disable-next-line

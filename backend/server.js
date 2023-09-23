@@ -7,12 +7,12 @@ const httpServer = http.createServer(app);
 // eslint-disable-next-line
 const io = require('socket.io')(httpServer, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://www.student.bth.se/~ersb21/train-controller/'],
     methods: ['GET', 'POST']
   }
 });
 
-const port = 1337;
+const port = process.env.PORT || 1337;
 
 httpServer.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

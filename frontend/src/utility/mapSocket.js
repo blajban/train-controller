@@ -1,9 +1,13 @@
 import io from "socket.io-client";
 import L from 'leaflet';
 
+const API_URL = process.env.NODE_ENV !== 'production'
+  ? process.env.REACT_APP_API_URL_DEV
+  : process.env.REACT_APP_API_URL_PROD;
+
 
 export default function mapSocket(map, markersRef) {
-  const socket = io("http://localhost:1337");
+  const socket = io(`${API_URL}`);
 
     socket.on("message", (data) => {
         if (markersRef.current.hasOwnProperty(data.trainnumber)) {

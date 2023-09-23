@@ -23,7 +23,7 @@ services:
       - 1337:1337
     restart:
       "always"
-    command: "npm start"
+    command: "npm run dev"
 
   frontend:
     build:
