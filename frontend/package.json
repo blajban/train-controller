@@ -19,7 +19,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --coverage --watchAll --detectOpenHandles",
+    "test": "NODE_ENV=development react-scripts test --coverage --watchAll --detectOpenHandles",
     "test:actions": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint .",

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Train from './Train';
 import Ticket from '../Ticket/Ticket';
 
-const API_URL = process.env.NODE_ENV === "development"
+const API_URL = process.env.NODE_ENV !== 'production'
   ? process.env.REACT_APP_API_URL_DEV
   : process.env.REACT_APP_API_URL_PROD;
 

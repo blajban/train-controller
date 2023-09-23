@@ -4,7 +4,7 @@ import styled from "styled-components";
 import NewTicket from './NewTicket';
 import OldTickets from './OldTickets';
 
-const API_URL = process.env.NODE_ENV === "development"
+const API_URL = process.env.NODE_ENV !== 'production'
   ? process.env.REACT_APP_API_URL_DEV
   : process.env.REACT_APP_API_URL_PROD;
 
