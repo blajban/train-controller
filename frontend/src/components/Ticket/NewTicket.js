@@ -6,6 +6,10 @@ const API_URL = process.env.NODE_ENV !== 'production'
   ? process.env.REACT_APP_API_URL_DEV
   : process.env.REACT_APP_API_URL_PROD;
 
+const API_KEY = process.env.NODE_ENV !== 'test'
+  ? process.env.REACT_APP_API_KEY
+  : 'testkey';
+
 function LocationString({trainData}) {
   return (
     <>
@@ -24,7 +28,11 @@ function NewTicketForm({ onAddNewTicket }) {
   useEffect(() => {
     const fetchReasonCodes = async () => {
       try {
-        const response = await fetch(`${API_URL}/codes`);
+        const response = await fetch(`${API_URL}/codes`, {
+          headers: {
+            'x-api-key': API_KEY
+          }
+        });
         const result = await response.json();
         setReasonCodes(result.data);
         setReasonCode(result.data[0].Code);

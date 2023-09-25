@@ -8,6 +8,10 @@ const API_URL = process.env.NODE_ENV !== 'production'
   ? process.env.REACT_APP_API_URL_DEV
   : process.env.REACT_APP_API_URL_PROD;
 
+const API_KEY = process.env.NODE_ENV !== 'test'
+  ? process.env.REACT_APP_API_KEY
+  : 'testkey';
+
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -36,7 +40,11 @@ function Ticket({invokeMock, isOpen, onClose, trainData}) {
 
   const fetchOldTickets = async () => {
     try {
-      const response = await fetch(`${API_URL}/tickets`);
+      const response = await fetch(`${API_URL}/tickets`, {
+        headers: {
+          'x-api-key': API_KEY
+        }
+      });
       const result = await response.json();
       setOldTickets(result.data);
     } catch (error) {
@@ -55,7 +63,8 @@ function Ticket({invokeMock, isOpen, onClose, trainData}) {
       const response = await fetch(`${API_URL}/tickets`, {
         body: JSON.stringify(newTicket),
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
+          'x-api-key': API_KEY
         },
         method: 'POST'
       });

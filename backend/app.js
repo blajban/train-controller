@@ -43,7 +43,10 @@ app.use(async (req, res, next) => {
       error.message = 'API key did not match';
       next(error);
     }
-  } catch (error) {
+  } catch (err) {
+    const error = new Error('No api key');
+    error.status = 500;
+    error.message = 'Something went wrong. Did you include API key?';
     next(error);
   }
   
