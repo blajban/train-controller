@@ -40,7 +40,7 @@ app.use(async (req, res, next) => {
     } else {
       const error = new Error('Unauthorised');
       error.status = 401;
-      error.description = 'API key did not match';
+      error.message = 'API key did not match';
       next(error);
     }
   } catch (error) {
