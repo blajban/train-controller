@@ -6,7 +6,6 @@ const scryptAsync = promisify(scrypt);
 
 const apiKeysCollection = 'apiKeys';
 
-
 const apiKeyModel = {
   newKey: () => {
     return randomBytes(32).toString('base64');
