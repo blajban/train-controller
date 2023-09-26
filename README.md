@@ -8,12 +8,11 @@ Kör igång:
 
 1. Klona repot
 2. `./install.bash`
-3. Ändra api-nyckel i `backend/.env`
-4. Sätt mongodb atlas user och pw i `backend/.env`
-5. Ändra deploy-url för frontend i `frontend/.env`
-6. `docker-compose up --build` eller starta med `npm start` i respektive katalog.
+3. Uppdatera `.env` i backend och frontend.
+4. `docker-compose up --build` eller starta med `npm start` i respektive katalog.
+    * Ingången `/api-key` genererar en api-nyckel (starta om)
 
-## Problem med backend-tester lokalt?
+## Problem med backend-tester lokalt i ubuntu?
 `wget http://nz2.archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.19_amd64.deb`
 
 `sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2.19_amd64.deb`
