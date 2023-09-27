@@ -2,13 +2,13 @@ const express = require('express');
 
 const router = express.Router();
 
-const { apiKeyModel } = require('../models/auth');
+const apiKey = require('../auth/apiKey');
 
 router.get('/', async (req, res, next) => {
   try {
     res.json({
       description: 'API key generated',
-      key: await apiKeyModel.generate()
+      key: await apiKey.generate()
     });
   } catch (error) {
     next(error);

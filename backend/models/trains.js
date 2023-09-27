@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const EventSource = require('eventsource');
-const { apiKeyModel } = require('./auth');
+const apiKey = require('../auth/apiKey');
 
 async function getSseurl() {
   const query = `<REQUEST>
@@ -42,8 +42,8 @@ function setupIo(io, eventSource) {
     console.log('a user connected');
 
     if (process.env.NODE_ENV !== 'test') {
-      const apiKey = socket.handshake.query['x-api-key'];
-      const isValid = await apiKeyModel.isValid(apiKey);
+      const key = socket.handshake.query['x-api-key'];
+      const isValid = await apiKey.isValid(key);
   
       if (!isValid) {
         console.log('Authentication error');

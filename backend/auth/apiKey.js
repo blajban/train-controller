@@ -4,9 +4,9 @@ const database = require('../db/db');
 
 const scryptAsync = promisify(scrypt);
 
-const apiKeysCollection = 'apiKeys';
+const collectionName = 'apiKeys';
 
-const apiKeyModel = {
+const apiKey = {
   newKey: () => {
     return randomBytes(32).toString('base64');
   },
@@ -19,7 +19,7 @@ const apiKeyModel = {
 
   storeKey: async (keyHash) => {
     try {
-      const db = await database.getDb(apiKeysCollection);
+      const db = await database.getDb(collectionName);
       await db.collection.insertOne({
         keyHash,
         date: new Date()
@@ -37,16 +37,16 @@ const apiKeyModel = {
   },
 
   getAllStoredKeys: async () => {
-    const db = await database.getDb(apiKeysCollection);
+    const db = await database.getDb(collectionName);
     const allKeys = await db.collection.find({}).toArray();
     return allKeys;
   },
 
   generate: async () => {
     try {
-      const key = apiKeyModel.newKey();
-      const hash = await apiKeyModel.newHash(key);
-      await apiKeyModel.storeKey(hash);
+      const key = apiKey.newKey();
+      const hash = await apiKey.newHash(key);
+      await apiKey.storeKey(hash);
       return key;
     } catch (error) {
       throw new Error(error);
@@ -55,9 +55,9 @@ const apiKeyModel = {
 
   isValid: async (suppliedKey) => {
     try {
-      const storedKeys = await apiKeyModel.getAllStoredKeys();
+      const storedKeys = await apiKey.getAllStoredKeys();
       for (const storedKey of storedKeys) {
-        const same = await apiKeyModel.compareKeys(storedKey.keyHash, suppliedKey);
+        const same = await apiKey.compareKeys(storedKey.keyHash, suppliedKey);
         if (same) {
           return true;
         }
@@ -69,4 +69,4 @@ const apiKeyModel = {
   }
 };
 
-module.exports = { apiKeyModel };
+module.exports = apiKey;

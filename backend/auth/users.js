@@ -1,0 +1,102 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const database = require('../db/db');
+
+
+const collectionName = 'users';
+
+const users = {
+  login: async (req, res, next) => {
+    try {
+      const db = await database.getDb(collectionName);
+
+      const { email, password } = req.body;
+
+      if (!(email && password)) {
+        const error = new Error('Not enough input');
+        error.status = 400;
+        error.message = 'Provide email and password';
+        return next(error);
+      }
+
+      const lowerEmail = email.toLowerCase();
+      const user = await db.collection.findOne({ email: lowerEmail });
+
+      if (user) {
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (validPassword) {
+          const payload = { email: lowerEmail };
+          const secret = process.env.JWT_SECRET;
+          const token = jwt.sign(payload, secret, { expiresIn: '1h'});
+
+          return res.json({
+            data: {
+              description: 'User logged in',
+              email: email.toLowerCase(),
+              token
+            }
+          });
+        }
+      }
+
+      const error = new Error('Invalid user/pass');
+      error.status = 400;
+      error.message = 'Wrong e-mail or password';
+      return next(error);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  register: async (req, res, next) => {
+    try {
+      const db = await database.getDb(collectionName);
+
+      const { firstName, lastName, email, password } = req.body;
+
+      if (!(firstName && lastName && email && password)) {
+        const error = new Error('Not enough input');
+        error.status = 400;
+        error.message = 'All user information is required';
+        return next(error);
+      }
+
+      const lowerEmail = email.toLowerCase();
+      const userAlreadyExists = await db.collection.findOne({ email: lowerEmail });
+
+      if (userAlreadyExists) {
+        const error = new Error('User already exists');
+        error.status = 409;
+        error.message = 'User already exists. Login instead';
+        return next(error);
+      }
+
+      const encryptedPassword = await bcrypt.hash(password, 10);
+
+      await db.collection.insertOne({
+        firstName,
+        lastName,
+        email: lowerEmail,
+        password: encryptedPassword
+      });
+
+      // Add token and send to user
+      const payload = { email: lowerEmail };
+      const secret = process.env.JWT_SECRET;
+
+      const token = jwt.sign(payload, secret, { expiresIn: '1h'});
+
+      return res.json({
+        data: {
+          description: 'User created',
+          email: email.toLowerCase(),
+          token
+        }
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+};
+
+module.exports = users;
