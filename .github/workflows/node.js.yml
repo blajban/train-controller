@@ -41,4 +41,5 @@ jobs:
       env:
         REACT_APP_API_URL_DEV: ${{ secrets.REACT_APP_API_URL_DEV }}
         REACT_APP_API_URL_PROD: ${{ secrets.REACT_APP_API_URL_PROD }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
