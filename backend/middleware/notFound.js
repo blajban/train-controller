@@ -1,7 +1,7 @@
+const { NotFoundError } = require('../errors');
+
 const notFound = (req, res, next) => {
-  const error = new Error(`Not Found - ${req.originalUrl}`);
-  error.status = 404;
-  next(error);
+  next(new NotFoundError(req.originalUrl));
 };
 
 module.exports = notFound;

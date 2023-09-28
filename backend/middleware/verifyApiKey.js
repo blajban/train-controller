@@ -1,4 +1,6 @@
 const apiKey = require('../auth/apiKey');
+const { NoApiKeyError, WrongApiKeyError } = require('../errors');
+
 
 const verifyApiKey = async (req, res, next) => {
   try {
@@ -6,16 +8,10 @@ const verifyApiKey = async (req, res, next) => {
     if (await apiKey.isValid(key)) {
       next();
     } else {
-      const error = new Error('Unauthorised');
-      error.status = 401;
-      error.message = 'API key did not match';
-      next(error);
+      next(new WrongApiKeyError());
     }
   } catch (err) {
-    const error = new Error('No api key');
-    error.status = 500;
-    error.message = 'APÌ key missing';
-    next(error);
+    next(new NoApiKeyError());
   }
 };
 

@@ -2,6 +2,11 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const database = require('../db/db');
 
+const {
+  InvalidCredentialsError,
+  NotEnoughCredentials,
+  UserExistsError
+} = require('../errors');
 
 const collectionName = 'users';
 
@@ -13,10 +18,7 @@ const users = {
       const { email, password } = req.body;
 
       if (!(email && password)) {
-        const error = new Error('Not enough input');
-        error.status = 400;
-        error.message = 'Provide email and password';
-        return next(error);
+        return next(new NotEnoughCredentials());
       }
 
       const lowerEmail = email.toLowerCase();
@@ -39,10 +41,7 @@ const users = {
         }
       }
 
-      const error = new Error('Invalid user/pass');
-      error.status = 400;
-      error.message = 'Wrong e-mail or password';
-      return next(error);
+      return next(new InvalidCredentialsError());
     } catch (error) {
       next(error);
     }
@@ -55,20 +54,14 @@ const users = {
       const { firstName, lastName, email, password } = req.body;
 
       if (!(firstName && lastName && email && password)) {
-        const error = new Error('Not enough input');
-        error.status = 400;
-        error.message = 'All user information is required';
-        return next(error);
+        return next(new NotEnoughCredentials());
       }
 
       const lowerEmail = email.toLowerCase();
       const userAlreadyExists = await db.collection.findOne({ email: lowerEmail });
 
       if (userAlreadyExists) {
-        const error = new Error('User already exists');
-        error.status = 409;
-        error.message = 'User already exists. Login instead';
-        return next(error);
+        return next(new UserExistsError());
       }
 
       const encryptedPassword = await bcrypt.hash(password, 10);
