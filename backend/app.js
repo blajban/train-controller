@@ -4,9 +4,19 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+// middleware
+const verifyApiKey = require('./middleware/verifyApiKey');
+const notFound = require('./middleware/notFound');
+const handleErrors = require('./middleware/handleErrors');
+
+// routes
+const apiKey = require('./routes/api-key');
 const delayed = require('./routes/delayed');
 const tickets = require('./routes/tickets');
 const codes = require('./routes/codes');
+const login = require('./routes/login');
+const register = require('./routes/register');
+
 
 const app = express();
 
@@ -20,31 +30,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.json({
-    data: 'Train Controller'
+    data: 'Train Controller',
+    description: 'Generate API key at /api-key'
   });
 });
 
+// Generate API key
+app.use('/api-key', apiKey)
+
+// Check API key
+app.use(verifyApiKey);
+
+// Routes
 app.use('/delayed', delayed);
 app.use('/tickets', tickets);
 app.use('/codes', codes);
+app.use('/login', login);
+app.use('/register', register);
 
 // Handle not found
-app.use((req, res, next) => {
-  const error = new Error(`Not Found - ${req.originalUrl}`);
-  error.status = 404;
-  next(error);
-});
+app.use(notFound);
 
 // Handle all errors
 // eslint-disable-next-line
-app.use((err, req, res, next) => {
-  const statusCode = err.status || 500;
-  res.status(statusCode);
-  res.json({
-    status: statusCode,
-    message: err.message,
-    stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack
-  });
-});
+app.use(handleErrors);
 
 module.exports = app;

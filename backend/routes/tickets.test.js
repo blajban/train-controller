@@ -1,9 +1,21 @@
 const request = require('supertest');
 const app = require('../app');
 const database = require('../db/db');
+const jwt = require('jsonwebtoken');
+
+const payload = { email: 'test@test.se' };
+const secret = process.env.JWT_SECRET;
+const validToken = jwt.sign(payload, secret, { expiresIn: '1h'});
 
 afterAll(async () => {
   await database.closeDb();
+});
+
+let testApiKey;
+
+beforeAll(async () => {
+  const response = await request(app).get('/api-key');
+  testApiKey = response.body.key;
 });
 
 describe('/tickets', () => {
@@ -14,7 +26,10 @@ describe('/tickets', () => {
   });
 
   it('GET should return 200 on success', async () => {
-    const res = await request(app).get('/tickets');
+    const res = await request(app)
+      .get('/tickets')
+      .set('x-api-key', testApiKey)
+      .set('x-access-token', validToken);
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('data');
   });
@@ -26,7 +41,11 @@ describe('/tickets', () => {
       traindate: '2023-09-23'
     };
 
-    const res = await request(app).post('/tickets').send(mockTicket);
+    const res = await request(app)
+      .post('/tickets')
+      .set('x-api-key', testApiKey)
+      .set('x-access-token', validToken)
+      .send(mockTicket);
 
     expect(res.statusCode).toEqual(200);
     expect(res.body.data).toHaveProperty('_id');
@@ -38,7 +57,7 @@ describe('/tickets', () => {
       throw new Error('Database error');
     });
 
-    const res = await request(app).get('/tickets');
+    const res = await request(app).get('/tickets').set('x-api-key', testApiKey);
     expect(res.statusCode).toEqual(500);
   });
 
@@ -53,7 +72,7 @@ describe('/tickets', () => {
       throw new Error('Database error');
     });
 
-    const res = await request(app).post('/tickets').send(mockTicket);
+    const res = await request(app).post('/tickets').set('x-api-key', testApiKey).send(mockTicket);
 
     expect(res.statusCode).toEqual(500);
   });

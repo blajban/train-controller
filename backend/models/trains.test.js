@@ -101,6 +101,7 @@ describe('fetchTrainPositions', () => {
     expect(result).toEqual(expectedTrainObject);
   });
 
+  
   it('should emit a message on train position change', () => {
     const mockSocket = {
       emit: jest.fn()
@@ -140,6 +141,7 @@ describe('fetchTrainPositions', () => {
     expect(mockSocket.emit).toHaveBeenCalledWith('message', expect.any(Object));
   });
 
+
   it('should catch if wrong data', () => {
     const mockSocket = {
       emit: jest.fn()
@@ -162,4 +164,5 @@ describe('fetchTrainPositions', () => {
 
     console.log.mockRestore();
   });
+
 });

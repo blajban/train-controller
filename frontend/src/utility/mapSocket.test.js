@@ -30,7 +30,12 @@ describe('mapSocket', () => {
   });
 
   it('creates a socket connection', () => {
-    expect(io).toHaveBeenCalledWith("http://localhost:1337");
+    expect(io).toHaveBeenCalledWith("http://localhost:1337", 
+    {
+      query: {
+        'x-api-key': 'testkey'
+      }
+    });
   });
 
   it('listens to "message" events on the socket', () => {

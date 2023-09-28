@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const EventSource = require('eventsource');
+const apiKey = require('../auth/apiKey');
 
 async function getSseurl() {
   const query = `<REQUEST>
@@ -37,8 +38,19 @@ function getTrainObject(changedPosition) {
 
 function setupIo(io, eventSource) {
   const trainPositions = {};
-  io.on('connection', (socket) => {
+  io.on('connection', async (socket) => {
     console.log('a user connected');
+
+    if (process.env.NODE_ENV !== 'test') {
+      const key = socket.handshake.query['x-api-key'];
+      const isValid = await apiKey.isValid(key);
+  
+      if (!isValid) {
+        console.log('Authentication error');
+        socket.disconnect();
+        return;
+      }
+    }
 
     // eslint-disable-next-line
     eventSource.onmessage = (e) => {

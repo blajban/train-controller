@@ -2,6 +2,8 @@ import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import * as React from 'react';
 import Ticket from './Ticket';
 
+const API_KEY = "testkey";
+
 let mockNewTicketProps;
 
 jest.mock('./NewTicket', () => {
@@ -66,7 +68,14 @@ describe('<Ticket />', () => {
     });
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:1337/tickets');
+      expect(global.fetch).toHaveBeenCalledWith(
+        "http://localhost:1337/tickets",
+        {
+          headers: {
+            'x-api-key': API_KEY
+          }
+        }
+      );
     });
 
     
@@ -154,7 +163,8 @@ describe('<Ticket />', () => {
         expect.objectContaining({
           method: 'POST',
           headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            'x-api-key': API_KEY
           },
           body: JSON.stringify({
             code: "ABC",
@@ -166,7 +176,12 @@ describe('<Ticket />', () => {
     });
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:1337/tickets');
+      expect(global.fetch).toHaveBeenCalledWith('http://localhost:1337/tickets',
+      {
+        headers: {
+          'x-api-key': API_KEY
+        }
+      });
     });
     
   });
