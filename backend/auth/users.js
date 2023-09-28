@@ -4,13 +4,20 @@ const database = require('../db/db');
 
 const {
   InvalidCredentialsError,
-  NotEnoughCredentials,
+  NotEnoughCredentialsError,
   UserExistsError
 } = require('../errors');
 
 const collectionName = 'users';
 
 const users = {
+  addToken: (email) => {
+    const payload = { email };
+    const secret = process.env.JWT_SECRET;
+
+    return jwt.sign(payload, secret, { expiresIn: '1h'});
+  },
+
   login: async (req, res, next) => {
     try {
       const db = await database.getDb(collectionName);
@@ -18,7 +25,7 @@ const users = {
       const { email, password } = req.body;
 
       if (!(email && password)) {
-        return next(new NotEnoughCredentials());
+        return next(new NotEnoughCredentialsError());
       }
 
       const lowerEmail = email.toLowerCase();
@@ -27,9 +34,7 @@ const users = {
       if (user) {
         const validPassword = await bcrypt.compare(password, user.password);
         if (validPassword) {
-          const payload = { email: lowerEmail };
-          const secret = process.env.JWT_SECRET;
-          const token = jwt.sign(payload, secret, { expiresIn: '1h'});
+          const token = users.addToken(lowerEmail);
 
           return res.json({
             data: {
@@ -54,7 +59,7 @@ const users = {
       const { firstName, lastName, email, password } = req.body;
 
       if (!(firstName && lastName && email && password)) {
-        return next(new NotEnoughCredentials());
+        return next(new NotEnoughCredentialsError());
       }
 
       const lowerEmail = email.toLowerCase();
@@ -74,10 +79,7 @@ const users = {
       });
 
       // Add token and send to user
-      const payload = { email: lowerEmail };
-      const secret = process.env.JWT_SECRET;
-
-      const token = jwt.sign(payload, secret, { expiresIn: '1h'});
+      const token = users.addToken(lowerEmail);
 
       return res.json({
         data: {

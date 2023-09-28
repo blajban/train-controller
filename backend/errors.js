@@ -6,7 +6,7 @@ class InvalidCredentialsError extends Error {
   }
 }
 
-class NotEnoughCredentials extends Error {
+class NotEnoughCredentialsError extends Error {
   constructor() {
     super('Not enough input');
     this.status = 400;
@@ -63,7 +63,7 @@ class NoApiKeyError extends Error {
 
 module.exports = {
   InvalidCredentialsError,
-  NotEnoughCredentials,
+  NotEnoughCredentialsError,
   UserExistsError,
   NoTokenError,
   InvalidTokenError,
