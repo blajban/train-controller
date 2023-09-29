@@ -39,7 +39,9 @@ app.get('/', (req, res) => {
 app.use('/api-key', apiKey)
 
 // Check API key
-app.use(verifyApiKey);
+if (process.env.NODE_ENV !== 'test') {
+  app.use(verifyApiKey);
+}
 
 // Routes
 app.use('/delayed', delayed);

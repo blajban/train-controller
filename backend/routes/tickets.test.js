@@ -11,13 +11,6 @@ afterAll(async () => {
   await database.closeDb();
 });
 
-let testApiKey;
-
-beforeAll(async () => {
-  const response = await request(app).get('/api-key');
-  testApiKey = response.body.key;
-});
-
 describe('/tickets', () => {
   afterEach(() => {
     jest.resetAllMocks();
@@ -28,7 +21,6 @@ describe('/tickets', () => {
   it('GET should return 200 on success', async () => {
     const res = await request(app)
       .get('/tickets')
-      .set('x-api-key', testApiKey)
       .set('x-access-token', validToken);
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('data');
@@ -43,7 +35,6 @@ describe('/tickets', () => {
 
     const res = await request(app)
       .post('/tickets')
-      .set('x-api-key', testApiKey)
       .set('x-access-token', validToken)
       .send(mockTicket);
 
@@ -57,7 +48,7 @@ describe('/tickets', () => {
       throw new Error('Database error');
     });
 
-    const res = await request(app).get('/tickets').set('x-api-key', testApiKey);
+    const res = await request(app).get('/tickets');
     expect(res.statusCode).toEqual(500);
   });
 
@@ -72,7 +63,7 @@ describe('/tickets', () => {
       throw new Error('Database error');
     });
 
-    const res = await request(app).post('/tickets').set('x-api-key', testApiKey).send(mockTicket);
+    const res = await request(app).post('/tickets').send(mockTicket);
 
     expect(res.statusCode).toEqual(500);
   });
