@@ -4,7 +4,7 @@ const app = require('../app');
 
 jest.mock('node-fetch');
 
-let testApiKey;
+let testApiKey = "dsad";
 
 beforeAll(async () => {
   const response = await request(app).get('/api-key');

@@ -18,16 +18,11 @@ const apiKey = {
   },
 
   storeKey: async (keyHash) => {
-    try {
-      const db = await database.getDb(collectionName);
-      await db.collection.insertOne({
-        keyHash,
-        date: new Date()
-      });
-      await db.client.close();
-    } catch (error) {
-      throw new Error(error);
-    }
+    const db = await database.getDb(collectionName);
+    await db.collection.insertOne({
+      keyHash,
+      date: new Date()
+    });
   },
 
   compareKeys: async (storedKey, suppliedKey) => {
@@ -43,29 +38,21 @@ const apiKey = {
   },
 
   generate: async () => {
-    try {
-      const key = apiKey.newKey();
-      const hash = await apiKey.newHash(key);
-      await apiKey.storeKey(hash);
-      return key;
-    } catch (error) {
-      throw new Error(error);
-    }
+    const key = apiKey.newKey();
+    const hash = await apiKey.newHash(key);
+    await apiKey.storeKey(hash);
+    return key;
   },
 
   isValid: async (suppliedKey) => {
-    try {
-      const storedKeys = await apiKey.getAllStoredKeys();
-      for (const storedKey of storedKeys) {
-        const same = await apiKey.compareKeys(storedKey.keyHash, suppliedKey);
-        if (same) {
-          return true;
-        }
+    const storedKeys = await apiKey.getAllStoredKeys();
+    for (const storedKey of storedKeys) {
+      const same = await apiKey.compareKeys(storedKey.keyHash, suppliedKey);
+      if (same) {
+        return true;
       }
-      return false;
-    } catch (error) {
-      throw new Error(error);
     }
+    return false;
   }
 };
 
