@@ -48,7 +48,7 @@ describe('/tickets', () => {
       throw new Error('Database error');
     });
 
-    const res = await request(app).get('/tickets');
+    const res = await request(app).get('/tickets').set('x-access-token', validToken);
     expect(res.statusCode).toEqual(500);
   });
 
@@ -63,7 +63,7 @@ describe('/tickets', () => {
       throw new Error('Database error');
     });
 
-    const res = await request(app).post('/tickets').send(mockTicket);
+    const res = await request(app).post('/tickets').set('x-access-token', validToken).send(mockTicket);
 
     expect(res.statusCode).toEqual(500);
   });
