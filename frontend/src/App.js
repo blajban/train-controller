@@ -1,4 +1,4 @@
-
+import { createContext, useState } from 'react';
 import styled from "styled-components";
 
 import Style from './Style';
@@ -24,21 +24,25 @@ const MapContainer = styled.nav`
   width: 60vw;
 `;
 
+export const SelectedTrainsContext = createContext();
 
 function App() {
+  const [selectedTrains, setSelectedTrains] = useState([]);
+
   return (
     <>
       <Style />
       <AppContainer>
-        <DelayedContainer>
-          <DelayedTrains />
-        </DelayedContainer>
-        <MapContainer>
-          <TrainMap />
-        </MapContainer>
+        <SelectedTrainsContext.Provider value={{ selectedTrains, setSelectedTrains }}>
+          <DelayedContainer>
+            <DelayedTrains />
+          </DelayedContainer>
+          <MapContainer>
+            <TrainMap />
+          </MapContainer>
+        </SelectedTrainsContext.Provider>
       </AppContainer>
     </>
-      
   );
 }
 

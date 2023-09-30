@@ -12,15 +12,19 @@ const CurrentStation = styled.div`
     width: 30%;
 `;
 
-function TrainItem({ train, ...restProps }) {
+function TrainItem({ train, isSelected, onCheckboxChange, ...restProps }) {
   return (
     <div {...restProps}>
+      <input
+        type="checkbox"
+        checked={isSelected}
+        onChange={() => onCheckboxChange(train)}
+      />
       <TrainNumber>{train.OperationalTrainNumber}</TrainNumber>
       <CurrentStation>
                 <div>{train.LocationSignature}</div>
                 <div>{train.FromLocation ? train.FromLocation[0].LocationName + " -> " : ""} {train.ToLocation ? train.ToLocation[0].LocationName : ""}</div>
       </CurrentStation>
-
     <Delay train={train} />
     </div>
     );
@@ -39,11 +43,13 @@ const StyledTrain = styled(TrainItem)`
   }
 `;
 
-function Train({ train, onClick }) {
+function Train({ train, onClick, onCheckboxChange, isSelected }) {
   return (
     <StyledTrain 
         onClick={onClick}
         train={train}
+        onCheckboxChange={onCheckboxChange}
+        isSelected={isSelected}
     />
   );
 }

@@ -9,7 +9,7 @@ const API_KEY = process.env.NODE_ENV !== 'test'
   ? process.env.REACT_APP_API_KEY
   : 'testkey';
 
-export default function mapSocket(map, markersRef) {
+export default function mapSocket(map, markersRef, selectedTrains) {
   const socket = io(`${API_URL}`, {
     query: {
       'x-api-key': API_KEY
@@ -17,13 +17,22 @@ export default function mapSocket(map, markersRef) {
   });
 
   socket.on("message", (data) => {
-      if (markersRef.current.hasOwnProperty(data.trainnumber)) {
-          let marker = markersRef.current[data.trainnumber];
-          marker.setLatLng(data.position);
-      } else {
-          let marker = L.marker(data.position).bindPopup(data.trainnumber).addTo(map);
-          markersRef.current[data.trainnumber] = marker;
-      }
+    // If no train is selected or the current train is in the selectedTrains array
+    if (selectedTrains.length === 0 || selectedTrains.includes(data.trainnumber)) {
+        if (markersRef.current.hasOwnProperty(data.trainnumber)) {
+            let marker = markersRef.current[data.trainnumber];
+            marker.setLatLng(data.position);
+        } else {
+            let marker = L.marker(data.position).bindPopup(data.trainnumber).addTo(map);
+            markersRef.current[data.trainnumber] = marker;
+        }
+    } else {
+        // If the train is not in the selectedTrains array, remove the marker if it exists
+        if (markersRef.current.hasOwnProperty(data.trainnumber)) {
+            map.removeLayer(markersRef.current[data.trainnumber]);
+            delete markersRef.current[data.trainnumber];
+        }
+    }
   });
 
   return () => {

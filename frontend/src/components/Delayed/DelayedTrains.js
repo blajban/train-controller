@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 import styled from "styled-components";
 
 import Train from './Train';
 import Ticket from '../Ticket/Ticket';
+import { SelectedTrainsContext } from '../../App';
 
 const API_URL = process.env.NODE_ENV !== 'production'
   ? process.env.REACT_APP_API_URL_DEV
@@ -23,6 +24,8 @@ function DelayedTrains() {
   const [delayedTrains, setDelayedTrains] = useState(null);
   const [isTicketOpen, setIsTicketOpen] = useState(false);
   const [currentTrain, setCurrentTrain] = useState(null);
+  const { selectedTrains, setSelectedTrains } = useContext(SelectedTrainsContext);
+
 
   const handleTrainClick = (trainData) => {
     setCurrentTrain(trainData);
@@ -70,9 +73,16 @@ function DelayedTrains() {
             key={index}
             train={train}
             onClick={() => handleTrainClick(train)}
+            onCheckboxChange={(selectedTrain) => {
+              setSelectedTrains(prevSelected =>
+                prevSelected.includes(selectedTrain)
+                  ? prevSelected.filter(train => train !== selectedTrain)
+                  : [...prevSelected, selectedTrain]
+              );
+            }}
+            isSelected={selectedTrains.includes(train)}
           />
         ))}
-        
       </DelayedTrainsList>
   </>
   );
