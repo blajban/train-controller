@@ -16,7 +16,7 @@ const verifyApiKey = async (req, res, next) => {
     return next(new WrongApiKeyError());
     
   } catch (err) {
-    next(new NoApiKeyError());
+    next(err);
   }
 };
 
