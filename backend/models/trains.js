@@ -27,7 +27,7 @@ function getTrainObject(changedPosition) {
     .reverse();
 
   return {
-    trainnumber: changedPosition.Train.AdvertisedTrainNumber,
+    trainnumber: changedPosition.Train.OperationalTrainNumber,
     position: position,
     timestamp: changedPosition.TimeStamp,
     bearing: changedPosition.Bearing,
@@ -63,12 +63,12 @@ function setupIo(io, eventSource) {
 
           if (Object.prototype.hasOwnProperty.call(
             trainPositions,
-            changedPosition.Train.AdvertisedTrainNumber
+            changedPosition.Train.OperationalTrainNumber
           )) {
             socket.emit('message', trainObject);
           }
 
-          trainPositions[changedPosition.Train.AdvertisedTrainNumber] = trainObject;
+          trainPositions[changedPosition.Train.OperationalTrainNumber] = trainObject;
         }
       } catch (error) {
         console.log(error);

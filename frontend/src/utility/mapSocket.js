@@ -22,22 +22,24 @@ export default function mapSocket(map, markersRef, selectedTrains) {
         if (markersRef.current.hasOwnProperty(data.trainnumber)) {
             let marker = markersRef.current[data.trainnumber];
             marker.setLatLng(data.position);
+            console.log(`Updating marker position for train ${data.trainnumber}`);
+            marker.addTo(map); // Ensure marker is visible
         } else {
             let marker = L.marker(data.position).bindPopup(data.trainnumber).addTo(map);
             markersRef.current[data.trainnumber] = marker;
         }
     } else {
-        // If the train is not in the selectedTrains array, remove the marker if it exists
+        // If the train is not in the selectedTrains array, hide the marker if it exists
         if (markersRef.current.hasOwnProperty(data.trainnumber)) {
-            map.removeLayer(markersRef.current[data.trainnumber]);
-            delete markersRef.current[data.trainnumber];
+            markersRef.current[data.trainnumber].remove(); // Hide the marker
+            console.log(`Hiding marker for train ${data.trainnumber}`);
         }
     }
   });
 
   return () => {
     for(let key in markersRef.current) {
-      map.removeLayer(markersRef.current[key]);
+      markersRef.current[key].remove(); // Hide all markers on cleanup
     }
     socket.disconnect();
   };
