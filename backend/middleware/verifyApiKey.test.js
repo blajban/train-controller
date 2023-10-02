@@ -19,7 +19,7 @@ describe('verifyApiKey middleware', () => {
 
   it('should return correct error if no API key is provided', async () => {
     const res = await request(app).get('/test');
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(403);
     expect(res.text).toMatch(/APÌ key missing/i);
   });
 
