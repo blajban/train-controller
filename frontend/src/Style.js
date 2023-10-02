@@ -25,6 +25,11 @@ const Style = createGlobalStyle`
       margin-bottom: 1.4rem;
   }
 
+  h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
   p {
       margin-bottom: 1.4rem;
       font-size: 1rem;

@@ -4,11 +4,17 @@ import styled from "styled-components";
 import Style from './Style';
 import DelayedTrains from "./components/Delayed/DelayedTrains";
 import TrainMap from "./components/Map/TrainMap";
+import UserConsole from "./components/Auth/UserConsole";
 
 const AppContainer = styled.nav`
   height: 100vh;
   width: 100vw;
   display: flex;
+`;
+
+const UserContainer = styled.nav`
+  height: 10vh;
+  margin-bottom: 1rem;
 `;
 
 const DelayedContainer = styled.nav`
@@ -31,11 +37,15 @@ function App() {
       <Style />
       <AppContainer>
         <DelayedContainer>
-          <DelayedTrains />
+          <UserContainer>
+            <UserConsole />
+          </UserContainer>
+        <DelayedTrains />
         </DelayedContainer>
         <MapContainer>
           <TrainMap />
         </MapContainer>
+        
       </AppContainer>
     </>
       

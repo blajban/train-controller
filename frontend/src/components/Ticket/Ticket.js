@@ -18,7 +18,7 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6); // semi-transparent black
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,7 +29,7 @@ const Content = styled.div`
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 80%; // or fixed width e.g. 500px
+  width: 80%;
   max-height: 80vh;
   overflow-y: auto;
 `;
