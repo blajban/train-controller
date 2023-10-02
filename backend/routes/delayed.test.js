@@ -4,13 +4,6 @@ const app = require('../app');
 
 jest.mock('node-fetch');
 
-let testApiKey;
-
-beforeAll(async () => {
-  const response = await request(app).get('/api-key');
-  testApiKey = response.body.key;
-});
-
 describe('GET /delayed', () => {
   afterEach(() => {
     jest.resetAllMocks();
@@ -27,7 +20,7 @@ describe('GET /delayed', () => {
 
     fetch.mockResolvedValueOnce(mockResolvedData);
 
-    const res = await request(app).get('/delayed').set('x-api-key', testApiKey);
+    const res = await request(app).get('/delayed');
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('data');
   });
@@ -35,7 +28,7 @@ describe('GET /delayed', () => {
   it('should return 500 on error', async () => {
     fetch.mockRejectedValueOnce(new Error('Mocked error'));
 
-    const res = await request(app).get('/delayed').set('x-api-key', testApiKey);
+    const res = await request(app).get('/delayed');
     expect(res.statusCode).toEqual(500);
   });
 });

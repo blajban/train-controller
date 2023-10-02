@@ -6,9 +6,10 @@ const apiKey = require('../auth/apiKey');
 
 router.get('/', async (req, res, next) => {
   try {
-    res.json({
+    const key = await apiKey.generate();
+    return res.json({
       description: 'API key generated',
-      key: await apiKey.generate()
+      key
     });
   } catch (error) {
     next(error);

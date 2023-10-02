@@ -56,7 +56,7 @@ class WrongApiKeyError extends Error {
 class NoApiKeyError extends Error {
   constructor() {
     super('No api key');
-    this.status = 500;
+    this.status = 403;
     this.message = 'APÌ key missing';
   }
 }
