@@ -30,6 +30,7 @@ const users = {
 
       const lowerEmail = email.toLowerCase();
       const user = await db.collection.findOne({ email: lowerEmail });
+      await db.client.close();
 
       if (user) {
         const validPassword = await bcrypt.compare(password, user.password);
@@ -59,6 +60,7 @@ const users = {
       const { firstName, lastName, email, password } = req.body;
 
       if (!(firstName && lastName && email && password)) {
+        await db.client.close();
         return next(new NotEnoughCredentialsError());
       }
 
@@ -66,6 +68,7 @@ const users = {
       const userAlreadyExists = await db.collection.findOne({ email: lowerEmail });
 
       if (userAlreadyExists) {
+        await db.client.close();
         return next(new UserExistsError());
       }
 
@@ -77,6 +80,7 @@ const users = {
         email: lowerEmail,
         password: encryptedPassword
       });
+      await db.client.close();
 
       // Add token and send to user
       const token = users.addToken(lowerEmail);

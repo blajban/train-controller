@@ -23,6 +23,7 @@ const apiKey = {
       keyHash,
       date: new Date()
     });
+    await db.client.close();
   },
 
   compareKeys: async (storedKey, suppliedKey) => {
@@ -34,6 +35,7 @@ const apiKey = {
   getAllStoredKeys: async () => {
     const db = await database.getDb(collectionName);
     const allKeys = await db.collection.find({}).toArray();
+    await db.client.close();
     return allKeys;
   },
 

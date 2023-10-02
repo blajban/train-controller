@@ -2,6 +2,10 @@ const request = require('supertest');
 const database = require('../db/db');
 const app = require('../app');
 
+afterAll(async () => {
+  await database.closeDb();
+});
+
 describe('POST /register', () => {
   afterEach(() => {
     jest.resetAllMocks();
@@ -23,6 +27,7 @@ describe('POST /register', () => {
 
     expect(res.statusCode).toEqual(200);
   });
+
 
   it('should return 409 if user already exists', async () => {
     const mockUser = {

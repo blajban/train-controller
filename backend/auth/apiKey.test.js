@@ -1,6 +1,4 @@
 const apiKey  = require('./apiKey');
-const { scrypt, timingSafeEqual } = require('crypto');
-const { promisify } = require('util');
 const database = require('../db/db');
 
 afterAll(async () => {
