@@ -18,6 +18,21 @@ const users = {
     return jwt.sign(payload, secret, { expiresIn: '1h'});
   },
 
+  verify: async (req, res, next) => {
+    try {
+
+      return res.json({
+        data: {
+          valid: true,
+          description: 'Token is valid'
+        }
+      });
+      
+    } catch (error) {
+      next(error);
+    }
+  },
+
   login: async (req, res, next) => {
     try {
       const db = await database.getDb(collectionName);
