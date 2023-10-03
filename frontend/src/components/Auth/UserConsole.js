@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
 import Button from '../../utility/Button';
+import UserContext from '../../contexts/UserContext';
 
 import { API_KEY, API_URL } from '../../config';
 
 
 function UserConsole() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);

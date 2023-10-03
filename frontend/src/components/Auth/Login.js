@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 import styled from "styled-components";
 
 import { API_KEY, API_URL } from '../../config';
 import Overlay from './Overlay';
 import Button from '../../utility/Button';
+import UserContext from '../../contexts/UserContext';
 
-function Login({ isOpen, onClose, setIsLoggedIn }) {
+function Login({ isOpen, onClose }) {
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+
   const [ formData, setFormData ] = useState({
     email: '',
     password: ''

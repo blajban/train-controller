@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 import styled from "styled-components";
 import Overlay from './Overlay';
 import Button from '../../utility/Button';
+import UserContext from '../../contexts/UserContext';
 
-function Logout({ isOpen, onClose, setIsLoggedIn }) {
+function Logout({ isOpen, onClose }) {
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('token'); // refactor to use state?

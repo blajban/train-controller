@@ -1,6 +1,8 @@
 
+import React, { useState } from 'react';
 import styled from "styled-components";
 
+import UserContext from './contexts/UserContext';
 import Style from './Style';
 import DelayedTrains from "./components/Delayed/DelayedTrains";
 import TrainMap from "./components/Map/TrainMap";
@@ -32,21 +34,25 @@ const MapContainer = styled.nav`
 
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <>
       <Style />
-      <AppContainer>
-        <DelayedContainer>
-          <UserContainer>
-            <UserConsole />
-          </UserContainer>
-        <DelayedTrains />
-        </DelayedContainer>
-        <MapContainer>
-          <TrainMap />
-        </MapContainer>
-        
-      </AppContainer>
+      <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+        <AppContainer>
+          <DelayedContainer>
+            <UserContainer>
+              <UserConsole />
+            </UserContainer>
+          <DelayedTrains />
+          </DelayedContainer>
+          <MapContainer>
+            <TrainMap />
+          </MapContainer>
+          
+        </AppContainer>
+      </UserContext.Provider>
     </>
       
   );
