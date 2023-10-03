@@ -18,7 +18,7 @@ function UserConsole() {
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(false);
 
-
+  
 
   return (
     <>
@@ -29,6 +29,7 @@ function UserConsole() {
             <Logout 
               isOpen={isLogoutOpen}
               onClose={() => setIsLogoutOpen(false)}
+              setIsLoggedIn={setIsLoggedIn}
             />
           }
         </div>
@@ -42,6 +43,7 @@ function UserConsole() {
               <Login
                 isOpen={isLoginOpen}
                 onClose={() => setIsLoginOpen(false)}
+                setIsLoggedIn={setIsLoggedIn}
               />
             }
 

@@ -16,9 +16,9 @@ const StyledButton = styled.button`
   }
 `;
 
-function Button({ children, onClick }) {
+function Button({ children, type, onClick }) {
   return (
-    <StyledButton onClick={onClick}>
+    <StyledButton type={type} onClick={onClick}>
       {children}
     </StyledButton>
   );
