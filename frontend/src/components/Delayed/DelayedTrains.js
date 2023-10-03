@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 import styled from "styled-components";
 
 import Train from './Train';
 import Ticket from '../Ticket/Ticket';
+import { SelectedTrainsContext } from '../../App';
 
 const API_URL = process.env.NODE_ENV !== 'production'
   ? process.env.REACT_APP_API_URL_DEV
@@ -18,11 +19,33 @@ const DelayedTrainsList = styled.div`
   flex-direction: column;
 `;
 
+const HeaderRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background-color: #d9d9d9;
+  border-bottom: 2px solid #bbb;
+  padding: 0.6rem;
+  font-weight: bold;
+`;
+
+const HeaderItem = styled.div`
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+
 
 function DelayedTrains() {
   const [delayedTrains, setDelayedTrains] = useState(null);
   const [isTicketOpen, setIsTicketOpen] = useState(false);
   const [currentTrain, setCurrentTrain] = useState(null);
+  const [selectAll, setSelectAll] = useState(false);
+  const { selectedTrains, setSelectedTrains } = useContext(SelectedTrainsContext);
+
 
   const handleTrainClick = (trainData) => {
     setCurrentTrain(trainData);
@@ -33,6 +56,16 @@ function DelayedTrains() {
     setIsTicketOpen(false);
     setCurrentTrain(null);
   };
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+        setSelectedTrains([]);
+    } else {
+        setSelectedTrains(delayedTrains.map(train => train.OperationalTrainNumber));
+    }
+    setSelectAll(!selectAll); 
+  };
+
 
   useEffect(() => {
     const fetchDelayedTrains = async () => {
@@ -52,6 +85,12 @@ function DelayedTrains() {
     fetchDelayedTrains();
   }, []);
 
+  //Remove later
+  useEffect(() => {
+    console.log("Selected Trains:", selectedTrains);
+  }, [selectedTrains]);
+
+
   if (!delayedTrains) return "Loading...";
 
   return (
@@ -63,16 +102,44 @@ function DelayedTrains() {
           trainData={currentTrain}
       />}
 
-      <h1>Försenade tåg</h1>
+      <h1 style={{ marginBottom: '20px' }}>Försenade tåg</h1>
       <DelayedTrainsList>
+      <HeaderRow>
+        <HeaderItem>
+            <div>Tågnummer</div>
+            <div>(Publikt tågnummer)</div>
+        </HeaderItem>
+        <HeaderItem>
+            <div>Station</div>
+            <div>Från -&gt; Till</div>
+        </HeaderItem>
+        <HeaderItem>Försening</HeaderItem>
+        <HeaderItem>
+          <label>Välj Alla</label>
+            <input 
+                type="checkbox" 
+                checked={selectAll} 
+                onChange={handleSelectAll} 
+            />
+        </HeaderItem>
+      </HeaderRow>
+
         {delayedTrains.map((train, index) => (
           <Train 
             key={index}
             train={train}
             onClick={() => handleTrainClick(train)}
+            onCheckboxChange={() => {
+              const trainNumber = train.OperationalTrainNumber;
+              setSelectedTrains(prevSelected => 
+                prevSelected.includes(trainNumber)
+                  ? prevSelected.filter(item => item !== trainNumber)
+                  : [...prevSelected, trainNumber]
+              );
+            }}
+            isSelected={selectedTrains.includes(train.OperationalTrainNumber)}
           />
         ))}
-        
       </DelayedTrainsList>
   </>
   );

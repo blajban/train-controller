@@ -18,7 +18,7 @@ function TrainMap() {
         attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         maxZoom={19}
       />
-      <Markers />
+      <Markers/>
     </StyledMapContainer>
   );
 }
