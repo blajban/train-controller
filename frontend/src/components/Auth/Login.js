@@ -56,7 +56,7 @@ function Login({ isOpen, onClose, setIsLoggedIn }) {
       <form onSubmit={handleSubmit}>
         <input name='email' type='email' value={formData.email} onChange={handleChange} placeholder='E-post' />
         <input name='password' type='password' value={formData.password} onChange={handleChange} placeholder='Lösenord' />
-        <Button type='submit'>Registrera</Button>
+        <Button type='submit'>Logga in</Button>
       </form>
     </Overlay>
   );

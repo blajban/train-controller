@@ -5,7 +5,7 @@ import Register from './Register';
 import Logout from './Logout';
 import Button from '../../utility/Button';
 
-
+import { API_KEY, API_URL } from '../../config';
 
 
 function UserConsole() {
@@ -18,7 +18,39 @@ function UserConsole() {
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(false);
 
+  useEffect(() => {
+    async function verifyToken() {
+      try {
+        const token = localStorage.getItem('token');
   
+        if (token) {
+          const response = await fetch(`${API_URL}/verify-token`, {
+            method: 'POST',
+            headers: { 
+              'content-type': 'application/json',
+              'x-api-key': API_KEY,
+              'x-access-token': token
+            }
+          });
+    
+          const result = await response.json();
+    
+          if (result.data?.valid) {
+            setIsLoggedIn(true);
+          }
+  
+          // Handle errors
+        }
+      } catch (error) {
+        // Handle errors gracefully
+        //console.error('Error:', error);
+      }
+    }
+
+    verifyToken();
+  });
+
+
 
   return (
     <>

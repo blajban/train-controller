@@ -7,6 +7,7 @@ import Button from '../../utility/Button';
 function Logout({ isOpen, onClose, setIsLoggedIn }) {
   const handleLogout = () => {
     setIsLoggedIn(false);
+    localStorage.removeItem('token'); // refactor to use state?
     onClose();
   };
 
