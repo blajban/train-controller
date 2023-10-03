@@ -124,7 +124,7 @@ describe("<DelayedTrains />", () => {
     const mockTicketData = [
       {
         code: "6789",
-        trainnumber: "123",
+        trainnumber: "12345",
         traindate: "2023-01-01",
         id: 1
       }
