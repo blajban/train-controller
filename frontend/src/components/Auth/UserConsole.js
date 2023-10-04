@@ -80,27 +80,37 @@ function UserConsole() {
       {!isLoggedIn && 
         <div>
           <p>Logga in eller registrera dig för att hantera ärenden.</p>
-            <Button onClick={() => setIsLoginOpen(true)}>Logga in</Button>
-            {isLoginOpen && 
-              <Login
-                isOpen={isLoginOpen}
-                onClose={() => setIsLoginOpen(false)}
-                setIsLoggedIn={setIsLoggedIn}
-              />
-            }
 
-            <Button onClick={() => setIsRegisterOpen(true)}>Registrera dig</Button>
-            {isRegisterOpen && 
-              <Register
-                isOpen={isRegisterOpen}
-                onClose={() => setIsRegisterOpen(false)}
-              />}
+          {!isRegisterOpen && (
+            isLoginOpen ? (
+              <>
+                <Button onClick={() => setIsLoginOpen(false)}>Tillbaka</Button>
+                <Login
+                  isOpen={isLoginOpen}
+                  onClose={() => setIsLoginOpen(false)}
+                  setIsLoggedIn={setIsLoggedIn}
+                />
+              </>
+            ) : (
+              <Button onClick={() => setIsLoginOpen(true)}>Logga in</Button>
+            )
+          )}
+
+          {!isLoginOpen && (
+            isRegisterOpen ? (
+              <>
+                <Button onClick={() => setIsRegisterOpen(false)}>Tillbaka</Button>
+                <Register
+                  isOpen={isRegisterOpen}
+                  onClose={() => setIsRegisterOpen(false)}
+                />
+              </>
+            ) : (
+              <Button onClick={() => setIsRegisterOpen(true)}>Registrera dig</Button>
+            )
+          )}
         </div>
       }
-
-      
-      
-      
     </UserConsoleContainer>
   );
 }

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { API_KEY, API_URL } from '../../config';
 import Button from '../../utility/Button';
 import Foldout from './Foldout';
+import StyledInput from '../../utility/StyledInput';
 
 function Register({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
@@ -53,12 +54,11 @@ function Register({ isOpen, onClose }) {
 
   return (
     <Foldout isOpen={isOpen}>
-      <h2>Registrera</h2>
       <form onSubmit={handleSubmit}>
-        <input name='firstName' type='text' value={formData.firstName} onChange={handleChange} placeholder='Förnamn' />
-        <input name='lastName' type='text' value={formData.lastName} onChange={handleChange} placeholder='Efternamn' />
-        <input name='email' type='email' value={formData.email} onChange={handleChange} placeholder='E-post' />
-        <input name='password' type='password' value={formData.password} onChange={handleChange} placeholder='Lösenord' />
+        <StyledInput name='firstName' type='text' value={formData.firstName} onChange={handleChange} placeholder='Förnamn' />
+        <StyledInput name='lastName' type='text' value={formData.lastName} onChange={handleChange} placeholder='Efternamn' />
+        <StyledInput name='email' type='email' value={formData.email} onChange={handleChange} placeholder='E-post' />
+        <StyledInput name='password' type='password' value={formData.password} onChange={handleChange} placeholder='Lösenord' />
         <Button type='submit'>Registrera</Button>
       </form>
     </Foldout>

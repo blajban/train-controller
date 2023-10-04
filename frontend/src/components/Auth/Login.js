@@ -4,6 +4,7 @@ import { API_KEY, API_URL } from '../../config';
 import Button from '../../utility/Button';
 import UserContext from '../../contexts/UserContext';
 import Foldout from './Foldout';
+import StyledInput from '../../utility/StyledInput';
 
 function Login({ isOpen, onClose }) {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
@@ -53,10 +54,9 @@ function Login({ isOpen, onClose }) {
 
   return (
     <Foldout isOpen={isOpen}>
-      <h2>Logga in</h2>
       <form onSubmit={handleSubmit}>
-        <input name='email' type='email' value={formData.email} onChange={handleChange} placeholder='E-post' />
-        <input name='password' type='password' value={formData.password} onChange={handleChange} placeholder='Lösenord' />
+        <StyledInput name='email' type='email' value={formData.email} onChange={handleChange} placeholder='E-post' />
+        <StyledInput name='password' type='password' value={formData.password} onChange={handleChange} placeholder='Lösenord' />
         <Button type='submit'>Logga in</Button>
       </form>
     </Foldout>

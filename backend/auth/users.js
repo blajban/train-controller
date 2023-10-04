@@ -55,6 +55,8 @@ const users = {
           return res.json({
             data: {
               description: 'User logged in',
+              firstName: user.firstName,
+              lastName: user.lastName,
               email: email.toLowerCase(),
               token
             }
@@ -103,6 +105,8 @@ const users = {
       return res.json({
         data: {
           description: 'User created',
+          firstName,
+          lastName,
           email: email.toLowerCase(),
           token
         }
