@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import styled from "styled-components";
 import NewTicket from './NewTicket';
 import OldTickets from './OldTickets';
+import { getUserToken } from '../User/util';
 
 const API_URL = process.env.NODE_ENV !== 'production'
   ? process.env.REACT_APP_API_URL_DEV
@@ -18,7 +19,7 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6); // semi-transparent black
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,7 +30,7 @@ const Content = styled.div`
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 80%; // or fixed width e.g. 500px
+  width: 80%;
   max-height: 80vh;
   overflow-y: auto;
 `;
@@ -42,10 +43,12 @@ function Ticket({invokeMock, isOpen, onClose, trainData}) {
     try {
       const response = await fetch(`${API_URL}/tickets`, {
         headers: {
-          'x-api-key': API_KEY
+          'x-api-key': API_KEY,
+          'x-access-token': getUserToken()
         }
       });
       const result = await response.json();
+
       setOldTickets(result.data);
     } catch (error) {
       console.error('Error:', error);
@@ -64,7 +67,8 @@ function Ticket({invokeMock, isOpen, onClose, trainData}) {
         body: JSON.stringify(newTicket),
         headers: {
           'content-type': 'application/json',
-          'x-api-key': API_KEY
+          'x-api-key': API_KEY,
+          'x-access-token': getUserToken()
         },
         method: 'POST'
       });

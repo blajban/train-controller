@@ -16,6 +16,7 @@ const tickets = require('./routes/tickets');
 const codes = require('./routes/codes');
 const login = require('./routes/login');
 const register = require('./routes/register');
+const verifyToken = require('./routes/verify-token');
 
 
 const app = express();
@@ -44,6 +45,7 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 // Routes
+app.use('/verify-token', verifyToken);
 app.use('/delayed', delayed);
 app.use('/tickets', tickets);
 app.use('/codes', codes);

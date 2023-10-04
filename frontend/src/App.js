@@ -1,15 +1,19 @@
 
+import React, { useState } from 'react';
 import styled from "styled-components";
 
+import UserContext from './contexts/UserContext';
 import Style from './Style';
 import DelayedTrains from "./components/Delayed/DelayedTrains";
 import TrainMap from "./components/Map/TrainMap";
+import UserConsole from "./components/User/UserConsole";
 
 const AppContainer = styled.nav`
   height: 100vh;
   width: 100vw;
   display: flex;
 `;
+
 
 const DelayedContainer = styled.nav`
   height: 100vh;
@@ -26,17 +30,23 @@ const MapContainer = styled.nav`
 
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <>
       <Style />
-      <AppContainer>
-        <DelayedContainer>
+      <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+        <AppContainer>
+          <DelayedContainer>
+              <UserConsole />
           <DelayedTrains />
-        </DelayedContainer>
-        <MapContainer>
-          <TrainMap />
-        </MapContainer>
-      </AppContainer>
+          </DelayedContainer>
+          <MapContainer>
+            <TrainMap />
+          </MapContainer>
+          
+        </AppContainer>
+      </UserContext.Provider>
     </>
       
   );

@@ -72,7 +72,8 @@ describe('<Ticket />', () => {
         "http://localhost:1337/tickets",
         {
           headers: {
-            'x-api-key': API_KEY
+            'x-api-key': API_KEY,
+            'x-access-token': null
           }
         }
       );
@@ -164,7 +165,8 @@ describe('<Ticket />', () => {
           method: 'POST',
           headers: {
             'content-type': 'application/json',
-            'x-api-key': API_KEY
+            'x-api-key': API_KEY,
+            'x-access-token': null
           },
           body: JSON.stringify({
             code: "ABC",
@@ -179,7 +181,8 @@ describe('<Ticket />', () => {
       expect(global.fetch).toHaveBeenCalledWith('http://localhost:1337/tickets',
       {
         headers: {
-          'x-api-key': API_KEY
+          'x-api-key': API_KEY,
+          'x-access-token': null
         }
       });
     });
