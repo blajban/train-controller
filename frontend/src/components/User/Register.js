@@ -1,10 +1,11 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useContext } from 'react'
 
 import { API_KEY, API_URL } from '../../config';
 import Button from '../ui/Button';
 import Foldout from './Foldout';
 import StyledInput from '../ui/StyledInput';
 import UserContext from '../../contexts/UserContext';
+import { loginUser } from './util';
 
 function Register({ isOpen, onClose, setUserName }) {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
@@ -43,22 +44,19 @@ function Register({ isOpen, onClose, setUserName }) {
       if (result.status === 400) {
         setError('Fyll i all information för att registrera dig');
         setIsError(true);
-        return; // Handle user exists
+        return;
       }
 
       if (result.status === 409) {
         setError('En användare med den här e-postadressen finns redan registrerad');
         setIsError(true);
-        return; // Handle user exists
+        return;
       }
 
       if (result.data.token) {
-        localStorage.setItem('token', result.data.token);
-        localStorage.setItem('name', `${result.data.firstName} ${result.data.lastName}`);
-        setUserName(`${result.data.firstName} ${result.data.lastName}`);
-        setIsLoggedIn(true);
+        loginUser(result.data.token, setUserName, setIsLoggedIn, result.data.firstName, result.data.lastName);
         console.log('Registered successfully');
-        onClose(); // Handle registered successfully
+        onClose();
       }
     } catch (error) {
       setError(error);

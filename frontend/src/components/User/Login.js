@@ -1,10 +1,11 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useContext } from 'react'
 
 import { API_KEY, API_URL } from '../../config';
 import Button from '../ui/Button';
 import UserContext from '../../contexts/UserContext';
 import Foldout from './Foldout';
 import StyledInput from '../ui/StyledInput';
+import { getUserToken, loginUser } from './util';
 
 function Login({ isOpen, onClose, setUserName }) {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
@@ -26,15 +27,13 @@ function Login({ isOpen, onClose, setUserName }) {
 
     const { email, password } = formData;
 
-    const token = localStorage.getItem('token');
-
     try {
       const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: { 
           'content-type': 'application/json',
           'x-api-key': API_KEY,
-          'x-access-token': token
+          'x-access-token': getUserToken()
         },
         body: JSON.stringify({ email, password }),
       });
@@ -54,12 +53,9 @@ function Login({ isOpen, onClose, setUserName }) {
       }
 
       if (result.data.token) {
-        localStorage.setItem('token', result.data.token);
-        localStorage.setItem('name', `${result.data.firstName} ${result.data.lastName}`);
-        setUserName(`${result.data.firstName} ${result.data.lastName}`);
-        setIsLoggedIn(true);
+        loginUser(result.data.token, setUserName, setIsLoggedIn, result.data.firstName, result.data.lastName);
         console.log('Successfully logged in');
-        onClose(); // Handle registered successfully
+        onClose();
       }
     } catch (error) {
       setError(error);

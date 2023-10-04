@@ -24,8 +24,6 @@ function UserConsole() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [userName, setUserName] = useState(localStorage.getItem('name') || '');
-  const [token, setToken] = useState(null);
-  
 
   useEffect(() => {
     async function verifyToken() {
@@ -47,12 +45,9 @@ function UserConsole() {
           if (result.data?.valid) {
             setIsLoggedIn(true);
           }
-  
-          // Handle errors
         }
       } catch (error) {
-        // Handle errors gracefully
-        //console.error('Error:', error);
+        console.error('Error:', error);
       }
     }
 

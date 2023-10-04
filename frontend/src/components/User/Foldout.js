@@ -10,8 +10,6 @@ const StyledFoldout = styled.div`
   `}
 `;
 
-
-
 function Foldout({ isOpen, children }) {
   if (!isOpen) {
     return null;
