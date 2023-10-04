@@ -23,7 +23,7 @@ function UserConsole() {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const [userName, setUserName] = useState(localStorage.getItem('name') || '');
   const [token, setToken] = useState(null);
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(false);
@@ -66,12 +66,13 @@ function UserConsole() {
     <UserConsoleContainer>
       {isLoggedIn && 
         <div>
+          <p>Välkommen {userName}</p>
           <Button onClick={() => setIsLogoutOpen(true)}>Logga ut</Button>
           {isLogoutOpen &&
             <Logout 
               isOpen={isLogoutOpen}
               onClose={() => setIsLogoutOpen(false)}
-              setIsLoggedIn={setIsLoggedIn}
+              setUserName={setUserName}
             />
           }
         </div>
@@ -88,7 +89,7 @@ function UserConsole() {
                 <Login
                   isOpen={isLoginOpen}
                   onClose={() => setIsLoginOpen(false)}
-                  setIsLoggedIn={setIsLoggedIn}
+                  setUserName={setUserName}
                 />
               </>
             ) : (
@@ -103,6 +104,7 @@ function UserConsole() {
                 <Register
                   isOpen={isRegisterOpen}
                   onClose={() => setIsRegisterOpen(false)}
+                  setUserName={setUserName}
                 />
               </>
             ) : (

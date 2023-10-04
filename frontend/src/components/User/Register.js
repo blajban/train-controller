@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 import { API_KEY, API_URL } from '../../config';
 import Button from '../../utility/Button';
 import Foldout from './Foldout';
 import StyledInput from '../../utility/StyledInput';
+import UserContext from '../../contexts/UserContext';
 
-function Register({ isOpen, onClose }) {
+function Register({ isOpen, onClose, setUserName }) {
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -40,14 +43,17 @@ function Register({ isOpen, onClose }) {
         return; // Handle user exists
       }
 
-      if (result.data?.token) {
-        localStorage.setItem('token', result.data.token); // refactor to use state
+      if (result.data.token) {
+        localStorage.setItem('token', result.data.token);
+        localStorage.setItem('name', `${result.data.firstName} ${result.data.lastName}`);
+        setUserName(`${result.data.firstName} ${result.data.lastName}`);
+        setIsLoggedIn(true);
         console.log('Registered successfully');
         onClose(); // Handle registered successfully
       }
     } catch (error) {
       // Handle errors gracefully
-      //console.error('Error:', error);
+      console.error('Error:', error);
     }
     
   };

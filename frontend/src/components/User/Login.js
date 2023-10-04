@@ -6,7 +6,7 @@ import UserContext from '../../contexts/UserContext';
 import Foldout from './Foldout';
 import StyledInput from '../../utility/StyledInput';
 
-function Login({ isOpen, onClose }) {
+function Login({ isOpen, onClose, setUserName }) {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
 
   const [ formData, setFormData ] = useState({
@@ -41,6 +41,8 @@ function Login({ isOpen, onClose }) {
 
       if (result.data.token) {
         localStorage.setItem('token', result.data.token);
+        localStorage.setItem('name', `${result.data.firstName} ${result.data.lastName}`);
+        setUserName(`${result.data.firstName} ${result.data.lastName}`);
         setIsLoggedIn(true);
         console.log('Successfully logged in');
         onClose(); // Handle registered successfully

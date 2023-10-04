@@ -10,6 +10,7 @@ function Logout({ isOpen, onClose }) {
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('token'); // refactor to use state?
+    localStorage.removeItem('name');
     onClose();
   };
 

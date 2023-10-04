@@ -6,7 +6,7 @@ import UserContext from './contexts/UserContext';
 import Style from './Style';
 import DelayedTrains from "./components/Delayed/DelayedTrains";
 import TrainMap from "./components/Map/TrainMap";
-import UserConsole from "./components/Auth/UserConsole";
+import UserConsole from "./components/User/UserConsole";
 
 const AppContainer = styled.nav`
   height: 100vh;
