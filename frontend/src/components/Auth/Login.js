@@ -1,11 +1,9 @@
 import { useState, useEffect, useContext } from 'react'
 
-import styled from "styled-components";
-
 import { API_KEY, API_URL } from '../../config';
-import Overlay from './Overlay';
 import Button from '../../utility/Button';
 import UserContext from '../../contexts/UserContext';
+import Foldout from './Foldout';
 
 function Login({ isOpen, onClose }) {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
@@ -54,14 +52,14 @@ function Login({ isOpen, onClose }) {
   };
 
   return (
-    <Overlay isOpen={isOpen} onClose={onClose}>
+    <Foldout isOpen={isOpen}>
       <h2>Logga in</h2>
       <form onSubmit={handleSubmit}>
         <input name='email' type='email' value={formData.email} onChange={handleChange} placeholder='E-post' />
         <input name='password' type='password' value={formData.password} onChange={handleChange} placeholder='Lösenord' />
         <Button type='submit'>Logga in</Button>
       </form>
-    </Overlay>
+    </Foldout>
   );
 }
 

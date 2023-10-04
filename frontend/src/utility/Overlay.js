@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Button from '../../utility/Button';
+import Button from './Button';
 
 const StyledOverlay = styled.div`
   position: fixed;

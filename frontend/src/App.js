@@ -14,10 +14,6 @@ const AppContainer = styled.nav`
   display: flex;
 `;
 
-const UserContainer = styled.nav`
-  height: 10vh;
-  margin-bottom: 1rem;
-`;
 
 const DelayedContainer = styled.nav`
   height: 100vh;
@@ -42,9 +38,7 @@ function App() {
       <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
         <AppContainer>
           <DelayedContainer>
-            <UserContainer>
               <UserConsole />
-            </UserContainer>
           <DelayedTrains />
           </DelayedContainer>
           <MapContainer>

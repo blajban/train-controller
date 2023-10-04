@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
-import styled from "styled-components";
 
 import { API_KEY, API_URL } from '../../config';
-import Overlay from './Overlay';
 import Button from '../../utility/Button';
+import Foldout from './Foldout';
 
 function Register({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
@@ -53,7 +52,7 @@ function Register({ isOpen, onClose }) {
   };
 
   return (
-    <Overlay isOpen={isOpen} onClose={onClose}>
+    <Foldout isOpen={isOpen}>
       <h2>Registrera</h2>
       <form onSubmit={handleSubmit}>
         <input name='firstName' type='text' value={formData.firstName} onChange={handleChange} placeholder='Förnamn' />
@@ -62,7 +61,7 @@ function Register({ isOpen, onClose }) {
         <input name='password' type='password' value={formData.password} onChange={handleChange} placeholder='Lösenord' />
         <Button type='submit'>Registrera</Button>
       </form>
-    </Overlay>
+    </Foldout>
   );
 }
 

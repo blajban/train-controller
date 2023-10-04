@@ -1,9 +1,8 @@
 import { useState, useEffect, useContext } from 'react'
 
-import styled from "styled-components";
-import Overlay from './Overlay';
 import Button from '../../utility/Button';
 import UserContext from '../../contexts/UserContext';
+import Foldout from './Foldout';
 
 function Logout({ isOpen, onClose }) {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
@@ -15,11 +14,11 @@ function Logout({ isOpen, onClose }) {
   };
 
   return (
-    <Overlay isOpen={isOpen} onClose={onClose}>
+    <Foldout isOpen={isOpen}>
       <h2>Vill du logga ut?</h2>
       <Button type='submit' onClick={handleLogout}>Ja, logga ut</Button>
       <Button type='submit' onClick={onClose}>Nej, fortsätt arbeta</Button>
-    </Overlay>
+    </Foldout>
   );
 }
 

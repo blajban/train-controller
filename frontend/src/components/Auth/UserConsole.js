@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import styled from 'styled-components';
 
 import Login from './Login';
 import Register from './Register';
@@ -8,6 +9,14 @@ import UserContext from '../../contexts/UserContext';
 
 import { API_KEY, API_URL } from '../../config';
 
+const UserConsoleContainer = styled.div`
+  position: relative; 
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+`;
 
 function UserConsole() {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
@@ -54,7 +63,7 @@ function UserConsole() {
 
 
   return (
-    <>
+    <UserConsoleContainer>
       {isLoggedIn && 
         <div>
           <Button onClick={() => setIsLogoutOpen(true)}>Logga ut</Button>
@@ -92,7 +101,7 @@ function UserConsole() {
       
       
       
-    </>
+    </UserConsoleContainer>
   );
 }
 
