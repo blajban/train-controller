@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
-import Button from '../../utility/Button';
+import Button from '../ui/Button';
 import UserContext from '../../contexts/UserContext';
 
 import { API_KEY, API_URL } from '../../config';
@@ -63,19 +63,23 @@ function UserConsole() {
 
   return (
     <UserConsoleContainer>
-      {isLoggedIn && 
-        <div>
-          <p>Välkommen {userName}</p>
-          <Button onClick={() => setIsLogoutOpen(true)}>Logga ut</Button>
-          {isLogoutOpen &&
+      {isLoggedIn && (
+        isLogoutOpen ? (
+          <>
+            <Button variant="secondary" onClick={() => setIsLogoutOpen(false)}>Tillbaka</Button>
             <Logout 
               isOpen={isLogoutOpen}
               onClose={() => setIsLogoutOpen(false)}
               setUserName={setUserName}
             />
-          }
-        </div>
-      }
+          </>
+        ) : (
+          <>
+            <p>Välkommen {userName}</p>
+            <Button onClick={() => setIsLogoutOpen(true)}>Logga ut</Button>
+          </>
+        )
+      )}
       
       {!isLoggedIn && 
         <div>
@@ -84,7 +88,7 @@ function UserConsole() {
           {!isRegisterOpen && (
             isLoginOpen ? (
               <>
-                <Button onClick={() => setIsLoginOpen(false)}>Tillbaka</Button>
+                <Button variant="secondary" onClick={() => setIsLoginOpen(false)}>Tillbaka</Button>
                 <Login
                   isOpen={isLoginOpen}
                   onClose={() => setIsLoginOpen(false)}
@@ -99,7 +103,7 @@ function UserConsole() {
           {!isLoginOpen && (
             isRegisterOpen ? (
               <>
-                <Button onClick={() => setIsRegisterOpen(false)}>Tillbaka</Button>
+                <Button variant="secondary" onClick={() => setIsRegisterOpen(false)}>Tillbaka</Button>
                 <Register
                   isOpen={isRegisterOpen}
                   onClose={() => setIsRegisterOpen(false)}

@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from 'react'
 
 import { API_KEY, API_URL } from '../../config';
-import Button from '../../utility/Button';
+import Button from '../ui/Button';
 import Foldout from './Foldout';
-import StyledInput from '../../utility/StyledInput';
+import StyledInput from '../ui/StyledInput';
 import UserContext from '../../contexts/UserContext';
 
 function Register({ isOpen, onClose, setUserName }) {

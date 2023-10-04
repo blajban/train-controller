@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 
-import Button from '../../utility/Button';
+import Button from '../ui/Button';
 import UserContext from '../../contexts/UserContext';
 import Foldout from './Foldout';
 
@@ -16,9 +16,8 @@ function Logout({ isOpen, onClose }) {
 
   return (
     <Foldout isOpen={isOpen}>
-      <h2>Vill du logga ut?</h2>
+      <p>Vill du logga ut?</p>
       <Button type='submit' onClick={handleLogout}>Ja, logga ut</Button>
-      <Button type='submit' onClick={onClose}>Nej, fortsätt arbeta</Button>
     </Foldout>
   );
 }

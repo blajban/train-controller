@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from 'react'
 
 import { API_KEY, API_URL } from '../../config';
-import Button from '../../utility/Button';
+import Button from '../ui/Button';
 import UserContext from '../../contexts/UserContext';
 import Foldout from './Foldout';
-import StyledInput from '../../utility/StyledInput';
+import StyledInput from '../ui/StyledInput';
 
 function Login({ isOpen, onClose, setUserName }) {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
