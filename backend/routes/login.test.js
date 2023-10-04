@@ -37,7 +37,7 @@ describe('POST /login', () => {
 
     expect(res.statusCode).toEqual(200);
   });
-/*
+
   it('should return 400 if email or pw not included', async () => {
     const userInfo = {
       email: "loginTest@test.se"
@@ -49,7 +49,7 @@ describe('POST /login', () => {
     expect(res.statusCode).toEqual(400);
   });
 
-  it('should return 400 if wrong email or pw', async () => {
+  it('should return 401 if wrong email or pw', async () => {
     const userInfo = {
       email: "loginTest@test.se",
       password: "wrongPassword"
@@ -58,7 +58,7 @@ describe('POST /login', () => {
       .post('/login')
       .send(userInfo);
 
-    expect(res.statusCode).toEqual(400);
+    expect(res.statusCode).toEqual(401);
   });
 
   it('should return 500 if other error', async () => {
@@ -71,6 +71,6 @@ describe('POST /login', () => {
       .post('/login');
 
     expect(res.statusCode).toEqual(500);
-  });*/
+  });
 
 });

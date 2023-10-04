@@ -25,8 +25,7 @@ function UserConsole() {
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [userName, setUserName] = useState(localStorage.getItem('name') || '');
   const [token, setToken] = useState(null);
-  const [error, setError] = useState(null);
-  const [isError, setIsError] = useState(false);
+  
 
   useEffect(() => {
     async function verifyToken() {

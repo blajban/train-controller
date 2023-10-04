@@ -5,7 +5,7 @@ const StyledFoldout = styled.div`
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
   ${props => props.$isOpen && `
-    max-height: 300px; /* Or adjust based on your actual content size */
+    max-height: 300px;
     padding: 10px;
   `}
 `;

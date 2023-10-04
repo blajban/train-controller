@@ -1,7 +1,7 @@
 class InvalidCredentialsError extends Error {
   constructor() {
     super('Invalid credentials');
-    this.status = 400;
+    this.status = 401;
     this.message = 'Wrong e-mail or password';
   }
 }

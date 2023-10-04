@@ -8,6 +8,8 @@ import StyledInput from '../../utility/StyledInput';
 
 function Login({ isOpen, onClose, setUserName }) {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  const [error, setError] = useState(null);
+  const [isError, setIsError] = useState(false);
 
   const [ formData, setFormData ] = useState({
     email: '',
@@ -39,6 +41,18 @@ function Login({ isOpen, onClose, setUserName }) {
 
       const result = await response.json();
 
+      if (result.status === 400) {
+        setError('Användarnamn eller lösenord saknas');
+        setIsError(true);
+        return;
+      }
+
+      if (result.status === 401) {
+        setError('Felaktigt användarnamn eller lösenord');
+        setIsError(true);
+        return;
+      }
+
       if (result.data.token) {
         localStorage.setItem('token', result.data.token);
         localStorage.setItem('name', `${result.data.firstName} ${result.data.lastName}`);
@@ -48,14 +62,17 @@ function Login({ isOpen, onClose, setUserName }) {
         onClose(); // Handle registered successfully
       }
     } catch (error) {
-      // Handle errors gracefully
-      //console.error('Error:', error);
+      setError(error);
+      setIsError(true);
     }
     
   };
 
   return (
     <Foldout isOpen={isOpen}>
+      {isError && 
+        <p style={{color: 'red'}}>{error}</p>
+      }
       <form onSubmit={handleSubmit}>
         <StyledInput name='email' type='email' value={formData.email} onChange={handleChange} placeholder='E-post' />
         <StyledInput name='password' type='password' value={formData.password} onChange={handleChange} placeholder='Lösenord' />
