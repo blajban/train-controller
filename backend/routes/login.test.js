@@ -72,5 +72,4 @@ describe('POST /login', () => {
 
     expect(res.statusCode).toEqual(500);
   });
-
 });

@@ -40,6 +40,7 @@ const users = {
       const { email, password } = req.body;
 
       if (!(email && password)) {
+        await db.client.close();
         return next(new NotEnoughCredentialsError());
       }
 
