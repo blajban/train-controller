@@ -58,7 +58,7 @@ function Login({ isOpen, onClose, setUserName }) {
         onClose();
       }
     } catch (error) {
-      setError(error);
+      setError(error.message);
       setIsError(true);
     }
     
