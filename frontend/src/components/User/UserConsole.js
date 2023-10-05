@@ -8,6 +8,7 @@ import Button from '../ui/Button';
 import UserContext from '../../contexts/UserContext';
 
 import { API_KEY, API_URL } from '../../config';
+import { getUserName, getUserToken } from './util';
 
 const UserConsoleContainer = styled.div`
   position: relative; 
@@ -23,12 +24,12 @@ function UserConsole() {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
-  const [userName, setUserName] = useState(localStorage.getItem('name') || '');
+  const [userName, setUserName] = useState(getUserName());
 
   useEffect(() => {
     async function verifyToken() {
       try {
-        const token = localStorage.getItem('token');
+        const token = getUserToken();
   
         if (token) {
           const response = await fetch(`${API_URL}/verify-token`, {

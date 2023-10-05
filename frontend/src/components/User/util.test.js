@@ -1,4 +1,4 @@
-import { getUserToken, loginUser, logoutUser } from './util';
+import { getUserName, getUserToken, loginUser, logoutUser } from './util';
 
 const localStorageMock = (function () {
   let store = {};
@@ -37,6 +37,11 @@ describe('User utility functions', () => {
   it('should get user token from localStorage', () => {
     localStorage.setItem('token', 'test-token');
     expect(getUserToken()).toBe('test-token');
+  });
+
+  it('should get user name from localStorage', () => {
+    localStorage.setItem('name', 'Testare Testaresson');
+    expect(getUserName()).toBe('Testare Testaresson');
   });
 
   it('should login user and set token and name in localStorage', () => {
