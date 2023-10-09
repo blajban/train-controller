@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, act, waitFor, fireEvent, screen } from '@testing-library/react';
 import NewTicket from './NewTicket';
-import { getDelayed, getReasonCodes, getTickets } from '../../models/models';
+import { getReasonCodes } from '../../models/models';
 
 jest.mock('../Delayed/Delay', () => {
   return function MockedDelay() {
@@ -18,14 +18,8 @@ jest.mock('../../models/models', () => ({
 
 
 describe('<NewTicket />', () => { 
-  afterAll(() => {
-    //global.fetch.mockRestore();
-  });
-
   afterEach(() => {
     jest.resetAllMocks();
-    //jest.clearAllTimers();
-    //jest.restoreAllMocks();
   });
   
 
