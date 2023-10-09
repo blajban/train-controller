@@ -113,5 +113,4 @@ const addTicket = async (ticketData) => {
   }
 }
 
-
 export { getReasonCodes, getDelayed, getTickets, addTicket };
