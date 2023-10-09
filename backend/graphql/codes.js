@@ -15,4 +15,3 @@ const ReasonCodeType = new GraphQLObjectType({
 });
 
 module.exports = ReasonCodeType;
-  
