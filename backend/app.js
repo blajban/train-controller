@@ -63,7 +63,9 @@ app.all('/graphql', createHandler({
 }));
 
 if (ENV !== 'production') {
-  app.get('/playground', graphQlPlayground({ endpoint: '/graphql' }))
+  app.get('/playground', graphQlPlayground({ 
+    endpoint: '/graphql'
+  }));
 }
 
 

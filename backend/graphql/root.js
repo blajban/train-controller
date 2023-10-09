@@ -6,16 +6,29 @@ const {
   GraphQLNonNull
 } = require('graphql');
 
+const ReasonCodeType = require('./codes');
+const codes = require('../models/codes');
+
+const DelayedTrainType = require('./delayed');
+const delayed = require('../models/delayed');
+
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
   fields: () => ({
-    test: {
-      name: 'Testing',
-      type: GraphQLString,
-      resolve: () => 'Test'
+    codes: { 
+      type: new GraphQLList(ReasonCodeType),
+      resolve: async () => {
+        return await codes.getData();
+      }
+    },
+    delayed: {
+      type: new GraphQLList(DelayedTrainType),
+      resolve: async () => {
+        return await delayed.getData();
+      }
     }
-  }), 
+  }),
 });
 
 
