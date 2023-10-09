@@ -40,6 +40,33 @@ const getReasonCodes = async () => {
   }
 };
 
+const getDelayed = async () => {
+  const query = `
+    {
+      delayed {
+        OperationalTrainNumber
+        LocationSignature
+        AdvertisedTimeAtLocation
+        EstimatedTimeAtLocation
+        LocationSignature
+        FromLocation {
+          LocationName
+        }
+        ToLocation {
+          LocationName
+        }
+      }
+    }
+  `;
+
+  try {
+    const result = await graphQlQuery(query);
+    return result.data.delayed;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
 const getTickets = async () => {
   const query = `
     {
@@ -87,4 +114,4 @@ const addTicket = async (ticketData) => {
 }
 
 
-export { getReasonCodes, getTickets, addTicket };
+export { getReasonCodes, getDelayed, getTickets, addTicket };
