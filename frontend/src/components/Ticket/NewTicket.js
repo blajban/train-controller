@@ -22,7 +22,6 @@ function NewTicketForm({ onAddNewTicket }) {
     const fetchReasonCodes = async () => {
       try {
         const data = await getReasonCodes();
-        console.log(data);
         setReasonCodes(data);
         setReasonCode(data[0].Code);
       } catch (error) {
