@@ -4,6 +4,7 @@ import styled from "styled-components";
 import NewTicket from './NewTicket';
 import OldTickets from './OldTickets';
 import { getTickets, addTicket, getReasonCodes } from '../../models/models';
+import SmallButton from '../ui/SmallButton';
 
 const Overlay = styled.div`
   position: fixed;
@@ -78,7 +79,7 @@ function Ticket({invokeMock, isOpen, onClose, trainData}) {
   return (
     <Overlay>
       <Content>
-        <button onClick={onClose}>Stäng</button>
+        <SmallButton onClick={onClose}>Stäng</SmallButton>
         <NewTicket invokeMock={invokeMock} trainData={trainData} onAddNewTicket={addNewTicket} reasonCodes={reasonCodes}/>
         <OldTickets oldTickets={oldTickets} reasonCodes={reasonCodes} refreshTickets={fetchOldTickets}/>
     </Content>

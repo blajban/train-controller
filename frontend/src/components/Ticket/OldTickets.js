@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { updateTicket } from "../../models/models";
+import Button from "../ui/Button";
+import SmallButton from "../ui/SmallButton";
+import StyledSelect from "../ui/StyledSelect";
 
 function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   const [ editingTicket, setEditingTicket ] = useState(null);
@@ -9,7 +12,6 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
     setEditingTicket(ticketId);
     setSelectedReasonCode(currentCode);
   };
-  
 
   const confirmEdit = async () => {
     try {
@@ -37,7 +39,7 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
           {ticket._id} - 
           {editingTicket === ticket._id ? (
             <>
-              <select 
+              <StyledSelect 
                 value={selectedReasonCode} 
                 onChange={(e) => setSelectedReasonCode(e.target.value)}
               >
@@ -47,14 +49,14 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
                     {code.Code} - {code.Level3Description}
                   </option>
                 ))}
-              </select>
-              <button onClick={confirmEdit}>Confirm</button>
-              <button onClick={cancelEdit}>Cancel</button>
+              </StyledSelect>
+              <SmallButton onClick={confirmEdit}>Spara</SmallButton>
+              <SmallButton onClick={cancelEdit}>Ångra</SmallButton>
             </>
           ) : (
             <>
               {ticket.code} - {ticket.trainnumber} - {ticket.traindate}
-              <button onClick={() => startEditing(ticket._id, ticket.code)}>🖊️</button>
+              <SmallButton variant="secondary" onClick={() => startEditing(ticket._id, ticket.code)}>🖊️</SmallButton>
             </>
           )}
         </div>

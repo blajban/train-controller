@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 
 import Delay from '../Delayed/Delay';
+import Button from '../ui/Button';
+import StyledSelect from '../ui/StyledSelect';
 
 function LocationString({trainData}) {
   return (
@@ -27,7 +29,7 @@ function NewTicketForm({ onAddNewTicket, reasonCodes }) {
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="reasonCode">Orsakskod</label><br />
-      <select id="reasonCode"
+      <StyledSelect id="reasonCode"
         value={reasonCode}
         onChange={e => setReasonCode(e.target.value)}
       >
@@ -36,8 +38,8 @@ function NewTicketForm({ onAddNewTicket, reasonCodes }) {
             {code.Code} - {code.Level3Description}
           </option>
         ))}
-        </select><br /><br />
-        <input type="submit" value="Skapa nytt ärende" /><br /><br />
+        </StyledSelect><br /><br />
+        <Button type="submit">Skapa nytt ärende</Button><br /><br />
     </form>
   )
 
