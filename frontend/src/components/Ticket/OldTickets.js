@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { updateTicket } from "../../models/models";
-import Button from "../ui/Button";
 import SmallButton from "../ui/SmallButton";
 import StyledSelect from "../ui/StyledSelect";
+import { TBody, THead, Table, Th, Tr, Td } from "../ui/StyledTable";
+
 
 function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   const [ editingTicket, setEditingTicket ] = useState(null);
@@ -34,33 +35,55 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   return (
     <div>
       <h2>Befintliga ärenden</h2>
-      {oldTickets.map((ticket, index) => (
-        <div key={index}>
-          {ticket._id} - 
-          {editingTicket === ticket._id ? (
-            <>
-              <StyledSelect 
-                value={selectedReasonCode} 
-                onChange={(e) => setSelectedReasonCode(e.target.value)}
-              >
-                <option value="" disabled>Choose a code</option>
-                {reasonCodes.map((code, index) => (
-                  <option key={index} value={code.Code}>
-                    {code.Code} - {code.Level3Description}
-                  </option>
-                ))}
-              </StyledSelect>
-              <SmallButton onClick={confirmEdit}>Spara</SmallButton>
-              <SmallButton onClick={cancelEdit}>Ångra</SmallButton>
-            </>
-          ) : (
-            <>
-              {ticket.code} - {ticket.trainnumber} - {ticket.traindate}
-              <SmallButton variant="secondary" onClick={() => startEditing(ticket._id, ticket.code)}>🖊️</SmallButton>
-            </>
-          )}
-        </div>
-      ))}
+      <Table>
+        <THead>
+          <Tr>
+            <Th>ID</Th>
+            <Th>Orsakskod</Th>
+            <Th>Tågnummer</Th>
+            <Th>Datum</Th>
+            <Th></Th>
+          </Tr>
+        </THead>
+        <TBody>
+          {oldTickets.map((ticket, index) => (
+            <Tr key={index}>
+              <Td>{ticket._id}</Td>
+              {editingTicket === ticket._id ? (
+                <>
+                  <Td colSpan="3">
+                    <StyledSelect 
+                      value={selectedReasonCode} 
+                      onChange={(e) => setSelectedReasonCode(e.target.value)}
+                    >
+                      <option value="" disabled>Choose a code</option>
+                      {reasonCodes.map((code, index) => (
+                        <option key={index} value={code.Code}>
+                          {code.Code} - {code.Level3Description}
+                        </option>
+                      ))}
+                    </StyledSelect>
+                  </Td>
+                  <Td>
+                    <SmallButton onClick={confirmEdit}>Spara</SmallButton>
+                    <SmallButton onClick={cancelEdit}>Ångra</SmallButton>
+                  </Td>
+                </>
+              ) : (
+                <>
+                  <Td>{ticket.code}</Td>
+                  <Td>{ticket.trainnumber}</Td>
+                  <Td>{ticket.traindate}</Td>
+                  <Td>
+                    <SmallButton onClick={() => startEditing(ticket._id, ticket.code)}>Uppdatera</SmallButton>
+                  </Td>
+                </>
+              )}
+            </Tr>
+          ))}
+        </TBody>
+      </Table>
+
     </div>
   )
 
