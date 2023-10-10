@@ -113,14 +113,12 @@ const addTicket = async (ticketData) => {
   }
 }
 
-const updateTicket = async (ticketData) => {
-  const { _id, code } = ticketData;
-
+const updateTicket = async (id, newCode) => {
   const query = `
     mutation {
       updateTicket(input: {
-        _id: "${_id}",
-        code: "${code}"
+        _id: "${id}",
+        code: "${newCode}"
       }) {
         _id,
         code,

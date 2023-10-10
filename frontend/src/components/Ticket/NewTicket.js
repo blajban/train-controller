@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { getReasonCodes } from '../../models/models';
 
 import Delay from '../Delayed/Delay';
 
@@ -14,23 +13,9 @@ function LocationString({trainData}) {
 }
 
 
-function NewTicketForm({ onAddNewTicket }) {
-  const [reasonCode, setReasonCode] = useState('');
-  const [reasonCodes, setReasonCodes] = useState(null);
+function NewTicketForm({ onAddNewTicket, reasonCodes }) {
+  const [reasonCode, setReasonCode] = useState(reasonCodes ? reasonCodes[0].Code : '');
 
-  useEffect(() => {
-    const fetchReasonCodes = async () => {
-      try {
-        const data = await getReasonCodes();
-        setReasonCodes(data);
-        setReasonCode(data[0].Code);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
-
-    fetchReasonCodes();
-  }, []);
 
   if (!reasonCodes) return "Loading reason codes...";
 
@@ -58,13 +43,13 @@ function NewTicketForm({ onAddNewTicket }) {
 
 }
 
-function NewTicket({invokeMock, trainData, onAddNewTicket}) {
+function NewTicket({invokeMock, trainData, onAddNewTicket, reasonCodes}) {
   return (
     <div>
       <h1>Nytt ärende</h1>
       <LocationString trainData={trainData} />
       <div><strong>Försenad:</strong> <Delay train={trainData}/></div>
-      <NewTicketForm trainData={trainData} onAddNewTicket={onAddNewTicket}/>
+      <NewTicketForm trainData={trainData} onAddNewTicket={onAddNewTicket} reasonCodes={reasonCodes}/>
     </div>
   )
 }
