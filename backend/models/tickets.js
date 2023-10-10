@@ -59,22 +59,17 @@ const tickets = {
 
   updateTicketCodeData: async ({ _id, code }) => {
     const db = await database.getDb(collectionName);
-    try {
-      const result = await db.collection.findOneAndUpdate(
-        { _id: new ObjectId(_id) },
-        { $set: { code: code } },
-        {
-          returnDocument: 'after',
-          upsert: false
-        }
-      );
 
-      return result;
+    const result = await db.collection.findOneAndUpdate(
+      { _id: new ObjectId(_id) },
+      { $set: { code: code } },
+      {
+        returnDocument: 'after',
+        upsert: false
+      }
+    );
 
-    } catch (error) {
-      console.error('Error updating ticket:', error);
-      throw error;
-    }
+    return result;
   }
 
 };
