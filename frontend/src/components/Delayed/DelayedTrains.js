@@ -5,13 +5,7 @@ import styled from "styled-components";
 import Train from './Train';
 import Ticket from '../Ticket/Ticket';
 
-const API_URL = process.env.NODE_ENV !== 'production'
-  ? process.env.REACT_APP_API_URL_DEV
-  : process.env.REACT_APP_API_URL_PROD;
-
-const API_KEY = process.env.NODE_ENV !== 'test'
-  ? process.env.REACT_APP_API_KEY
-  : 'testkey';
+import { getDelayed } from '../../models/models';
 
 const DelayedTrainsList = styled.div`
   display: flex;
@@ -37,13 +31,8 @@ function DelayedTrains() {
   useEffect(() => {
     const fetchDelayedTrains = async () => {
       try {
-        const response = await fetch(`${API_URL}/delayed`, {
-          headers: {
-            'x-api-key': API_KEY
-          }
-        });
-        const result = await response.json();
-        setDelayedTrains(result.data);
+        const data = await getDelayed();
+        setDelayedTrains(data);
       } catch (error) {
         console.error('Error:', error);
       }

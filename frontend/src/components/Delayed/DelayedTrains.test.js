@@ -1,18 +1,16 @@
-import { render, fireEvent, waitFor, screen } from "@testing-library/react";
+import { render, fireEvent, waitFor, screen, act } from "@testing-library/react";
 import DelayedTrains from "./DelayedTrains";
+import { getDelayed, getReasonCodes, getTickets } from '../../models/models';
 
-global.fetch = jest.fn();
-
+jest.mock('../../models/models', () => ({
+  getDelayed: jest.fn(),
+  getTickets: jest.fn(),
+  getReasonCodes: jest.fn()
+}));
 
 describe("<DelayedTrains />", () => {
-  beforeEach(() => {
-    fetch.mockClear();
-  });
-
   afterEach(() => {
     jest.resetAllMocks();
-    jest.clearAllTimers();
-    jest.restoreAllMocks();
   });
   
 
@@ -29,12 +27,8 @@ describe("<DelayedTrains />", () => {
         ] 
       }
     ];
-    
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({ data: mockData }),
-      })
-    );
+
+    getDelayed.mockResolvedValue(mockData);
 
     render(<DelayedTrains />);
 
@@ -55,6 +49,8 @@ describe("<DelayedTrains />", () => {
       }
     ];
 
+    getDelayed.mockResolvedValue(mockData);
+
     const mockTicketData = [
       {
         code: "6789",
@@ -63,6 +59,8 @@ describe("<DelayedTrains />", () => {
         id: 1
       }
     ];
+
+    getTickets.mockResolvedValue(mockTicketData);
 
     const mockCodesData = [
       {
@@ -73,33 +71,15 @@ describe("<DelayedTrains />", () => {
       }
     ];
 
-    global.fetch = jest.fn().mockImplementation((url) => {
-      if (url.includes('/delayed')) {
-        return Promise.resolve({
-          json: () => Promise.resolve({ data: mockData }),
-        });
-      }
-
-      if (url.includes('/tickets')) {
-        return Promise.resolve({
-          json: () => Promise.resolve({ data: mockTicketData }),
-        });
-      }
-
-      if (url.includes('/codes')) {
-        return Promise.resolve({
-          json: () => Promise.resolve({ data: mockCodesData }),
-        });
-      }
-
-    });
-
+    getReasonCodes.mockResolvedValue(mockCodesData);
 
     render(<DelayedTrains />);
 
     const clickableElement = await screen.findByText("Start -> End");
 
-    fireEvent.click(clickableElement);
+    await act(async () => {
+      fireEvent.click(clickableElement);
+    });
 
     await waitFor(async () => {
       expect(screen.getByText(/6789/)).toBeInTheDocument()
@@ -121,6 +101,8 @@ describe("<DelayedTrains />", () => {
       }
     ];
 
+    getDelayed.mockResolvedValue(mockData);
+
     const mockTicketData = [
       {
         code: "6789",
@@ -129,6 +111,8 @@ describe("<DelayedTrains />", () => {
         id: 1
       }
     ];
+
+    getTickets.mockResolvedValue(mockTicketData);
 
     const mockCodesData = [
       {
@@ -139,31 +123,15 @@ describe("<DelayedTrains />", () => {
       }
     ];
 
-    global.fetch = jest.fn().mockImplementation((url) => {
-      if (url.includes('/delayed')) {
-        return Promise.resolve({
-          json: () => Promise.resolve({ data: mockData }),
-        });
-      }
-
-      if (url.includes('/tickets')) {
-        return Promise.resolve({
-          json: () => Promise.resolve({ data: mockTicketData }),
-        });
-      }
-
-      if (url.includes('/codes')) {
-        return Promise.resolve({
-          json: () => Promise.resolve({ data: mockCodesData }),
-        });
-      }
-
-    });
+    getReasonCodes.mockResolvedValue(mockCodesData);
 
     render(<DelayedTrains />);
 
     const clickableElement = await screen.findByText("Start -> End");
-    fireEvent.click(clickableElement);
+    await act(async () => {
+      fireEvent.click(clickableElement);
+    });
+
 
     await waitFor(async () => {
       expect(screen.getByText("Stäng")).toBeInTheDocument();
@@ -177,7 +145,7 @@ describe("<DelayedTrains />", () => {
   });
 
   it("test fetch error", async () => {
-    global.fetch = jest.fn().mockRejectedValue(new Error("Mock fetch error"));
+    getDelayed.mockRejectedValue(new Error("Mock fetch error"));
 
     console.error = jest.fn();
 
@@ -189,6 +157,4 @@ describe("<DelayedTrains />", () => {
 
     expect(console.error).toHaveBeenCalledWith("Error:", new Error("Mock fetch error"));
   });
-
-
 });

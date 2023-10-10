@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, act, waitFor, fireEvent, screen } from '@testing-library/react';
 import NewTicket from './NewTicket';
+import { getReasonCodes } from '../../models/models';
 
 jest.mock('../Delayed/Delay', () => {
   return function MockedDelay() {
@@ -8,16 +9,17 @@ jest.mock('../Delayed/Delay', () => {
   };
 });
 
+jest.mock('../../models/models', () => ({
+  getDelayed: jest.fn(),
+  getTickets: jest.fn(),
+  getReasonCodes: jest.fn()
+}));
+
+
 
 describe('<NewTicket />', () => { 
-  afterAll(() => {
-    global.fetch.mockRestore();
-  });
-
   afterEach(() => {
     jest.resetAllMocks();
-    jest.clearAllTimers();
-    jest.restoreAllMocks();
   });
   
 
@@ -43,12 +45,8 @@ describe('<NewTicket />', () => {
         Level3Description: "C"
       }
     ];
-    
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({ data: mockCodesData }),
-      })
-    );
+
+    getReasonCodes.mockResolvedValue(mockCodesData);
 
     // eslint-disable-next-line testing-library/no-unnecessary-act
     await act(async () => {
@@ -92,12 +90,8 @@ describe('<NewTicket />', () => {
         Level3Description: "C"
       }
     ];
-    
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({ data: mockCodesData }),
-      })
-    );
+
+    getReasonCodes.mockResolvedValue(mockCodesData);
 
     render(
       <NewTicket 
@@ -136,7 +130,7 @@ describe('<NewTicket />', () => {
     const mockTicketId = 1;
     const mockOnAddNewTicket = () => {};
 
-    global.fetch = jest.fn().mockRejectedValue(new Error("Mock fetch error"));
+    getReasonCodes.mockRejectedValue(new Error("Mock fetch error"));
 
     console.error = jest.fn();
 
@@ -176,12 +170,8 @@ describe('<NewTicket />', () => {
         Level3Description: "C"
       }
     ];
-    
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({ data: mockCodesData }),
-      })
-    );
+
+    getReasonCodes.mockResolvedValue(mockCodesData);
 
     render(
       <NewTicket 
@@ -203,6 +193,5 @@ describe('<NewTicket />', () => {
 
     expect(mockOnAddNewTicket).toHaveBeenCalledWith("AA");
   });
-
 
 });

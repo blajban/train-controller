@@ -1,14 +1,7 @@
 import { useState, useEffect } from 'react'
+import { getReasonCodes } from '../../models/models';
 
 import Delay from '../Delayed/Delay';
-
-const API_URL = process.env.NODE_ENV !== 'production'
-  ? process.env.REACT_APP_API_URL_DEV
-  : process.env.REACT_APP_API_URL_PROD;
-
-const API_KEY = process.env.NODE_ENV !== 'test'
-  ? process.env.REACT_APP_API_KEY
-  : 'testkey';
 
 function LocationString({trainData}) {
   return (
@@ -28,14 +21,9 @@ function NewTicketForm({ onAddNewTicket }) {
   useEffect(() => {
     const fetchReasonCodes = async () => {
       try {
-        const response = await fetch(`${API_URL}/codes`, {
-          headers: {
-            'x-api-key': API_KEY
-          }
-        });
-        const result = await response.json();
-        setReasonCodes(result.data);
-        setReasonCode(result.data[0].Code);
+        const data = await getReasonCodes();
+        setReasonCodes(data);
+        setReasonCode(data[0].Code);
       } catch (error) {
         console.error('Error:', error);
       }

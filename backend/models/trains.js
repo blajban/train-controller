@@ -41,7 +41,7 @@ function setupIo(io, eventSource) {
   io.on('connection', async (socket) => {
     console.log('a user connected');
 
-    if (process.env.NODE_ENV !== 'test') {
+    if (process.env.NODE_ENV === 'production') {
       const key = socket.handshake.query['x-api-key'];
       const isValid = await apiKey.isValid(key);
   

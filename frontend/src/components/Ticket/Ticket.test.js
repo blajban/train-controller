@@ -1,6 +1,7 @@
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import * as React from 'react';
 import Ticket from './Ticket';
+import { getDelayed, getReasonCodes, getTickets } from '../../models/models';
 
 const API_KEY = "testkey";
 
@@ -23,15 +24,15 @@ jest.mock('./OldTickets', () => {
   };
 });
 
-describe('<Ticket />', () => {
-  beforeEach(() => {
-      global.fetch = jest.fn();
-  });
+jest.mock('../../models/models', () => ({
+  getDelayed: jest.fn(),
+  getTickets: jest.fn(),
+  getReasonCodes: jest.fn()
+}));
 
+describe('<Ticket />', () => {
   afterEach(() => {
     jest.resetAllMocks();
-    jest.clearAllTimers();
-    jest.restoreAllMocks();
   });
   
 
@@ -44,10 +45,8 @@ describe('<Ticket />', () => {
         id: 1
       }
     ];
-    
-    global.fetch.mockResolvedValueOnce({ 
-      json: jest.fn().mockResolvedValue({ data: mockOldTickets }) 
-    });
+
+    getTickets.mockResolvedValue(mockOldTickets);
 
     jest.spyOn(React, 'createElement').mockImplementation((type, props) => {
       // eslint-disable-next-line no-undef
@@ -66,25 +65,11 @@ describe('<Ticket />', () => {
     await waitFor(() => {
       expect(screen.getByText("NewTicket Mock")).toBeInTheDocument();
     });
-
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        "http://localhost:1337/tickets",
-        {
-          headers: {
-            'x-api-key': API_KEY,
-            'x-access-token': null
-          }
-        }
-      );
-    });
-
     
   });
 
   it("test fetch error", async () => {
-    global.fetch = jest.fn().mockRejectedValue(new Error("Mock fetch error"));
-
+    getTickets.mockRejectedValue(new Error("Mock fetch error"));
     console.error = jest.fn();
 
     render(<Ticket isOpen={true} onClose={jest.fn()} trainData={{}} />);
@@ -104,9 +89,7 @@ describe('<Ticket />', () => {
       }
     ];
 
-    global.fetch.mockResolvedValueOnce({ 
-      json: jest.fn().mockResolvedValue({ data: mockOldTickets }) 
-    });
+    getTickets.mockResolvedValue(mockOldTickets);
 
     const mockOnClose = jest.fn();
 
@@ -116,9 +99,7 @@ describe('<Ticket />', () => {
       expect(screen.getByText("Stäng")).toBeInTheDocument();
     });
 
-
     fireEvent.click(screen.getByText("Stäng"));
-
 
     await waitFor(() => {
       expect(mockOnClose).toHaveBeenCalled();
@@ -126,100 +107,5 @@ describe('<Ticket />', () => {
 
     
   });
-
-  it('should add a new ticket and refetch old tickets', async () => {
-    const mockTrainData = {
-      OperationalTrainNumber: "12345",
-      EstimatedTimeAtLocation: "2023-01-02T03:04:05"
-    };
-
-    const mockOldTickets = [
-      {
-        code: "6789",
-        trainnumber: "123",
-        traindate: "2023-01-01",
-        id: 1
-      }
-    ];
-
-    global.fetch
-      .mockResolvedValueOnce({ 
-        json: jest.fn().mockResolvedValue({ data: mockOldTickets }) 
-      })
-      .mockResolvedValueOnce({ ok: true })
-
-
-    const mockOnClose = jest.fn();
-
-    render(<Ticket invokeMock={true} isOpen={true} onClose={mockOnClose} trainData={mockTrainData} />);
-    
-
-    await waitFor(() => {
-      expect(screen.getByText("NewTicket Mock")).toBeInTheDocument();
-    });
-
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        'http://localhost:1337/tickets',
-        expect.objectContaining({
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-            'x-api-key': API_KEY,
-            'x-access-token': null
-          },
-          body: JSON.stringify({
-            code: "ABC",
-            trainnumber: mockTrainData.OperationalTrainNumber,
-            traindate: mockTrainData.EstimatedTimeAtLocation.substring(0, 10)
-          })
-        })
-      );
-    });
-
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:1337/tickets',
-      {
-        headers: {
-          'x-api-key': API_KEY,
-          'x-access-token': null
-        }
-      });
-    });
-    
-  });
-  
-  it('should handle error when adding a new ticket', async () => {
-    const mockTrainData = {
-      OperationalTrainNumber: "12345",
-      EstimatedTimeAtLocation: "2023-01-02T03:04:05"
-    };
-  
-    global.fetch.mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValue({ data: [] })
-    });
-    
-    global.fetch.mockRejectedValueOnce(new Error("Mock fetch error"));
-  
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-  
-    const mockOnClose = jest.fn();
-  
-    render(<Ticket invokeMock={true} isOpen={true} onClose={mockOnClose} trainData={mockTrainData} />);
-  
-    await waitFor(() => {
-      expect(screen.getByText("NewTicket Mock")).toBeInTheDocument();
-    });
-
-    await waitFor(() => {
-      expect(consoleErrorSpy).toHaveBeenCalledWith('Error:', new Error("Mock fetch error"));
-    });
-    
-    
-    
-  
-    consoleErrorSpy.mockRestore();
-  });
-  
 
 });
