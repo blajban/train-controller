@@ -10,7 +10,7 @@ const codes = require('../models/codes');
 const DelayedTrainType = require('./delayed');
 const delayed = require('../models/delayed');
 
-const { TicketType, TicketInputType } = require('./tickets');
+const { TicketType, TicketInputType, TicketUpdateType } = require('./tickets');
 const tickets = require('../models/tickets');
 
 const RootQueryType = new GraphQLObjectType({
@@ -51,6 +51,17 @@ const RootMutationType = new GraphQLObjectType({
       resolve: async (parent, args) => {
         const newTicket = args.input;
         return await tickets.insertTicketData(newTicket);
+      }
+    },
+    updateTicket: {
+      type: TicketType,
+      description: 'Update a ticket',
+      args: {
+        input: { type: TicketUpdateType }
+      },
+      resolve: async (parent, args) => {
+        const { _id, code } = args.input;
+        return await tickets.updateTicketCodeData({ _id, code });
       }
     }
   })
