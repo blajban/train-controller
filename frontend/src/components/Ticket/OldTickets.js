@@ -1,13 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { updateTicket } from "../../models/models";
 import SmallButton from "../ui/SmallButton";
 import StyledSelect from "../ui/StyledSelect";
 import { TBody, THead, Table, Th, Tr, Td } from "../ui/StyledTable";
-
+import ticketSocket from "./ticketSocket";
 
 function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   const [ editingTicket, setEditingTicket ] = useState(null);
   const [ selectedReasonCode, setSelectedReasonCode ] = useState('');
+
+  useEffect(() => {
+    const disconnectSocket = ticketSocket.setupSocket(() => console.log("CALLBACK CALLED"));
+    return () => {
+      disconnectSocket();
+    }
+  }, []);
+
+  const lockCurrentTicket = () => {
+    const ticketId = '25';
+    try {
+      ticketSocket.lockTicket(ticketId);
+    } catch (error) {
+      console.error("Error locking ticket:", error);
+    }
+  };
+
+  const unlockCurrentTicket = () => {
+    const ticketId = '25';
+    try {
+      ticketSocket.unlockTicket(ticketId);
+    } catch (error) {
+      console.error("Error unlocking ticket:", error);
+    }
+  };
+  
 
   const startEditing = (ticketId, currentCode) => {
     setEditingTicket(ticketId);
@@ -34,6 +60,8 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
 
   return (
     <div>
+      <SmallButton onClick={lockCurrentTicket}>Testa socket - lås</SmallButton>
+      <SmallButton onClick={unlockCurrentTicket}>Testa socket - lås upp</SmallButton>
       <h2>Befintliga ärenden</h2>
       <Table>
         <THead>

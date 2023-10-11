@@ -1,6 +1,7 @@
 const http = require('http');
 const app = require('./app');
 const { fetchTrainPositions } = require('./models/trains');
+const tickets = require('./models/tickets');
 
 const httpServer = http.createServer(app);
 
@@ -19,3 +20,4 @@ httpServer.listen(port, () => {
 });
 
 fetchTrainPositions(io);
+tickets.lockTicketsSocketConnection(io);

@@ -70,6 +70,37 @@ const tickets = {
     );
 
     return result;
+  },
+
+  lockTicketsSocketConnection: async (io) => {
+    io.on('connection', async (socket) => {
+      console.log('a user connected');
+
+      if (process.env.NODE_ENV === 'production') {
+        const key = socket.handshake.query['x-api-key'];
+        const isValid = await apiKey.isValid(key);
+    
+        if (!isValid) {
+          console.log('Authentication error');
+          socket.disconnect();
+          return;
+        }
+      }
+
+      socket.on('lockTicket', async (data) => {
+        console.log('Locking ticket: ', data);
+        socket.broadcast.emit('ticketLocked', data);
+      });
+
+      socket.on('unlockTicket', async (data) => {
+        console.log('Unlocking ticket: ', data);
+        socket.broadcast.emit('ticketUnlocked', data);
+      });
+
+      socket.on('disconnect', () => {
+        console.log('user disconnected');
+      });
+    });
   }
 
 };
