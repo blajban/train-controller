@@ -9,8 +9,15 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   const [ editingTicket, setEditingTicket ] = useState(null);
   const [ selectedReasonCode, setSelectedReasonCode ] = useState('');
 
+  const onTicketLockedCallback = (ticketId) => {
+    console.log("SERVER LOCKED TICKET:", ticketId);
+  };
+
+  const onTicketUnlockedCallback = (ticketId) => {
+    console.log("SERVER UNLOCKED TICKET:", ticketId);
+  };
   useEffect(() => {
-    const disconnectSocket = ticketSocket.setupSocket(() => console.log("CALLBACK CALLED"));
+    const disconnectSocket = ticketSocket.setupSocket(onTicketUnlockedCallback, onTicketLockedCallback);
     return () => {
       disconnectSocket();
     }
@@ -60,8 +67,6 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
 
   return (
     <div>
-      <SmallButton onClick={lockCurrentTicket}>Testa socket - lås</SmallButton>
-      <SmallButton onClick={unlockCurrentTicket}>Testa socket - lås upp</SmallButton>
       <h2>Befintliga ärenden</h2>
       <Table>
         <THead>

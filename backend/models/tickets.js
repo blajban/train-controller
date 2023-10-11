@@ -87,6 +87,12 @@ const tickets = {
         }
       }
 
+      socket.emit('lockedTickets', [
+        'id1',
+        'id2',
+        'id3',
+      ]);
+
       socket.on('lockTicket', async (data) => {
         console.log('Locking ticket: ', data);
         socket.broadcast.emit('ticketLocked', data);

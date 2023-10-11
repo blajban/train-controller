@@ -4,29 +4,25 @@ import { API_KEY, API_URL } from '../../config';
 let socket;
 
 const ticketSocket = {
-  setupSocket: (onOpenTicket) => {
+  setupSocket: (onTicketUnlocked, onTicketLocked) => {
     socket = io(`${API_URL}`, {
       query: {
         'x-api-key': API_KEY
       }
     });
 
+    socket.on('lockedTickets', (data) => {
+      data.forEach(id => {
+        onTicketLocked(id);
+      });
+    });
+
     socket.on('ticketLocked', (data) => {
-      console.log('Ticket locked: ', data);
+      if (onTicketLocked) onTicketLocked(data);
     });
 
     socket.on('ticketUnlocked', (data) => {
-      console.log('Ticket unlocked: ', data);
-    });
-
-
-
-
-
-    socket.on('openTicket', (data) => {
-      const { _id } = data;
-      console.log('Opening ticket: ', _id);
-      if (onOpenTicket) onOpenTicket(data);
+      if (onTicketUnlocked) onTicketUnlocked(data);
     });
 
     socket.on('connect_error', (error) => {
