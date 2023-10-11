@@ -48,6 +48,17 @@ describe('<Ticket />', () => {
 
     getTickets.mockResolvedValue(mockOldTickets);
 
+    const mockCodesData = [
+      {
+        Code: "AA",
+        Level1Description: "A",
+        Level2Description: "B",
+        Level3Description: "C"
+      }
+    ];
+
+    getReasonCodes.mockResolvedValue(mockCodesData);
+
     jest.spyOn(React, 'createElement').mockImplementation((type, props) => {
       // eslint-disable-next-line no-undef
       if (type === MockedNewTicket) {
@@ -90,6 +101,17 @@ describe('<Ticket />', () => {
     ];
 
     getTickets.mockResolvedValue(mockOldTickets);
+
+    const mockCodesData = [
+      {
+        Code: "AA",
+        Level1Description: "A",
+        Level2Description: "B",
+        Level3Description: "C"
+      }
+    ];
+
+    getReasonCodes.mockResolvedValue(mockCodesData);
 
     const mockOnClose = jest.fn();
 

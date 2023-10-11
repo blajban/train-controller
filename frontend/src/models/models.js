@@ -113,4 +113,27 @@ const addTicket = async (ticketData) => {
   }
 }
 
-export { getReasonCodes, getDelayed, getTickets, addTicket };
+const updateTicket = async (id, newCode) => {
+  const query = `
+    mutation {
+      updateTicket(input: {
+        _id: "${id}",
+        code: "${newCode}"
+      }) {
+        _id,
+        code,
+        traindate,
+        trainnumber
+      }
+    }
+  `;
+
+  try {
+    const result = await graphQlQuery(query, true);
+    return result.data.updateTicket;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+export { getReasonCodes, getDelayed, getTickets, addTicket, updateTicket };

@@ -1,4 +1,6 @@
 const database = require('../db/db');
+const { ObjectId } = require('mongodb');
+
 
 const collectionName = 'tickets';
 
@@ -53,7 +55,23 @@ const tickets = {
     } catch (error) {
       next(error);
     }
+  },
+
+  updateTicketCodeData: async ({ _id, code }) => {
+    const db = await database.getDb(collectionName);
+
+    const result = await db.collection.findOneAndUpdate(
+      { _id: new ObjectId(_id) },
+      { $set: { code: code } },
+      {
+        returnDocument: 'after',
+        upsert: false
+      }
+    );
+
+    return result;
   }
+
 };
 
 module.exports = tickets;

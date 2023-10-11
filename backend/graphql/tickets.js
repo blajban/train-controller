@@ -27,4 +27,13 @@ const TicketInputType = new GraphQLInputObjectType({
   })
 });
 
-module.exports = { TicketType, TicketInputType };
+const TicketUpdateType = new GraphQLInputObjectType({
+  name: 'TicketUpdate',
+  description: 'Update type for a ticket',
+  fields: () => ({
+    _id: { type: new GraphQLNonNull(GraphQLID) },
+    code: { type: GraphQLString }
+  })
+});
+
+module.exports = { TicketType, TicketInputType, TicketUpdateType };

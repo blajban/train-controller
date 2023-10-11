@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react'
 import styled from "styled-components";
 import NewTicket from './NewTicket';
 import OldTickets from './OldTickets';
-import { getTickets, addTicket } from '../../models/models';
+import { getTickets, addTicket, getReasonCodes } from '../../models/models';
+import SmallButton from '../ui/SmallButton';
 
 const Overlay = styled.div`
   position: fixed;
@@ -30,6 +31,20 @@ const Content = styled.div`
 
 function Ticket({invokeMock, isOpen, onClose, trainData}) {
   const [oldTickets, setOldTickets] = useState(null);
+  const [reasonCodes, setReasonCodes] = useState(null);
+
+  useEffect(() => {
+    const fetchReasonCodes = async () => {
+      try {
+        const data = await getReasonCodes();
+        setReasonCodes(data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchReasonCodes();
+  }, []);
 
   const fetchOldTickets = async () => {
     try {
@@ -59,14 +74,14 @@ function Ticket({invokeMock, isOpen, onClose, trainData}) {
     fetchOldTickets();
   }, []);
 
-  if (!oldTickets) return "Loading tickets...";
+  if (!oldTickets || !reasonCodes) return "Loading tickets...";
 
   return (
     <Overlay>
       <Content>
-        <button onClick={onClose}>Stäng</button>
-        <NewTicket invokeMock={invokeMock} trainData={trainData} onAddNewTicket={addNewTicket}/>
-        <OldTickets oldTickets={oldTickets}/>
+        <SmallButton onClick={onClose}>Stäng</SmallButton>
+        <NewTicket invokeMock={invokeMock} trainData={trainData} onAddNewTicket={addNewTicket} reasonCodes={reasonCodes}/>
+        <OldTickets oldTickets={oldTickets} reasonCodes={reasonCodes} refreshTickets={fetchOldTickets}/>
     </Content>
     </Overlay>
   )
