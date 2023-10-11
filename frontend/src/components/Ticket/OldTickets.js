@@ -66,7 +66,7 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
                   </Td>
                   <Td>
                     <SmallButton onClick={confirmEdit}>Spara</SmallButton>
-                    <SmallButton onClick={cancelEdit}>Ångra</SmallButton>
+                    <SmallButton variant="secondary" onClick={cancelEdit}>Ångra</SmallButton>
                   </Td>
                 </>
               ) : (

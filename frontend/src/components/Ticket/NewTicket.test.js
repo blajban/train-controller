@@ -1,21 +1,12 @@
 import React from 'react';
 import { render, act, waitFor, fireEvent, screen } from '@testing-library/react';
 import NewTicket from './NewTicket';
-import { getReasonCodes } from '../../models/models';
 
 jest.mock('../Delayed/Delay', () => {
   return function MockedDelay() {
     return <div>Mocked Delay</div>;
   };
 });
-
-jest.mock('../../models/models', () => ({
-  getDelayed: jest.fn(),
-  getTickets: jest.fn(),
-  getReasonCodes: jest.fn()
-}));
-
-
 
 describe('<NewTicket />', () => { 
   afterEach(() => {
@@ -46,14 +37,13 @@ describe('<NewTicket />', () => {
       }
     ];
 
-    getReasonCodes.mockResolvedValue(mockCodesData);
-
     // eslint-disable-next-line testing-library/no-unnecessary-act
     await act(async () => {
       render(
         <NewTicket 
           trainData={mockTrainData}
           onAddNewTicket={mockOnAddNewTicket}
+          reasonCodes={mockCodesData}
         />
       );
     });
@@ -91,60 +81,25 @@ describe('<NewTicket />', () => {
       }
     ];
 
-    getReasonCodes.mockResolvedValue(mockCodesData);
-
     render(
       <NewTicket 
         trainData={mockTrainData}
         newTicketId={mockTicketId}
         onAddNewTicket={mockOnAddNewTicket}
+        reasonCodes={mockCodesData}
       />
     );
 
     await waitFor(() => {
-      expect(screen.getByText("AA - C")).toBeInTheDocument();
+      expect(screen.queryByText("Loading reason codes...")).not.toBeInTheDocument();
     });
-
+    
+    expect(screen.getByText("AA - C")).toBeInTheDocument();
+    
     const dropdown = screen.getByLabelText("Orsakskod");
     fireEvent.change(dropdown, { target: { value: "AA" } });
-
+    
     expect(dropdown.value).toBe("AA");
-
-    await waitFor(() => {
-      expect(screen.queryByText("Loading reason codes...")).not.toBeInTheDocument()
-    });
-  });
-
-  it("test fetch error", async () => {
-    const mockTrainData = { 
-      OperationalTrainNumber: "12345",
-      LocationSignature: "AA", 
-      FromLocation: [
-        { LocationName: "Start" 
-      }],
-      ToLocation: [
-        { LocationName: "End" }
-      ] 
-    };
-
-    const mockTicketId = 1;
-    const mockOnAddNewTicket = () => {};
-
-    getReasonCodes.mockRejectedValue(new Error("Mock fetch error"));
-
-    console.error = jest.fn();
-
-    render(
-      <NewTicket 
-        trainData={mockTrainData}
-        newTicketId={mockTicketId}
-        onAddNewTicket={mockOnAddNewTicket}
-      />
-    );
-
-    await waitFor(() => expect(console.error).toHaveBeenCalledTimes(1));
-
-    expect(console.error).toHaveBeenCalledWith("Error:", new Error("Mock fetch error"));
   });
 
   it('should call the submit callback correctly', async () => {
@@ -171,13 +126,12 @@ describe('<NewTicket />', () => {
       }
     ];
 
-    getReasonCodes.mockResolvedValue(mockCodesData);
-
     render(
       <NewTicket 
         trainData={mockTrainData}
         newTicketId={mockTicketId}
         onAddNewTicket={mockOnAddNewTicket}
+        reasonCodes={mockCodesData}
       />
     );
 
