@@ -1,12 +1,20 @@
 import { render, fireEvent, waitFor, screen, act } from "@testing-library/react";
 import DelayedTrains from "./DelayedTrains";
 import { getDelayed, getReasonCodes, getTickets } from '../../models/models';
+import OldTickets from "../Ticket/OldTickets";
 
 jest.mock('../../models/models', () => ({
   getDelayed: jest.fn(),
   getTickets: jest.fn(),
   getReasonCodes: jest.fn()
 }));
+
+jest.mock('../Ticket/OldTickets', () => {
+  return function DummyOldTickets(props) {
+    return <div data-testid="old-tickets-mock"></div>;
+  };
+});
+
 
 describe("<DelayedTrains />", () => {
   afterEach(() => {
@@ -82,7 +90,8 @@ describe("<DelayedTrains />", () => {
     });
 
     await waitFor(async () => {
-      expect(screen.getByText(/6789/)).toBeInTheDocument()
+      expect(screen.getByTestId('old-tickets-mock')).toBeInTheDocument();
+
     });
 
   });

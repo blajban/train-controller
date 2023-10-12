@@ -1,6 +1,22 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import OldTickets from './OldTickets';
+import ticketSocket from './ticketSocket';
+
+
+const mockDisconnect = jest.fn();
+
+jest.mock('./ticketSocket', () => {
+  return {
+    setupSocket: () => {
+      return mockDisconnect;
+    },
+    lockTicket: jest.fn(),
+    unlockTicket: jest.fn(),
+  };
+});
+
+
 
 describe('<OldTickets />', () => {
   it('should render old tickets', () => {
