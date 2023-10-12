@@ -30,10 +30,21 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   }, []);
 
   useEffect(() => {
-    console.log("LOCKED TICKETS (updated):", lockedTickets);
-  }, [lockedTickets]);
+    const handleBeforeUnload = () => {
+      if (editingTicket) {
+        cancelEdit();
+      }
+    };
+  
+    window.addEventListener('beforeunload', handleBeforeUnload);
+  
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    }
+  }, [editingTicket]); 
 
   const startEditing = (ticketId, currentCode) => {
+    cancelEdit();
     setEditingTicket(ticketId);
     setSelectedReasonCode(currentCode);
     try {
