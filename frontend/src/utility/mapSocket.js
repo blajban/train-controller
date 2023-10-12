@@ -1,13 +1,6 @@
 import io from "socket.io-client";
 import L from 'leaflet';
-
-const API_URL = process.env.NODE_ENV !== 'production'
-  ? process.env.REACT_APP_API_URL_DEV
-  : process.env.REACT_APP_API_URL_PROD;
-
-const API_KEY = process.env.NODE_ENV !== 'test'
-  ? process.env.REACT_APP_API_KEY
-  : 'testkey';
+import { API_KEY, API_URL } from '../config';
 
 export default function mapSocket(map, markersRef) {
   const socket = io(`${API_URL}`, {

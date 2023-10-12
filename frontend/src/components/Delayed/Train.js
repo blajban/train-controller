@@ -3,9 +3,9 @@ import styled from "styled-components";
 import Delay from "./Delay";
 
 const TrainNumber = styled.div`
-    font-size: 2rem;
-    font-weight: bold;
-    width: 30%;
+  font-size: 2rem;
+  font-weight: bold;
+  width: 30%;
 `;
 
 const CurrentStation = styled.div`
