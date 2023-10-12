@@ -4,6 +4,8 @@ const { ObjectId } = require('mongodb');
 
 const collectionName = 'tickets';
 
+let currentLockedTickets = [];
+
 const tickets = {
   getData: async () => {
     const db = await database.getDb(collectionName);
@@ -87,19 +89,17 @@ const tickets = {
         }
       }
 
-      socket.emit('lockedTickets', [
-        'id1',
-        'id2',
-        'id3',
-      ]);
+      socket.emit('lockedTickets', currentLockedTickets);
 
       socket.on('lockTicket', async (data) => {
         console.log('Locking ticket: ', data);
+        currentLockedTickets.push(data);
         socket.broadcast.emit('ticketLocked', data);
       });
 
       socket.on('unlockTicket', async (data) => {
         console.log('Unlocking ticket: ', data);
+        currentLockedTickets = currentLockedTickets.filter(id => id !== data);
         socket.broadcast.emit('ticketUnlocked', data);
       });
 

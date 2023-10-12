@@ -13,8 +13,15 @@ const StyledButton = styled.button`
 
   &:hover {
     background: ${({ $variant }) => ($variant === 'secondary' ? '#607883' : '#004699')};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   }
+
+  ${({ disabled }) => disabled && `
+    opacity: 0.6;
+    cursor: not-allowed;
+  `}
 `;
+
 function SmallButton({ children, type, onClick, variant = 'primary', ...restProps}) {
   return (
     <StyledButton type={type} onClick={onClick} $variant={variant} {...restProps}>

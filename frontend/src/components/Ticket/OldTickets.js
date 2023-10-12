@@ -115,6 +115,11 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
                     >
                       Redigera
                     </SmallButton>
+                    {lockedTickets.includes(ticket._id) && 
+                    <div style={{marginLeft: '4px', display: 'inline-block', color: 'red', fontSize: '12px'}}>
+                      Låst av annan användare
+                    </div>}
+
                   </Td>
                 </>
               )}
