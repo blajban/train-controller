@@ -36,45 +36,32 @@ function getTrainObject(changedPosition) {
   };
 }
 
-function setupIo(io, eventSource) {
+function setupSocket(socket, eventSource) {
   const trainPositions = {};
-  io.on('connection', async (socket) => {
-    console.log('a user connected');
 
-    if (process.env.NODE_ENV === 'production') {
-      const key = socket.handshake.query['x-api-key'];
-      const isValid = await apiKey.isValid(key);
-  
-      if (!isValid) {
-        console.log('Authentication error');
-        socket.disconnect();
-        return;
-      }
-    }
+  // eslint-disable-next-line
+  eventSource.onmessage = (e) => {
+    try {
+      const parsedData = JSON.parse(e.data);
 
-    // eslint-disable-next-line
-    eventSource.onmessage = (e) => {
-      try {
-        const parsedData = JSON.parse(e.data);
+      if (parsedData) {
+        const changedPosition = parsedData.RESPONSE.RESULT[0].TrainPosition[0];
+        const trainObject = getTrainObject(changedPosition);
 
-        if (parsedData) {
-          const changedPosition = parsedData.RESPONSE.RESULT[0].TrainPosition[0];
-          const trainObject = getTrainObject(changedPosition);
-
-          if (Object.prototype.hasOwnProperty.call(
-            trainPositions,
-            changedPosition.Train.AdvertisedTrainNumber
-          )) {
-            socket.emit('message', trainObject);
-          }
-
-          trainPositions[changedPosition.Train.AdvertisedTrainNumber] = trainObject;
+        if (Object.prototype.hasOwnProperty.call(
+          trainPositions,
+          changedPosition.Train.AdvertisedTrainNumber
+        )) {
+          socket.emit('message', trainObject);
         }
-      } catch (error) {
-        console.log(error);
+
+        trainPositions[changedPosition.Train.AdvertisedTrainNumber] = trainObject;
       }
-    };
-  });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 }
 
 function setupEventSource(sseurl) {
@@ -90,15 +77,15 @@ function setupEventSource(sseurl) {
   return eventSource;
 }
 
-async function fetchTrainPositions(io) {
+async function fetchTrainPositions(socket) {
   const sseurl = await getSseurl();
   const eventSource = setupEventSource(sseurl);
-  setupIo(io, eventSource);
+  setupSocket(socket, eventSource);
 }
 
 module.exports = {
   getSseurl,
-  setupIo,
+  setupSocket,
   getTrainObject,
   setupEventSource,
   fetchTrainPositions
