@@ -4,7 +4,8 @@ const {
   getSseurl,
   setupEventSource,
   getTrainObject,
-  setupIo
+  setupIo,
+  setupSocket
 } = require('./trains');
 
 jest.mock('node-fetch');
@@ -106,12 +107,10 @@ describe('fetchTrainPositions', () => {
     const mockSocket = {
       emit: jest.fn()
     };
-    const mockIo = {
-      on: jest.fn((event, callback) => callback(mockSocket))
-    };
+
     const mockEventSource = {};
 
-    setupIo(mockIo, mockEventSource);
+    setupSocket(mockSocket, mockEventSource);
 
     const eventData = {
       data: JSON.stringify({
@@ -146,13 +145,11 @@ describe('fetchTrainPositions', () => {
     const mockSocket = {
       emit: jest.fn()
     };
-    const mockIo = {
-      on: jest.fn((event, callback) => callback(mockSocket))
-    };
+
     const mockEventSource = {};
     jest.spyOn(console, 'log').mockImplementation(() => {});
 
-    setupIo(mockIo, mockEventSource);
+    setupSocket(mockSocket, mockEventSource);
 
     const invalidEventData = {
       data: 'invalidData'

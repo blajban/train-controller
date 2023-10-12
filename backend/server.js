@@ -1,6 +1,7 @@
 const http = require('http');
 const app = require('./app');
 const { fetchTrainPositions } = require('./models/trains');
+const tickets = require('./models/tickets');
 
 const httpServer = http.createServer(app);
 
@@ -18,4 +19,24 @@ httpServer.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-fetchTrainPositions(io);
+io.on('connection', async (socket) => {
+  console.log('a user connected');
+
+  if (process.env.NODE_ENV === 'production') {
+    const key = socket.handshake.query['x-api-key'];
+    const isValid = await apiKey.isValid(key);
+
+    if (!isValid) {
+      console.log('Authentication error');
+      socket.disconnect();
+      return;
+    }
+  }
+
+
+  fetchTrainPositions(socket);
+  tickets.lockTicketsSocketConnection(socket);
+});
+
+
+
