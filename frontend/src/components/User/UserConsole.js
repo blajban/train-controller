@@ -9,12 +9,13 @@ import UserContext from '../../contexts/UserContext';
 
 import { API_KEY, API_URL } from '../../config';
 import { getUserName, getUserToken } from './util';
+import ThemeToggle from '../../style/ThemeToggle';
 
 const UserConsoleContainer = styled.div`
   position: relative; 
-  border: 1px solid #ccc;
+  border: 1px solid ${({theme}) => theme.secondary};
   padding: 10px;
-  background-color: #f9f9f9;
+  background-color: ${({theme}) => theme.backgroundDarker};
   box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
   margin-bottom: 1rem;
 `;
@@ -72,6 +73,7 @@ function UserConsole() {
         ) : (
           <>
             <p>Välkommen {userName}</p>
+            <ThemeToggle />
             <Button onClick={() => setIsLogoutOpen(true)}>Logga ut</Button>
           </>
         )
