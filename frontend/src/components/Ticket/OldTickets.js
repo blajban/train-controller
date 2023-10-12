@@ -13,12 +13,10 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   const [ lockedTickets, setLockedTickets ] = useState([]);
 
   const onTicketLockedCallback = (ticketId) => {
-    console.log("SERVER LOCKED TICKET:", ticketId);
     setLockedTickets(prevLocked => [...prevLocked, ticketId]);
   };
 
   const onTicketUnlockedCallback = (ticketId) => {
-    console.log("SERVER UNLOCKED TICKET:", ticketId);
     setLockedTickets(prevLocked => prevLocked.filter(id => id !== ticketId));
   };
 

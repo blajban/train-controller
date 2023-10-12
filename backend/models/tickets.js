@@ -78,13 +78,11 @@ const tickets = {
     socket.emit('lockedTickets', currentLockedTickets);
 
     socket.on('lockTicket', async (data) => {
-      console.log('Locking ticket: ', data);
       currentLockedTickets.push(data);
       socket.broadcast.emit('ticketLocked', data);
     });
 
     socket.on('unlockTicket', async (data) => {
-      console.log('Unlocking ticket: ', data);
       currentLockedTickets = currentLockedTickets.filter(id => id !== data);
       socket.broadcast.emit('ticketUnlocked', data);
     });
