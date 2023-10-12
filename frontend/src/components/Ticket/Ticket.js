@@ -20,7 +20,7 @@ const Overlay = styled.div`
 `;
 
 const Content = styled.div`
-  background: white;
+  background: ${({theme}) => theme.background};
   padding: 20px;
   border-radius: 8px;
   width: 80%;

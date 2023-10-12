@@ -9,6 +9,10 @@ export const Table = styled.table`
 export const THead = styled.thead`
   background-color: ${({theme}) => theme.primaryDarker};
   color: ${({theme}) => theme.white};
+
+  th { 
+    color: ${({theme}) => theme.white};
+  }
 `;
 
 export const Tr = styled.tr`
@@ -26,7 +30,6 @@ export const Th = styled.th`
 
 export const TBody = styled.tbody`
   background-color: ${({theme}) => theme.background};
-  color: #000;
 `;
 
 export const Td = styled.td`

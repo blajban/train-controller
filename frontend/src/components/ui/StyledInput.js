@@ -9,6 +9,7 @@ const StyledInput = styled.input`
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
   margin: 0.1rem 0;
+  background: ${({theme}) => theme.backgroundDarker};
 
   &:focus {
     border-color: ${({theme}) => theme.primaryDarker};

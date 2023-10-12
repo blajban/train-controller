@@ -1,10 +1,11 @@
 
 import React, { useState } from 'react';
-import styled, { ThemeProvider } from "styled-components";
-import { theme } from './Style';
+import styled, { ThemeProvider as StyledThemeProvider} from "styled-components";
+import { ThemeProvider, useTheme } from './style/ThemeProvider';
+import { lightTheme, darkTheme } from './style/themes';
 
 import UserContext from './contexts/UserContext';
-import Style from './Style';
+import Style from './style/Style';
 import DelayedTrains from "./components/Delayed/DelayedTrains";
 import TrainMap from "./components/Map/TrainMap";
 import UserConsole from "./components/User/UserConsole";
@@ -21,7 +22,7 @@ const DelayedContainer = styled.nav`
   width: 40vw;
   padding: 2rem;
   overflow: scroll;
-  background-color: white;
+  background-color: ${({theme}) => theme.background};
 `;
 
 const MapContainer = styled.nav`
@@ -33,10 +34,12 @@ const MapContainer = styled.nav`
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const { theme } = useTheme();
+
   return (
     <>
+      <StyledThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <Style />
-      <ThemeProvider theme={theme}>
         <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
           <AppContainer>
             <DelayedContainer>
@@ -48,7 +51,7 @@ function App() {
             </MapContainer>
           </AppContainer>
         </UserContext.Provider>
-      </ThemeProvider>
+      </StyledThemeProvider>
     </>
       
   );

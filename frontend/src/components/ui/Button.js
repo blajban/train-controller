@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const StyledButton = styled.button`
   border: none;
-  color: white;
+  color: ${({theme}) => theme.white};
   padding: 11px 18px;
   font-size: 14px;
   border-radius: 3px;
@@ -15,6 +15,7 @@ const StyledButton = styled.button`
     background: ${({ $variant, theme }) => $variant === 'secondary' ? theme.secondaryDarker : theme.primaryDarker};
   }
 `;
+
 function Button({ children, type, onClick, variant = 'primary', ...restProps }) {
   return (
     <StyledButton type={type} onClick={onClick} $variant={variant} {...restProps}>

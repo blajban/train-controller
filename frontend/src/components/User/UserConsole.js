@@ -9,6 +9,7 @@ import UserContext from '../../contexts/UserContext';
 
 import { API_KEY, API_URL } from '../../config';
 import { getUserName, getUserToken } from './util';
+import ThemeToggle from '../../style/ThemeToggle';
 
 const UserConsoleContainer = styled.div`
   position: relative; 
@@ -72,6 +73,7 @@ function UserConsole() {
         ) : (
           <>
             <p>Välkommen {userName}</p>
+            <ThemeToggle />
             <Button onClick={() => setIsLogoutOpen(true)}>Logga ut</Button>
           </>
         )

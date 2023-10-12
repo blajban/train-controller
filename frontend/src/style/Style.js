@@ -5,6 +5,7 @@ const Style = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    color: ${({theme}) => theme.text};
   }
 
   html {
@@ -35,17 +36,5 @@ const Style = createGlobalStyle`
     font-size: 1rem;
   }
 `;
-
-export const theme = {
-  primary: '#0062CC',
-  secondary: '#7D919E',
-  primaryDarker: '#004699',
-  secondaryDarker: '#607883',
-  placeholderText: '#666',
-  tableNthRow: '#eee',
-  background: '#fff',
-  backgroundDarker: '#f9f9f9',
-  white: '#fff',
-};
 
 export default Style;
