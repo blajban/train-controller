@@ -15,9 +15,9 @@ const StyledButton = styled.button`
     background: ${({ $variant }) => ($variant === 'secondary' ? '#607883' : '#004699')};
   }
 `;
-function Button({ children, type, onClick, variant = 'primary' }) {
+function Button({ children, type, onClick, variant = 'primary', ...restProps }) {
   return (
-    <StyledButton type={type} onClick={onClick} $variant={variant}>
+    <StyledButton type={type} onClick={onClick} $variant={variant} {...restProps}>
       {children}
     </StyledButton>
   );

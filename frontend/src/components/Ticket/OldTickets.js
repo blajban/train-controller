@@ -5,17 +5,23 @@ import StyledSelect from "../ui/StyledSelect";
 import { TBody, THead, Table, Th, Tr, Td } from "../ui/StyledTable";
 import ticketSocket from "./ticketSocket";
 
+
+
 function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   const [ editingTicket, setEditingTicket ] = useState(null);
   const [ selectedReasonCode, setSelectedReasonCode ] = useState('');
+  const [ lockedTickets, setLockedTickets ] = useState([]);
 
   const onTicketLockedCallback = (ticketId) => {
     console.log("SERVER LOCKED TICKET:", ticketId);
+    setLockedTickets(prevLocked => [...prevLocked, ticketId]);
   };
 
   const onTicketUnlockedCallback = (ticketId) => {
     console.log("SERVER UNLOCKED TICKET:", ticketId);
+    setLockedTickets(prevLocked => prevLocked.filter(id => id !== ticketId));
   };
+
   useEffect(() => {
     const disconnectSocket = ticketSocket.setupSocket(onTicketUnlockedCallback, onTicketLockedCallback);
     return () => {
@@ -23,28 +29,18 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
     }
   }, []);
 
-  const lockCurrentTicket = () => {
-    const ticketId = '25';
+  useEffect(() => {
+    console.log("LOCKED TICKETS (updated):", lockedTickets);
+  }, [lockedTickets]);
+
+  const startEditing = (ticketId, currentCode) => {
+    setEditingTicket(ticketId);
+    setSelectedReasonCode(currentCode);
     try {
       ticketSocket.lockTicket(ticketId);
     } catch (error) {
       console.error("Error locking ticket:", error);
     }
-  };
-
-  const unlockCurrentTicket = () => {
-    const ticketId = '25';
-    try {
-      ticketSocket.unlockTicket(ticketId);
-    } catch (error) {
-      console.error("Error unlocking ticket:", error);
-    }
-  };
-  
-
-  const startEditing = (ticketId, currentCode) => {
-    setEditingTicket(ticketId);
-    setSelectedReasonCode(currentCode);
   };
 
   const confirmEdit = async () => {
@@ -59,6 +55,11 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   };
 
   const cancelEdit = () => {
+    try {
+      ticketSocket.unlockTicket(editingTicket);
+    } catch (error) {
+      console.error("Error unlocking ticket:", error);
+    }
     setEditingTicket(null);
     setSelectedReasonCode(null);
   };
@@ -89,7 +90,7 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
                       value={selectedReasonCode} 
                       onChange={(e) => setSelectedReasonCode(e.target.value)}
                     >
-                      <option value="" disabled>Choose a code</option>
+                      <option value="" disabled>Välj en kod</option>
                       {reasonCodes.map((code, index) => (
                         <option key={index} value={code.Code}>
                           {code.Code} - {code.Level3Description}
@@ -108,7 +109,12 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
                   <Td>{ticket.trainnumber}</Td>
                   <Td>{ticket.traindate}</Td>
                   <Td>
-                    <SmallButton onClick={() => startEditing(ticket._id, ticket.code)}>Uppdatera</SmallButton>
+                    <SmallButton
+                      disabled={lockedTickets.includes(ticket._id)}
+                      onClick={() => startEditing(ticket._id, ticket.code)}
+                    >
+                      Redigera
+                    </SmallButton>
                   </Td>
                 </>
               )}
