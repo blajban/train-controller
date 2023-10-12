@@ -3,6 +3,7 @@ import { render, fireEvent } from '@testing-library/react';
 import UserConsole from './UserConsole';
 import UserContext from '../../contexts/UserContext';
 import * as util from './util';
+import { AllProviders } from '../../setupTests';
 
 util.getUserName = jest.fn();
 util.getUserToken = jest.fn();
@@ -21,7 +22,7 @@ describe('<UserConsole />', () => {
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <UserConsole />
       </UserContext.Provider>
-    );
+    , { wrapper: AllProviders });
 
     expect(getByText('Välkommen')).toBeInTheDocument();
     expect(getByText('Logga ut')).toBeInTheDocument();
@@ -33,7 +34,7 @@ describe('<UserConsole />', () => {
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <UserConsole />
       </UserContext.Provider>
-    );
+    , { wrapper: AllProviders });
 
     expect(getByText('Logga in eller registrera dig för att hantera ärenden.')).toBeInTheDocument();
     expect(getByText('Logga in')).toBeInTheDocument();
@@ -46,7 +47,7 @@ describe('<UserConsole />', () => {
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <UserConsole />
       </UserContext.Provider>
-    );
+    , { wrapper: AllProviders });
 
     const loginButton = getByText('Logga in');
     fireEvent.click(loginButton);
@@ -60,7 +61,7 @@ describe('<UserConsole />', () => {
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <UserConsole />
       </UserContext.Provider>
-    );
+    , { wrapper: AllProviders });
 
     const registerButton = getByText('Registrera dig');
     fireEvent.click(registerButton);
@@ -100,7 +101,7 @@ describe('<UserConsole />', () => {
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <UserConsole />
       </UserContext.Provider>
-    );
+    , { wrapper: AllProviders });
 
     const registerButton = getByText('Registrera dig');
     fireEvent.click(registerButton);

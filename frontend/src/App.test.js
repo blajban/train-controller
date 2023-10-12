@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import { AllProviders } from './setupTests';
 
 jest.mock("./components/Delayed/DelayedTrains", () => {
   return function MockedDelayedTrains() {
@@ -15,12 +16,12 @@ jest.mock("./components/Map/TrainMap", () => {
 
 describe('App', () => {
   it('renders DelayedTrains component', () => {
-    render(<App />);
+    render(<App />, { wrapper: AllProviders });
     expect(screen.getByText('DelayedTrains mock')).toBeInTheDocument();
   });
 
   it('renders map placeholder', () => {
-    render(<App />);
+    render(<App />, { wrapper: AllProviders });
     expect(screen.getByText('TrainMap mock')).toBeInTheDocument();
   });
 
