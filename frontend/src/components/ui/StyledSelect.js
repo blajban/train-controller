@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const StyledSelect = styled.select`
-  border: 1px solid #004699;
+  border: 1px solid ${({theme}) => theme.secondary};
   padding: 10px 15px;
   font-size: 14px;
   border-radius: 3px;
@@ -12,12 +12,12 @@ const StyledSelect = styled.select`
   background: white;
 
   &:focus {
-    border-color: #0062CC;
+    border-color: ${({theme}) => theme.primaryDarker};
     box-shadow: 0 0 5px rgba(0, 98, 204, 0.5);
   }
 
   &::placeholder {
-    color: #666;
+    color: ${({theme}) => theme.placeholderText};
   }
 `;
 

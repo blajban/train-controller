@@ -29,13 +29,13 @@ function TrainItem({ train, ...restProps }) {
 const StyledTrain = styled(TrainItem)`
   display: flex;
   flex-direction: row;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid ${({theme}) => theme.secondary};
   padding: 0.2rem 0.8rem;
   align-items: center;
   cursor: pointer;
 
   &:nth-of-type(2n) {
-    background-color: #eee;
+    background-color: ${({theme}) => theme.tableNthRow};
   }
 `;
 

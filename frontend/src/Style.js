@@ -2,9 +2,9 @@ import { createGlobalStyle } from 'styled-components';
 
 const Style = createGlobalStyle`
   * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
   html {
@@ -21,8 +21,8 @@ const Style = createGlobalStyle`
   }
 
   h2 {
-      font-size: 1.6rem;
-      margin-bottom: 1.4rem;
+    font-size: 1.6rem;
+    margin-bottom: 1.4rem;
   }
 
   h3 {
@@ -31,9 +31,21 @@ const Style = createGlobalStyle`
   }
 
   p {
-      margin-bottom: 1.4rem;
-      font-size: 1rem;
+    margin-bottom: 1.4rem;
+    font-size: 1rem;
   }
 `;
+
+export const theme = {
+  primary: '#0062CC',
+  secondary: '#7D919E',
+  primaryDarker: '#004699',
+  secondaryDarker: '#607883',
+  placeholderText: '#666',
+  tableNthRow: '#eee',
+  background: '#fff',
+  backgroundDarker: '#f9f9f9',
+  white: '#fff',
+};
 
 export default Style;

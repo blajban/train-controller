@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
+import { theme } from './Style';
 
 import UserContext from './contexts/UserContext';
 import Style from './Style';
@@ -35,18 +36,19 @@ function App() {
   return (
     <>
       <Style />
-      <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-        <AppContainer>
-          <DelayedContainer>
-              <UserConsole />
-          <DelayedTrains />
-          </DelayedContainer>
-          <MapContainer>
-            <TrainMap />
-          </MapContainer>
-          
-        </AppContainer>
-      </UserContext.Provider>
+      <ThemeProvider theme={theme}>
+        <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+          <AppContainer>
+            <DelayedContainer>
+                <UserConsole />
+            <DelayedTrains />
+            </DelayedContainer>
+            <MapContainer>
+              <TrainMap />
+            </MapContainer>
+          </AppContainer>
+        </UserContext.Provider>
+      </ThemeProvider>
     </>
       
   );

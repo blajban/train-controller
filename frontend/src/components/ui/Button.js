@@ -8,11 +8,11 @@ const StyledButton = styled.button`
   border-radius: 3px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  background: ${({ $variant }) => ($variant === 'secondary' ? '#7D919E' : '#0062CC')};
+  background: ${({ $variant, theme }) => $variant === 'secondary' ? theme.secondary : theme.primary};
   margin: 0.1rem;
 
   &:hover {
-    background: ${({ $variant }) => ($variant === 'secondary' ? '#607883' : '#004699')};
+    background: ${({ $variant, theme }) => $variant === 'secondary' ? theme.secondaryDarker : theme.primaryDarker};
   }
 `;
 function Button({ children, type, onClick, variant = 'primary', ...restProps }) {
