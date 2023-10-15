@@ -27,8 +27,6 @@ const checkToken = (req) => {
   }
 }
 
-
-
 const checkTokenGraphQL = (req) => {
   try {
     return checkToken(req);

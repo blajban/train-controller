@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import Train from './Train';
+import UserContext from '../../contexts/UserContext';
 
 jest.mock('./Delay', () => {
   return function MockedDelay() {
@@ -11,6 +12,7 @@ jest.mock('./Delay', () => {
 describe('<Train />', () => {
   it('renders train details and handles click', () => {
     const handleClick = jest.fn();
+    const mockIsLoggedIn = true;
 
     const mockTrainData = {
       OperationalTrainNumber: '12345',
@@ -19,7 +21,11 @@ describe('<Train />', () => {
       ToLocation: [{ LocationName: 'End' }],
     };
 
-    render(<Train train={mockTrainData} onClick={handleClick} />);
+    render(
+      <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
+        <Train train={mockTrainData} onClick={handleClick} />
+      </UserContext.Provider>
+    );
 
 
     expect(screen.getByText('12345')).toBeInTheDocument();
@@ -27,7 +33,7 @@ describe('<Train />', () => {
     expect(screen.getByText('AA')).toBeInTheDocument();
     expect(screen.getByText('Start -> End')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText('12345'));
+    fireEvent.click(screen.getByText('+'));
     expect(handleClick).toHaveBeenCalled();
   });
 
@@ -36,8 +42,14 @@ describe('<Train />', () => {
       OperationalTrainNumber: '12345',
       LocationSignature: 'AA'
     };
+    const mockIsLoggedIn = true;
 
-    render(<Train train={mockTrainData} onClick={() => {}} />);
+    render(
+      <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
+        <Train train={mockTrainData} onClick={() => {}} />
+      </UserContext.Provider>
+    );
+
 
     expect(screen.queryByText('Start ->')).toBeNull();
     expect(screen.queryByText('End')).toBeNull();
