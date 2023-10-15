@@ -13,19 +13,21 @@ const checkTokenHttp = (req, res, next) => {
 }
 
 const checkToken = (req) => {
-  try {
-    const token = req.headers['x-access-token'];
-    if (!token) {
-      throw new NoTokenError();
-    }
+  const token = req.headers['x-access-token'];
+  if (!token) {
+    throw new NoTokenError();
+  }
 
-    const secret = process.env.JWT_SECRET;
+  const secret = process.env.JWT_SECRET;
+  try {
     const decoded = jwt.verify(token, secret);
     return decoded;
   } catch (error) {
     throw new InvalidTokenError();
   }
 }
+
+
 
 const checkTokenGraphQL = (req) => {
   try {
