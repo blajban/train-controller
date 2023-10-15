@@ -2,6 +2,7 @@ import { render, fireEvent, waitFor, screen, act } from "@testing-library/react"
 import DelayedTrains from "./DelayedTrains";
 import { getDelayed, getReasonCodes, getTickets } from '../../models/models';
 import OldTickets from "../Ticket/OldTickets";
+import UserContext from '../../contexts/UserContext';
 
 jest.mock('../../models/models', () => ({
   getDelayed: jest.fn(),
@@ -35,10 +36,15 @@ describe("<DelayedTrains />", () => {
         ] 
       }
     ];
+    const mockIsLoggedIn = true;
 
     getDelayed.mockResolvedValue(mockData);
 
-    render(<DelayedTrains />);
+    render(
+      <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
+        <DelayedTrains />
+      </UserContext.Provider>
+    );
 
     await screen.findByText("Start -> End");
   });
@@ -81,9 +87,15 @@ describe("<DelayedTrains />", () => {
 
     getReasonCodes.mockResolvedValue(mockCodesData);
 
-    render(<DelayedTrains />);
+    const mockIsLoggedIn = true;
 
-    const clickableElement = await screen.findByText("Start -> End");
+    render(
+      <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
+        <DelayedTrains />
+      </UserContext.Provider>
+    );
+
+    const clickableElement = await screen.findByText("+");
 
     await act(async () => {
       fireEvent.click(clickableElement);
@@ -91,7 +103,6 @@ describe("<DelayedTrains />", () => {
 
     await waitFor(async () => {
       expect(screen.getByTestId('old-tickets-mock')).toBeInTheDocument();
-
     });
 
   });
@@ -134,9 +145,15 @@ describe("<DelayedTrains />", () => {
 
     getReasonCodes.mockResolvedValue(mockCodesData);
 
-    render(<DelayedTrains />);
+    const mockIsLoggedIn = true;
 
-    const clickableElement = await screen.findByText("Start -> End");
+    render(
+      <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
+        <DelayedTrains />
+      </UserContext.Provider>
+    );
+
+    const clickableElement = await screen.findByText("+");
     await act(async () => {
       fireEvent.click(clickableElement);
     });
@@ -158,7 +175,13 @@ describe("<DelayedTrains />", () => {
 
     console.error = jest.fn();
 
-    render(<DelayedTrains />);
+    const mockIsLoggedIn = true;
+
+    render(
+      <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
+        <DelayedTrains />
+      </UserContext.Provider>
+    );
 
     await waitFor(() => {
       expect(console.error).toHaveBeenCalledTimes(1)
@@ -166,4 +189,5 @@ describe("<DelayedTrains />", () => {
 
     expect(console.error).toHaveBeenCalledWith("Error:", new Error("Mock fetch error"));
   });
+
 });
