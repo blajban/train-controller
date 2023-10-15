@@ -54,7 +54,10 @@ const RootMutationType = new GraphQLObjectType({
       args: {
         input: { type: TicketInputType }
       },
-      resolve: async (parent, args) => {
+      resolve: async (parent, args, context) => {
+        if (!context.user) {
+          throw new AuthorizationError();
+        }
         const newTicket = args.input;
         return await tickets.insertTicketData(newTicket);
       }
@@ -65,7 +68,10 @@ const RootMutationType = new GraphQLObjectType({
       args: {
         input: { type: TicketUpdateType }
       },
-      resolve: async (parent, args) => {
+      resolve: async (parent, args, context) => {
+        if (!context.user) {
+          throw new AuthorizationError();
+        }
         const { _id, code } = args.input;
         return await tickets.updateTicketCodeData({ _id, code });
       }
