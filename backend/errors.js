@@ -61,6 +61,13 @@ class NoApiKeyError extends Error {
   }
 }
 
+class AuthorizationError extends Error {
+  constructor() {
+    super('Unauthorized');
+    this.message = 'You are not authorized to view this resource';
+  }
+}
+
 module.exports = {
   InvalidCredentialsError,
   NotEnoughCredentialsError,
@@ -69,6 +76,7 @@ module.exports = {
   InvalidTokenError,
   NotFoundError,
   WrongApiKeyError,
-  NoApiKeyError
+  NoApiKeyError,
+  AuthorizationError
 };
 

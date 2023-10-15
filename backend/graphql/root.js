@@ -4,6 +4,8 @@ const {
   GraphQLList
 } = require('graphql');
 
+const { checkToken } = require('../middleware/checkToken');
+
 const ReasonCodeType = require('./codes');
 const codes = require('../models/codes');
 
@@ -12,6 +14,7 @@ const delayed = require('../models/delayed');
 
 const { TicketType, TicketInputType, TicketUpdateType } = require('./tickets');
 const tickets = require('../models/tickets');
+const { AuthorizationError } = require('../errors');
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -31,7 +34,10 @@ const RootQueryType = new GraphQLObjectType({
     },
     tickets: {
       type: new GraphQLList(TicketType),
-      resolve: async () => {
+      resolve: async (parent, args, context) => {
+        if (!context.user) {
+          throw new AuthorizationError();
+        }
         return await tickets.getData();
       }
     }
