@@ -4,6 +4,8 @@ import Delay from '../Delayed/Delay';
 import Button from '../ui/Button';
 import StyledSelect from '../ui/StyledSelect';
 
+import TicketConfirmation from './TicketConfirmation';
+
 function LocationString({trainData}) {
   return (
     <>
@@ -15,7 +17,7 @@ function LocationString({trainData}) {
 }
 
 
-function NewTicketForm({ onAddNewTicket, reasonCodes }) {
+function NewTicketForm({ onAddNewTicket, reasonCodes, setIsModalOpen }) {
   const [reasonCode, setReasonCode] = useState(reasonCodes ? reasonCodes[0].Code : '');
 
 
@@ -24,6 +26,7 @@ function NewTicketForm({ onAddNewTicket, reasonCodes }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     onAddNewTicket(reasonCode);
+    setIsModalOpen(true);
   };
 
   return (
@@ -46,12 +49,22 @@ function NewTicketForm({ onAddNewTicket, reasonCodes }) {
 }
 
 function NewTicket({invokeMock, trainData, onAddNewTicket, reasonCodes}) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div>
       <h1>Nytt ärende</h1>
       <LocationString trainData={trainData} />
       <div><strong>Försenad:</strong> <Delay train={trainData}/></div>
-      <NewTicketForm trainData={trainData} onAddNewTicket={onAddNewTicket} reasonCodes={reasonCodes}/>
+      <NewTicketForm 
+        trainData={trainData}
+        onAddNewTicket={onAddNewTicket}
+        reasonCodes={reasonCodes}
+        setIsModalOpen={setIsModalOpen}
+      />
+
+      {isModalOpen &&
+        <TicketConfirmation onClose={() => setIsModalOpen(false)}/>
+      }
     </div>
   )
 }

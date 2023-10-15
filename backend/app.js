@@ -22,6 +22,7 @@ const login = require('./routes/login');
 const register = require('./routes/register');
 const verifyToken = require('./routes/verify-token');
 const schema = require('./graphql/schema');
+const { checkTokenGraphQL } = require('./middleware/checkToken');
 
 const app = express();
 
@@ -58,9 +59,38 @@ app.use('/codes', codes);
 app.use('/login', login);
 app.use('/register', register);
 
-app.all('/graphql', createHandler({
-  schema: schema
+/*app.all('/graphql', createHandler({
+    schema: schema
+  })
+);
+*/
+
+/*app.use('/graphql', createHandler({
+  schema: schema,
+  context: (args) => {
+    let user;
+    try {
+      user = checkToken(args.headers['x-access-token']);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+    return { user: user }
+  }
 }));
+*/
+
+app.use('/graphql', (req, res, next) => {
+  const user = checkTokenGraphQL(req);
+  req.user = user;
+  next();
+}, createHandler({
+  schema: schema,
+  context: (req, res) => {
+    return { user: req.raw.user };
+  }
+}));
+
 
 if (ENV !== 'production') {
   app.get('/playground', graphQlPlayground({ 

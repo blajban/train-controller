@@ -3,19 +3,36 @@ const jwt = require('jsonwebtoken');
 const { NoTokenError, InvalidTokenError } = require('../errors');
 
 
-const checkToken = (req, res, next) => {
+const checkTokenHttp = (req, res, next) => {
   try {
-    const token = req.headers['x-access-token'];
-    if (!token) {
-      return next(new NoTokenError());
-    }
-
-    const secret = process.env.JWT_SECRET;
-    jwt.verify(token, secret);
+    checkToken(req);
     return next();
   } catch (error) {
-    next(new InvalidTokenError());
+    next(error);
   }
 }
 
-module.exports = checkToken;
+const checkToken = (req) => {
+  const token = req.headers['x-access-token'];
+  if (!token) {
+    throw new NoTokenError();
+  }
+
+  const secret = process.env.JWT_SECRET;
+  try {
+    const decoded = jwt.verify(token, secret);
+    return decoded;
+  } catch (error) {
+    throw new InvalidTokenError();
+  }
+}
+
+const checkTokenGraphQL = (req) => {
+  try {
+    return checkToken(req);
+  } catch (error) {
+    return null;
+  }
+}
+
+module.exports = { checkTokenHttp, checkToken, checkTokenGraphQL };

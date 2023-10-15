@@ -9,6 +9,8 @@ const blueColors = {
   backgroundDarker: '#f9f9f9',
   white: '#fff',
   text: '#000',
+  alertBackground: '#FFF8E1',
+  alertText: '#616161'
 };
 
 export const lightTheme = {
@@ -22,6 +24,8 @@ export const lightTheme = {
   backgroundDarker: '#F5F5F5',
   white: '#fff',
   text: '#000',
+  alertBackground: '#FFF8E1',
+  alertText: '#616161'
 };
 
 export const darkTheme = {
@@ -34,5 +38,7 @@ export const darkTheme = {
   background: '#121212',
   backgroundDarker: '#1B1B1B',
   white: '#ECEFF1',
-  text: '#ECEFF1'
+  text: '#ECEFF1',
+  alertBackground: '#FFF8E1',
+  alertText: '#616161'
 };
