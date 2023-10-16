@@ -8,7 +8,7 @@ import StyledInput from '../ui/StyledInput';
 import { getUserToken, loginUser } from './util';
 
 function Login({ isOpen, onClose, setUserName }) {
-  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  const { isLoggedIn, setIsLoggedIn, setUserInfo } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(false);
 
@@ -53,7 +53,7 @@ function Login({ isOpen, onClose, setUserName }) {
       }
 
       if (result.data.token) {
-        loginUser(result.data.token, setUserName, setIsLoggedIn, result.data.firstName, result.data.lastName);
+        loginUser(result.data.token, setIsLoggedIn, setUserInfo, result.data.firstName, result.data.lastName, result.data.email);
         console.log('Successfully logged in');
         onClose();
       }

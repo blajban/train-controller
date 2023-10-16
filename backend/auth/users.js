@@ -29,9 +29,11 @@ const users = {
         data: {
           valid: true,
           description: 'Token is valid',
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email
+          user: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email
+          }
         }
       });
       

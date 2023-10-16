@@ -7,8 +7,8 @@ import StyledInput from '../ui/StyledInput';
 import UserContext from '../../contexts/UserContext';
 import { loginUser } from './util';
 
-function Register({ isOpen, onClose, setUserName }) {
-  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+function Register({ isOpen, onClose }) {
+  const { isLoggedIn, setIsLoggedIn, setUserInfo } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(false);
 
@@ -54,7 +54,7 @@ function Register({ isOpen, onClose, setUserName }) {
       }
 
       if (result.data.token) {
-        loginUser(result.data.token, setUserName, setIsLoggedIn, result.data.firstName, result.data.lastName);
+        loginUser(result.data.token, setIsLoggedIn, setUserInfo, result.data.firstName, result.data.lastName, result.data.email);
         console.log('Registered successfully');
         onClose();
       }

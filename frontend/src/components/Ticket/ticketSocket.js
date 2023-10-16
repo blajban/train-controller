@@ -18,7 +18,6 @@ const ticketSocket = {
     });
 
     socket.on('ticketLocked', (data) => {
-      console.log(data);
       if (onTicketLocked) onTicketLocked(data);
     });
 
@@ -39,12 +38,13 @@ const ticketSocket = {
     };
   },
 
-  lockTicket: (ticketId) => {
-    socket.emit('lockTicket', ticketId);
+  lockTicket: (data) => {
+    socket.emit('lockTicket', data);
   },
 
-  unlockTicket: (ticketId) => {
-    socket.emit('unlockTicket', ticketId);
+  unlockTicket: (data) => {
+    console.log('unlocking ticket', data)
+    socket.emit('unlockTicket', data);
   },
 };
 

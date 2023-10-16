@@ -8,7 +8,7 @@ import Button from '../ui/Button';
 import UserContext from '../../contexts/UserContext';
 
 import { API_KEY, API_URL } from '../../config';
-import { getUserName, getUserToken } from './util';
+import { getUserToken } from './util';
 import ThemeToggle from '../../style/ThemeToggle';
 
 const UserConsoleContainer = styled.div`
@@ -21,11 +21,10 @@ const UserConsoleContainer = styled.div`
 `;
 
 function UserConsole() {
-  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  const { isLoggedIn, setIsLoggedIn, userInfo, setUserInfo } = useContext(UserContext);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
-  const [userName, setUserName] = useState(getUserName());
 
   useEffect(() => {
     async function verifyToken() {
@@ -43,9 +42,10 @@ function UserConsole() {
           });
     
           const result = await response.json();
-    
+
           if (result.data?.valid) {
             setIsLoggedIn(true);
+            setUserInfo(result.data.user);
           }
         }
       } catch (error) {
@@ -67,12 +67,13 @@ function UserConsole() {
             <Logout 
               isOpen={isLogoutOpen}
               onClose={() => setIsLogoutOpen(false)}
-              setUserName={setUserName}
             />
           </>
         ) : (
           <>
-            <p>Välkommen {userName}</p>
+           {userInfo.firstName && userInfo.lastName && userInfo.email && (
+            <p>Välkommen {userInfo.firstName} {userInfo.lastName} ({userInfo.email})</p>
+           )}
             <ThemeToggle />
             <Button onClick={() => setIsLogoutOpen(true)}>Logga ut</Button>
           </>
@@ -90,7 +91,6 @@ function UserConsole() {
                 <Login
                   isOpen={isLoginOpen}
                   onClose={() => setIsLoginOpen(false)}
-                  setUserName={setUserName}
                 />
               </>
             ) : (
@@ -105,7 +105,6 @@ function UserConsole() {
                 <Register
                   isOpen={isRegisterOpen}
                   onClose={() => setIsRegisterOpen(false)}
-                  setUserName={setUserName}
                 />
               </>
             ) : (

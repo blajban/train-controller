@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { updateTicket } from "../../models/models";
 import SmallButton from "../ui/SmallButton";
 import StyledSelect from "../ui/StyledSelect";
 import { TBody, THead, Table, Th, Tr, Td } from "../ui/StyledTable";
 import ticketSocket from "./ticketSocket";
+
+import UserContext from "../../contexts/UserContext";
 
 
 
@@ -12,12 +14,14 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   const [ selectedReasonCode, setSelectedReasonCode ] = useState('');
   const [ lockedTickets, setLockedTickets ] = useState([]);
 
-  const onTicketLockedCallback = (ticketId) => {
-    setLockedTickets(prevLocked => [...prevLocked, ticketId]);
+  const { userInfo } = useContext(UserContext);
+
+  const onTicketLockedCallback = (data) => {
+    setLockedTickets(prevLocked => [...prevLocked, data]);
   };
 
-  const onTicketUnlockedCallback = (ticketId) => {
-    setLockedTickets(prevLocked => prevLocked.filter(id => id !== ticketId));
+  const onTicketUnlockedCallback = (data) => {
+    setLockedTickets(prevLocked => prevLocked.filter(ticket => ticket.ticketId !== data));
   };
 
   useEffect(() => {
@@ -46,7 +50,7 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
     setEditingTicket(ticketId);
     setSelectedReasonCode(currentCode);
     try {
-      ticketSocket.lockTicket(ticketId);
+      ticketSocket.lockTicket({ ticketId, userInfo });
     } catch (error) {
       console.error("Error locking ticket:", error);
     }
@@ -64,11 +68,14 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   };
 
   const cancelEdit = () => {
-    try {
-      ticketSocket.unlockTicket(editingTicket);
-    } catch (error) {
-      console.error("Error unlocking ticket:", error);
+    if (editingTicket) {
+      try {
+        ticketSocket.unlockTicket(editingTicket);
+      } catch (error) {
+        console.error("Error unlocking ticket:", error);
+      }
     }
+    
     setEditingTicket(null);
     setSelectedReasonCode(null);
   };
@@ -124,10 +131,12 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
                     >
                       Redigera
                     </SmallButton>
-                    {lockedTickets.includes(ticket._id) && 
-                    <div style={{marginLeft: '4px', display: 'inline-block', color: 'red', fontSize: '12px'}}>
-                      Låst av annan användare
-                    </div>}
+                    {lockedTickets.some(lockedTicket => lockedTicket.ticketId === ticket._id) && 
+                      <div style={{marginLeft: '4px', display: 'inline-block', color: 'red', fontSize: '12px'}}>
+                        Låst av {lockedTickets.find(lockedTicket => lockedTicket.ticketId === ticket._id).userInfo.email}
+                      </div>
+                    }
+
 
                   </Td>
                 </>
