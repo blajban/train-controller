@@ -7,6 +7,7 @@ const {
   NotEnoughCredentialsError,
   UserExistsError
 } = require('../errors');
+const { checkToken } = require('../middleware/checkToken');
 
 const collectionName = 'users';
 
@@ -20,11 +21,17 @@ const users = {
 
   verify: async (req, res, next) => {
     try {
-
+      console.log(req.decoded);
+      const db = await database.getDb(collectionName);
+      const user = await db.collection.findOne({ email: req.decoded.email });
+      await db.client.close();
       return res.json({
         data: {
           valid: true,
-          description: 'Token is valid'
+          description: 'Token is valid',
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email
         }
       });
       

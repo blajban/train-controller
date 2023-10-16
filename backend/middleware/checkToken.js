@@ -5,7 +5,8 @@ const { NoTokenError, InvalidTokenError } = require('../errors');
 
 const checkTokenHttp = (req, res, next) => {
   try {
-    checkToken(req);
+    const decoded = checkToken(req);
+    req.decoded = decoded;
     return next();
   } catch (error) {
     next(error);

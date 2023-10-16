@@ -18,6 +18,7 @@ const ticketSocket = {
     });
 
     socket.on('ticketLocked', (data) => {
+      console.log(data);
       if (onTicketLocked) onTicketLocked(data);
     });
 
