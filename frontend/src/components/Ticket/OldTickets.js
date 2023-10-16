@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { updateTicket } from "../../models/models";
-import SmallButton from "../ui/SmallButton";
-import StyledSelect from "../ui/StyledSelect";
+import TicketRow from "./TicketRow";
 import { TBody, THead, Table, Th, Tr, Td } from "../ui/StyledTable";
 import useTicketSocket from "./ticketSocket";
 
@@ -82,52 +81,19 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
           </Tr>
         </THead>
         <TBody>
-          {oldTickets.map((ticket, index) => (
-            <Tr key={index}>
-              <Td>{ticket._id}</Td>
-              {editingTicket === ticket._id ? (
-                <>
-                  <Td colSpan="3">
-                    <StyledSelect 
-                      value={selectedReasonCode} 
-                      onChange={(e) => setSelectedReasonCode(e.target.value)}
-                    >
-                      <option value="" disabled>Välj en kod</option>
-                      {reasonCodes.map((code, index) => (
-                        <option key={index} value={code.Code}>
-                          {code.Code} - {code.Level3Description}
-                        </option>
-                      ))}
-                    </StyledSelect>
-                  </Td>
-                  <Td>
-                    <SmallButton onClick={confirmEdit}>Spara</SmallButton>
-                    <SmallButton variant="secondary" onClick={cancelEdit}>Ångra</SmallButton>
-                  </Td>
-                </>
-              ) : (
-                <>
-                  <Td>{ticket.code}</Td>
-                  <Td>{ticket.trainnumber}</Td>
-                  <Td>{ticket.traindate}</Td>
-                  <Td>
-                    <SmallButton
-                      disabled={lockedTickets.includes(ticket._id)}
-                      onClick={() => startEditing(ticket._id, ticket.code)}
-                    >
-                      Redigera
-                    </SmallButton>
-                    {lockedTickets.some(lockedTicket => lockedTicket.ticketId === ticket._id) && 
-                      <div style={{marginLeft: '4px', display: 'inline-block', color: 'red', fontSize: '12px'}}>
-                        Låst av {lockedTickets.find(lockedTicket => lockedTicket.ticketId === ticket._id).userInfo.email}
-                      </div>
-                    }
-
-
-                  </Td>
-                </>
-              )}
-            </Tr>
+          {oldTickets.map((ticket) => (
+            <TicketRow 
+              key={ticket._id} 
+              ticket={ticket} 
+              reasonCodes={reasonCodes} 
+              isEditing={editingTicket === ticket._id}
+              lockedTickets={lockedTickets}
+              selectedReasonCode={selectedReasonCode}
+              onReasonCodeChange={(e) => setSelectedReasonCode(e.target.value)}
+              onStartEditing={startEditing}
+              onConfirmEdit={confirmEdit}
+              onCancelEdit={cancelEdit}
+            />
           ))}
         </TBody>
       </Table>
