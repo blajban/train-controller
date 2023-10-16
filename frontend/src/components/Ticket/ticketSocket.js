@@ -1,5 +1,6 @@
 import io from "socket.io-client";
 import { API_KEY, API_URL } from '../../config';
+import { useState, useEffect } from "react";
 
 let socket;
 
@@ -48,4 +49,29 @@ const ticketSocket = {
   },
 };
 
-export default ticketSocket;
+const useTicketSocket = () => {
+  const [lockedTickets, setLockedTickets] = useState([]);
+
+  useEffect(() => {
+    const onTicketLockedCallback = (data) => {
+      setLockedTickets(prevLocked => [...prevLocked, data]);
+    };
+
+    const onTicketUnlockedCallback = (data) => {
+      setLockedTickets(prevLocked => prevLocked.filter(ticket => ticket.ticketId !== data));
+    };
+
+    const disconnectSocket = ticketSocket.setupSocket(onTicketUnlockedCallback, onTicketLockedCallback);
+    
+    return () => {
+      disconnectSocket();
+    };
+  }, []);
+
+  return {
+    lockedTickets,
+    lockTicket: ticketSocket.lockTicket,
+    unlockTicket: ticketSocket.unlockTicket,
+  };
+};
+export default useTicketSocket;

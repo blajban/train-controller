@@ -3,7 +3,7 @@ import { updateTicket } from "../../models/models";
 import SmallButton from "../ui/SmallButton";
 import StyledSelect from "../ui/StyledSelect";
 import { TBody, THead, Table, Th, Tr, Td } from "../ui/StyledTable";
-import ticketSocket from "./ticketSocket";
+import useTicketSocket from "./ticketSocket";
 
 import UserContext from "../../contexts/UserContext";
 
@@ -12,24 +12,10 @@ import UserContext from "../../contexts/UserContext";
 function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   const [ editingTicket, setEditingTicket ] = useState(null);
   const [ selectedReasonCode, setSelectedReasonCode ] = useState('');
-  const [ lockedTickets, setLockedTickets ] = useState([]);
 
   const { userInfo } = useContext(UserContext);
 
-  const onTicketLockedCallback = (data) => {
-    setLockedTickets(prevLocked => [...prevLocked, data]);
-  };
-
-  const onTicketUnlockedCallback = (data) => {
-    setLockedTickets(prevLocked => prevLocked.filter(ticket => ticket.ticketId !== data));
-  };
-
-  useEffect(() => {
-    const disconnectSocket = ticketSocket.setupSocket(onTicketUnlockedCallback, onTicketLockedCallback);
-    return () => {
-      disconnectSocket();
-    }
-  }, []);
+  const { lockedTickets, lockTicket, unlockTicket } = useTicketSocket();
 
   useEffect(() => {
     const handleBeforeUnload = () => {
@@ -50,7 +36,7 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
     setEditingTicket(ticketId);
     setSelectedReasonCode(currentCode);
     try {
-      ticketSocket.lockTicket({ ticketId, userInfo });
+      lockTicket({ ticketId, userInfo });
     } catch (error) {
       console.error("Error locking ticket:", error);
     }
@@ -70,7 +56,7 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   const cancelEdit = () => {
     if (editingTicket) {
       try {
-        ticketSocket.unlockTicket(editingTicket);
+        unlockTicket(editingTicket);
       } catch (error) {
         console.error("Error unlocking ticket:", error);
       }
