@@ -19,7 +19,7 @@ function LocationString({trainData}) {
 }
 
 
-function NewTicketForm({ reasonCodes, setIsModalOpen }) {
+function NewTicketForm({ trainData, reasonCodes, setIsModalOpen }) {
   const [reasonCode, setReasonCode] = useState(reasonCodes ? reasonCodes[0].Code : '');
 
   const { addNewTicket } = useTickets();
@@ -29,7 +29,7 @@ function NewTicketForm({ reasonCodes, setIsModalOpen }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    addNewTicket(reasonCode);
+    addNewTicket(reasonCode, trainData);
     setIsModalOpen(true);
   };
 

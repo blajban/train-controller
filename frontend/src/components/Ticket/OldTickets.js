@@ -17,7 +17,6 @@ function OldTickets({ reasonCodes}) {
   const { oldTickets, setOldTickets } = useTickets();
 
   const onTicketUpdated = (updatedMessage) => {
-    console.log("Ticket updated:", updatedMessage);
     setOldTickets((prevTickets) => {
       return prevTickets.map(ticket => 
         ticket._id === updatedMessage.ticketId 
@@ -67,7 +66,6 @@ function OldTickets({ reasonCodes}) {
   const cancelEdit = () => {
     if (editingTicket) {
       try {
-        console.log("Unlocking ticket:", editingTicket)
         unlockTicket(editingTicket);
       } catch (error) {
         console.error("Error unlocking ticket:", error);
