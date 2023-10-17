@@ -5,16 +5,29 @@ import { TBody, THead, Table, Th, Tr, Td } from "../ui/StyledTable";
 import useTicketSocket from "./ticketSocket";
 
 import UserContext from "../../contexts/UserContext";
+import { useTickets } from "../../contexts/TicketContext";
 
 
 
-function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
+function OldTickets({ reasonCodes}) {
   const [ editingTicket, setEditingTicket ] = useState(null);
   const [ selectedReasonCode, setSelectedReasonCode ] = useState('');
-
   const { userInfo } = useContext(UserContext);
 
-  const { lockedTickets, lockTicket, unlockTicket } = useTicketSocket();
+  const { oldTickets, setOldTickets } = useTickets();
+
+  const onTicketUpdated = (updatedMessage) => {
+    console.log("Ticket updated:", updatedMessage);
+    setOldTickets((prevTickets) => {
+      return prevTickets.map(ticket => 
+        ticket._id === updatedMessage.ticketId 
+          ? { ...ticket, code: updatedMessage.code }
+          : ticket
+      );
+    });
+  };
+
+  const { lockedTickets, lockTicket, unlockTicket } = useTicketSocket(onTicketUpdated);
 
   useEffect(() => {
     const handleBeforeUnload = () => {
@@ -44,7 +57,6 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   const confirmEdit = async () => {
     try {
       await updateTicket(editingTicket, selectedReasonCode);
-      refreshTickets();
     } catch (error) {
       console.error('Error:', error);
     }
@@ -55,6 +67,7 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   const cancelEdit = () => {
     if (editingTicket) {
       try {
+        console.log("Unlocking ticket:", editingTicket)
         unlockTicket(editingTicket);
       } catch (error) {
         console.error("Error unlocking ticket:", error);

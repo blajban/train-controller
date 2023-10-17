@@ -7,6 +7,8 @@ import Ticket from '../Ticket/Ticket';
 
 import { getDelayed } from '../../models/models';
 
+import { TicketProvider } from '../Ticket/TicketProvider';
+
 const DelayedTrainsList = styled.div`
   display: flex;
   flex-direction: column;
@@ -46,11 +48,14 @@ function DelayedTrains() {
   return (
     <>
       {isTicketOpen && 
+      <TicketProvider>
         <Ticket
           isOpen={isTicketOpen}
           onClose={handleCloseTicket}
           trainData={currentTrain}
-      />}
+        />
+      </TicketProvider>
+      }
 
       <h1>Försenade tåg</h1>
       <DelayedTrainsList>

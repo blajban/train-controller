@@ -6,6 +6,8 @@ import StyledSelect from '../ui/StyledSelect';
 
 import TicketConfirmation from './TicketConfirmation';
 
+import { useTickets } from '../../contexts/TicketContext';
+
 function LocationString({trainData}) {
   return (
     <>
@@ -17,15 +19,17 @@ function LocationString({trainData}) {
 }
 
 
-function NewTicketForm({ onAddNewTicket, reasonCodes, setIsModalOpen }) {
+function NewTicketForm({ reasonCodes, setIsModalOpen }) {
   const [reasonCode, setReasonCode] = useState(reasonCodes ? reasonCodes[0].Code : '');
+
+  const { addNewTicket } = useTickets();
 
 
   if (!reasonCodes) return "Loading reason codes...";
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    onAddNewTicket(reasonCode);
+    addNewTicket(reasonCode);
     setIsModalOpen(true);
   };
 
@@ -48,7 +52,7 @@ function NewTicketForm({ onAddNewTicket, reasonCodes, setIsModalOpen }) {
 
 }
 
-function NewTicket({invokeMock, trainData, onAddNewTicket, reasonCodes}) {
+function NewTicket({invokeMock, trainData, reasonCodes}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div>
@@ -57,7 +61,6 @@ function NewTicket({invokeMock, trainData, onAddNewTicket, reasonCodes}) {
       <div><strong>Försenad:</strong> <Delay train={trainData}/></div>
       <NewTicketForm 
         trainData={trainData}
-        onAddNewTicket={onAddNewTicket}
         reasonCodes={reasonCodes}
         setIsModalOpen={setIsModalOpen}
       />

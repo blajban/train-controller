@@ -59,27 +59,6 @@ app.use('/codes', codes);
 app.use('/login', login);
 app.use('/register', register);
 
-/*app.all('/graphql', createHandler({
-    schema: schema
-  })
-);
-*/
-
-/*app.use('/graphql', createHandler({
-  schema: schema,
-  context: (args) => {
-    let user;
-    try {
-      user = checkToken(args.headers['x-access-token']);
-    } catch (error) {
-      console.log(error);
-      next(error);
-    }
-    return { user: user }
-  }
-}));
-*/
-
 app.use('/graphql', (req, res, next) => {
   const user = checkTokenGraphQL(req);
   req.user = user;

@@ -21,7 +21,6 @@ const users = {
 
   verify: async (req, res, next) => {
     try {
-      console.log(req.decoded);
       const db = await database.getDb(collectionName);
       const user = await db.collection.findOne({ email: req.decoded.email });
       await db.client.close();

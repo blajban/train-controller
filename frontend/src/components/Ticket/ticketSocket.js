@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 let socket;
 
 const ticketSocket = {
-  setupSocket: (onTicketUnlocked, onTicketLocked) => {
+  setupSocket: (onTicketUnlocked, onTicketLocked, onTicketUpdate) => {
     socket = io(`${API_URL}`, {
       query: {
         'x-api-key': API_KEY
@@ -26,6 +26,10 @@ const ticketSocket = {
       if (onTicketUnlocked) onTicketUnlocked(data);
     });
 
+    socket.on('ticketUpdate', (data) => {
+      if (onTicketUpdate) onTicketUpdate(data);
+    });
+
     socket.on('connect_error', (error) => {
       console.error('Connection Error:', error);
     });
@@ -44,12 +48,11 @@ const ticketSocket = {
   },
 
   unlockTicket: (data) => {
-    console.log('unlocking ticket', data)
     socket.emit('unlockTicket', data);
   },
 };
 
-const useTicketSocket = () => {
+const useTicketSocket = (onTicketUpdated) => {
   const [lockedTickets, setLockedTickets] = useState([]);
 
   useEffect(() => {
@@ -61,7 +64,17 @@ const useTicketSocket = () => {
       setLockedTickets(prevLocked => prevLocked.filter(ticket => ticket.ticketId !== data));
     };
 
-    const disconnectSocket = ticketSocket.setupSocket(onTicketUnlockedCallback, onTicketLockedCallback);
+    const onTicketUpdateCallback = (updatedTicket) => {
+      if(onTicketUpdated) {
+        onTicketUpdated(updatedTicket);
+      }
+    };
+
+    const disconnectSocket = ticketSocket.setupSocket(
+      onTicketUnlockedCallback,
+      onTicketLockedCallback,
+      onTicketUpdateCallback
+    );
     
     return () => {
       disconnectSocket();
