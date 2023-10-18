@@ -18,20 +18,30 @@ describe('<UserConsole />', () => {
 
   it('renders welcome message and logout when logged in', () => {
     const mockIsLoggedIn = true;
+    const mockUserInfo = {  
+      firstName: "erik", 
+      lastName: "testare",
+      email: "test@test.se"
+    };
     const { getByText } = render(
-      <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
+      <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, userInfo: mockUserInfo}}>
         <UserConsole />
       </UserContext.Provider>
     , { wrapper: AllProviders });
 
-    expect(getByText('Välkommen')).toBeInTheDocument();
-    expect(getByText('Logga ut')).toBeInTheDocument();
+    expect(getByText(/Välkommen/)).toBeInTheDocument();
+    expect(getByText(/Logga ut/)).toBeInTheDocument();
   });
 
   it('renders login and register when not logged in', () => {
     const mockIsLoggedIn = false;
+    const mockUserInfo = {  
+      firstName: "erik", 
+      lastName: "testare",
+      email: "test@test.se"
+    };
     const { getByText } = render(
-      <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
+      <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, userInfo: mockUserInfo}}>
         <UserConsole />
       </UserContext.Provider>
     , { wrapper: AllProviders });
@@ -72,6 +82,11 @@ describe('<UserConsole />', () => {
   it('verifies the user token on component mount', async () => {
     const mockIsLoggedIn = false;
     const mockSetIsLoggedIn = jest.fn();
+    const mockUserInfo = {  
+      firstName: "erik", 
+      lastName: "testare",
+      email: "test@test.se"
+    };
 
     const mockResponseData = {
       data: { valid: true }
@@ -86,7 +101,7 @@ describe('<UserConsole />', () => {
     util.getUserToken.mockReturnValueOnce('sample_token');
 
     render(
-      <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
+      <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn, userInfo: mockUserInfo, setUserInfo: () => {} }}>
         <UserConsole />
       </UserContext.Provider>
     );
