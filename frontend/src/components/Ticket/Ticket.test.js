@@ -3,6 +3,8 @@ import * as React from 'react';
 import Ticket from './Ticket';
 import { getDelayed, getReasonCodes, getTickets } from '../../models/models';
 
+import { TicketProvider } from './TicketProvider';
+
 const API_KEY = "testkey";
 
 let mockNewTicketProps;
@@ -67,7 +69,11 @@ describe('<Ticket />', () => {
       return jest.requireActual('react').createElement(type, props);
     });
   
-    render(<Ticket isOpen={true} onClose={jest.fn()} trainData={{}} />);
+    render(
+      <TicketProvider>
+        <Ticket isOpen={true} onClose={jest.fn()} trainData={{}} />
+      </TicketProvider>
+    );
 
     await waitFor(() => {
       expect(screen.getByText("OldTickets Mock")).toBeInTheDocument();
@@ -83,7 +89,11 @@ describe('<Ticket />', () => {
     getTickets.mockRejectedValue(new Error("Mock fetch error"));
     console.error = jest.fn();
 
-    render(<Ticket isOpen={true} onClose={jest.fn()} trainData={{}} />);
+    render(
+      <TicketProvider>
+        <Ticket isOpen={true} onClose={jest.fn()} trainData={{}} />
+      </TicketProvider>
+    );
 
     await waitFor(() => expect(console.error).toHaveBeenCalledTimes(1));
 
@@ -115,7 +125,11 @@ describe('<Ticket />', () => {
 
     const mockOnClose = jest.fn();
 
-    render(<Ticket isOpen={true} onClose={mockOnClose} trainData={{}} />);
+    render(
+      <TicketProvider>
+        <Ticket isOpen={true} onClose={mockOnClose} trainData={{}} />
+      </TicketProvider>
+    );
     
     await waitFor(() => {
       expect(screen.getByText("Stäng")).toBeInTheDocument();
