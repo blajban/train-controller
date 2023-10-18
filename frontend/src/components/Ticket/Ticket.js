@@ -5,6 +5,8 @@ import NewTicket from './NewTicket';
 import OldTickets from './OldTickets';
 import { getTickets, addTicket, getReasonCodes } from '../../models/models';
 import SmallButton from '../ui/SmallButton';
+import { useTickets } from '../../contexts/TicketContext';
+
 
 const Overlay = styled.div`
   position: fixed;
@@ -30,8 +32,9 @@ const Content = styled.div`
 
 
 function Ticket({invokeMock, isOpen, onClose, trainData}) {
-  const [oldTickets, setOldTickets] = useState(null);
   const [reasonCodes, setReasonCodes] = useState(null);
+
+  const { oldTickets, fetchOldTickets } = useTickets();
 
   useEffect(() => {
     const fetchReasonCodes = async () => {
@@ -46,30 +49,6 @@ function Ticket({invokeMock, isOpen, onClose, trainData}) {
     fetchReasonCodes();
   }, []);
 
-  const fetchOldTickets = async () => {
-    try {
-      const data = await getTickets();
-      setOldTickets(data);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-  const addNewTicket = async (reasonCode) => {
-    const newTicket = {
-      code: reasonCode,
-      trainnumber: trainData.OperationalTrainNumber,
-      traindate: trainData.EstimatedTimeAtLocation.substring(0, 10),
-    };
-
-    try {
-      const addedTicket = await addTicket(newTicket);
-      setOldTickets(prevTickets => [...prevTickets, addedTicket]);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
   useEffect(() => {
     fetchOldTickets();
   }, []);
@@ -80,9 +59,9 @@ function Ticket({invokeMock, isOpen, onClose, trainData}) {
     <Overlay>
       <Content>
         <SmallButton onClick={onClose}>Stäng</SmallButton>
-        <NewTicket invokeMock={invokeMock} trainData={trainData} onAddNewTicket={addNewTicket} reasonCodes={reasonCodes}/>
-        <OldTickets oldTickets={oldTickets} reasonCodes={reasonCodes} refreshTickets={fetchOldTickets}/>
-    </Content>
+        <NewTicket invokeMock={invokeMock} trainData={trainData} reasonCodes={reasonCodes}/>
+        <OldTickets reasonCodes={reasonCodes}/>
+      </Content>
     </Overlay>
   )
 }

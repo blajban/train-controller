@@ -6,10 +6,10 @@ import Foldout from './Foldout';
 import { logoutUser } from './util';
 
 function Logout({ isOpen, onClose }) {
-  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  const { isLoggedIn, setIsLoggedIn, setUserInfo } = useContext(UserContext);
 
   const handleLogout = () => {
-    logoutUser(setIsLoggedIn);
+    logoutUser(setIsLoggedIn, setUserInfo);
     onClose();
   };
 

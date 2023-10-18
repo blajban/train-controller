@@ -39,33 +39,36 @@ describe('User utility functions', () => {
     expect(getUserToken()).toBe('test-token');
   });
 
-  it('should get user name from localStorage', () => {
-    localStorage.setItem('name', 'Testare Testaresson');
-    expect(getUserName()).toBe('Testare Testaresson');
-  });
+
 
   it('should login user and set token and name in localStorage', () => {
-    const mockSetUserName = jest.fn();
+    const mockSetUserInfo = jest.fn();
     const mockSetIsLoggedIn = jest.fn();
+    const mockUserInfo = { 
+      firstName: 'Testare', 
+      lastName: 'Testaresson',
+      email: 'test@test.se'
+    };
 
-    loginUser('test-token', mockSetUserName, mockSetIsLoggedIn, 'Testare', 'Testaresson');
+    loginUser('test-token', mockSetIsLoggedIn, mockSetUserInfo, mockUserInfo.firstName, mockUserInfo.lastName, mockUserInfo.email);
 
     expect(localStorage.getItem('token')).toBe('test-token');
-    expect(localStorage.getItem('name')).toBe('Testare Testaresson');
-    expect(mockSetUserName).toHaveBeenCalledWith('Testare Testaresson');
+
+    expect(mockSetUserInfo).toHaveBeenCalledWith(mockUserInfo);
     expect(mockSetIsLoggedIn).toHaveBeenCalledWith(true);
   });
 
   it('should logout user and remove token and name from localStorage', () => {
     const mockSetIsLoggedIn = jest.fn();
+    const mockSetUserInfo = jest.fn();
 
     localStorage.setItem('token', 'test-token');
-    localStorage.setItem('name', 'Testare Testaresson');
 
-    logoutUser(mockSetIsLoggedIn);
+
+    logoutUser(mockSetIsLoggedIn, mockSetUserInfo);
 
     expect(localStorage.getItem('token')).toBe(null || undefined);
-    expect(localStorage.getItem('name')).toBe(null || undefined);
+    expect(mockSetUserInfo).toHaveBeenCalledWith(null);
     expect(mockSetIsLoggedIn).toHaveBeenCalledWith(false);
   });
 

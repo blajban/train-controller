@@ -33,6 +33,7 @@ const MapContainer = styled.nav`
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
 
   const { theme } = useTheme();
 
@@ -40,7 +41,7 @@ function App() {
     <>
       <StyledThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <Style />
-        <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+        <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn, userInfo, setUserInfo }}>
           <AppContainer>
             <DelayedContainer>
                 <UserConsole />

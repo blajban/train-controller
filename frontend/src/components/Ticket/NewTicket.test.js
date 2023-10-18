@@ -2,6 +2,8 @@ import React from 'react';
 import { render, act, waitFor, fireEvent, screen } from '@testing-library/react';
 import NewTicket from './NewTicket';
 
+import TicketContext from '../../contexts/TicketContext';
+
 jest.mock('../Delayed/Delay', () => {
   return function MockedDelay() {
     return <div>Mocked Delay</div>;
@@ -26,8 +28,6 @@ describe('<NewTicket />', () => {
       ] 
     };
 
-    const mockOnAddNewTicket = () => {};
-
     const mockCodesData = [
       {
         Code: "AA",
@@ -40,11 +40,12 @@ describe('<NewTicket />', () => {
     // eslint-disable-next-line testing-library/no-unnecessary-act
     await act(async () => {
       render(
+        <TicketContext.Provider value={{ addNewTicket: () => {} }}>
         <NewTicket 
           trainData={mockTrainData}
-          onAddNewTicket={mockOnAddNewTicket}
           reasonCodes={mockCodesData}
         />
+        </TicketContext.Provider>
       );
     });
 
@@ -69,9 +70,6 @@ describe('<NewTicket />', () => {
       ] 
     };
 
-    const mockTicketId = 1;
-    const mockOnAddNewTicket = () => {};
-
     const mockCodesData = [
       {
         Code: "AA",
@@ -82,12 +80,12 @@ describe('<NewTicket />', () => {
     ];
 
     render(
+      <TicketContext.Provider value={{ addNewTicket: () => {} }}>
       <NewTicket 
         trainData={mockTrainData}
-        newTicketId={mockTicketId}
-        onAddNewTicket={mockOnAddNewTicket}
         reasonCodes={mockCodesData}
       />
+      </TicketContext.Provider>
     );
 
     await waitFor(() => {
@@ -114,7 +112,6 @@ describe('<NewTicket />', () => {
       ] 
     };
 
-    const mockTicketId = 1;
     const mockOnAddNewTicket = jest.fn();
 
     const mockCodesData = [
@@ -127,12 +124,12 @@ describe('<NewTicket />', () => {
     ];
 
     render(
+      <TicketContext.Provider value={{ addNewTicket: mockOnAddNewTicket }}>
       <NewTicket 
         trainData={mockTrainData}
-        newTicketId={mockTicketId}
-        onAddNewTicket={mockOnAddNewTicket}
         reasonCodes={mockCodesData}
       />
+      </TicketContext.Provider>
     );
 
     await waitFor(() => {
@@ -145,7 +142,7 @@ describe('<NewTicket />', () => {
     const submitButton = screen.getByText("Skapa nytt ärende");
     fireEvent.click(submitButton);
 
-    expect(mockOnAddNewTicket).toHaveBeenCalledWith("AA");
+    expect(mockOnAddNewTicket).toHaveBeenCalledWith("AA", mockTrainData);
   });
 
 });

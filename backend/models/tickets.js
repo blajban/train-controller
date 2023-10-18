@@ -74,7 +74,7 @@ const tickets = {
     return result;
   },
 
-  lockTicketsSocketConnection: async (socket) => {
+  lockTicketsSocketConnection: async (socket, io) => {
     socket.emit('lockedTickets', currentLockedTickets);
 
     socket.on('lockTicket', async (data) => {
@@ -83,8 +83,11 @@ const tickets = {
     });
 
     socket.on('unlockTicket', async (data) => {
-      currentLockedTickets = currentLockedTickets.filter(id => id !== data);
+      currentLockedTickets = currentLockedTickets.filter(ticket => ticket.ticketId !== data);
       socket.broadcast.emit('ticketUnlocked', data);
+      const db = await database.getDb(collectionName);
+      const result = await db.collection.findOne({ _id: new ObjectId(data) });
+      io.emit('ticketUpdate', { ticketId: data, code: result.code });
     });
 
     socket.on('disconnect', () => {

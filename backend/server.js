@@ -35,7 +35,7 @@ io.on('connection', async (socket) => {
 
 
   fetchTrainPositions(socket);
-  tickets.lockTicketsSocketConnection(socket);
+  tickets.lockTicketsSocketConnection(socket, io);
 });
 
 

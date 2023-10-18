@@ -1,31 +1,32 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { updateTicket } from "../../models/models";
-import SmallButton from "../ui/SmallButton";
-import StyledSelect from "../ui/StyledSelect";
+import TicketRow from "./TicketRow";
 import { TBody, THead, Table, Th, Tr, Td } from "../ui/StyledTable";
-import ticketSocket from "./ticketSocket";
+import useTicketSocket from "./ticketSocket";
+
+import UserContext from "../../contexts/UserContext";
+import { useTickets } from "../../contexts/TicketContext";
 
 
 
-function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
+function OldTickets({ reasonCodes}) {
   const [ editingTicket, setEditingTicket ] = useState(null);
   const [ selectedReasonCode, setSelectedReasonCode ] = useState('');
-  const [ lockedTickets, setLockedTickets ] = useState([]);
+  const { userInfo } = useContext(UserContext);
 
-  const onTicketLockedCallback = (ticketId) => {
-    setLockedTickets(prevLocked => [...prevLocked, ticketId]);
+  const { oldTickets, setOldTickets } = useTickets();
+
+  const onTicketUpdated = (updatedMessage) => {
+    setOldTickets((prevTickets) => {
+      return prevTickets.map(ticket => 
+        ticket._id === updatedMessage.ticketId 
+          ? { ...ticket, code: updatedMessage.code }
+          : ticket
+      );
+    });
   };
 
-  const onTicketUnlockedCallback = (ticketId) => {
-    setLockedTickets(prevLocked => prevLocked.filter(id => id !== ticketId));
-  };
-
-  useEffect(() => {
-    const disconnectSocket = ticketSocket.setupSocket(onTicketUnlockedCallback, onTicketLockedCallback);
-    return () => {
-      disconnectSocket();
-    }
-  }, []);
+  const { lockedTickets, lockTicket, unlockTicket } = useTicketSocket(onTicketUpdated);
 
   useEffect(() => {
     const handleBeforeUnload = () => {
@@ -46,7 +47,7 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
     setEditingTicket(ticketId);
     setSelectedReasonCode(currentCode);
     try {
-      ticketSocket.lockTicket(ticketId);
+      lockTicket({ ticketId, userInfo });
     } catch (error) {
       console.error("Error locking ticket:", error);
     }
@@ -55,7 +56,6 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   const confirmEdit = async () => {
     try {
       await updateTicket(editingTicket, selectedReasonCode);
-      refreshTickets();
     } catch (error) {
       console.error('Error:', error);
     }
@@ -64,11 +64,14 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
   };
 
   const cancelEdit = () => {
-    try {
-      ticketSocket.unlockTicket(editingTicket);
-    } catch (error) {
-      console.error("Error unlocking ticket:", error);
+    if (editingTicket) {
+      try {
+        unlockTicket(editingTicket);
+      } catch (error) {
+        console.error("Error unlocking ticket:", error);
+      }
     }
+    
     setEditingTicket(null);
     setSelectedReasonCode(null);
   };
@@ -89,50 +92,19 @@ function OldTickets({oldTickets, reasonCodes, refreshTickets}) {
           </Tr>
         </THead>
         <TBody>
-          {oldTickets.map((ticket, index) => (
-            <Tr key={index}>
-              <Td>{ticket._id}</Td>
-              {editingTicket === ticket._id ? (
-                <>
-                  <Td colSpan="3">
-                    <StyledSelect 
-                      value={selectedReasonCode} 
-                      onChange={(e) => setSelectedReasonCode(e.target.value)}
-                    >
-                      <option value="" disabled>Välj en kod</option>
-                      {reasonCodes.map((code, index) => (
-                        <option key={index} value={code.Code}>
-                          {code.Code} - {code.Level3Description}
-                        </option>
-                      ))}
-                    </StyledSelect>
-                  </Td>
-                  <Td>
-                    <SmallButton onClick={confirmEdit}>Spara</SmallButton>
-                    <SmallButton variant="secondary" onClick={cancelEdit}>Ångra</SmallButton>
-                  </Td>
-                </>
-              ) : (
-                <>
-                  <Td>{ticket.code}</Td>
-                  <Td>{ticket.trainnumber}</Td>
-                  <Td>{ticket.traindate}</Td>
-                  <Td>
-                    <SmallButton
-                      disabled={lockedTickets.includes(ticket._id)}
-                      onClick={() => startEditing(ticket._id, ticket.code)}
-                    >
-                      Redigera
-                    </SmallButton>
-                    {lockedTickets.includes(ticket._id) && 
-                    <div style={{marginLeft: '4px', display: 'inline-block', color: 'red', fontSize: '12px'}}>
-                      Låst av annan användare
-                    </div>}
-
-                  </Td>
-                </>
-              )}
-            </Tr>
+          {oldTickets.map((ticket) => (
+            <TicketRow 
+              key={ticket._id} 
+              ticket={ticket} 
+              reasonCodes={reasonCodes} 
+              isEditing={editingTicket === ticket._id}
+              lockedTickets={lockedTickets}
+              selectedReasonCode={selectedReasonCode}
+              onReasonCodeChange={(e) => setSelectedReasonCode(e.target.value)}
+              onStartEditing={startEditing}
+              onConfirmEdit={confirmEdit}
+              onCancelEdit={cancelEdit}
+            />
           ))}
         </TBody>
       </Table>
