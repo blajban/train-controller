@@ -1,10 +1,12 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import styled from "styled-components";
 
 import Delay from "./Delay";
 import SmallButton from "../ui/SmallButton";
 import UserContext from "../../contexts/UserContext";
+
+import { useDelayed } from "../../contexts/DelayedContext";
 
 const TrainNumber = styled.div`
   font-size: 2rem;
@@ -16,14 +18,36 @@ const CurrentStation = styled.div`
     width: 30%;
 `;
 
-const StyledSmallButton = styled(SmallButton)`
+const StyledSmallButtonRight = styled(SmallButton)`
   margin-left: auto;
+`;
+
+const StyledSmallButtonLeft = styled(SmallButton)`
+  margin-right: auto;
 `;
 
 function TrainItem({ train, onClick, ...restProps }) {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  const { selectedTrain, setSelectedTrain } = useDelayed();
+
+  const isFocused = selectedTrain === train;
+
+  const handleClick = (e) => {
+    if (selectedTrain) {
+      setSelectedTrain(null);
+      return;
+    }
+    setSelectedTrain(train);
+    
+  };
+
   return (
     <div {...restProps}>
+      {isFocused ? (
+        <StyledSmallButtonLeft onClick={handleClick}>Visa alla</StyledSmallButtonLeft>
+      ) : (
+        <StyledSmallButtonLeft onClick={handleClick}>Visa på karta</StyledSmallButtonLeft>
+      )}
       <TrainNumber>{train.OperationalTrainNumber}</TrainNumber>
       <CurrentStation>
           <div>{train.LocationSignature}</div>
@@ -32,7 +56,9 @@ function TrainItem({ train, onClick, ...restProps }) {
 
     <Delay train={train} />
 
-    {isLoggedIn && <StyledSmallButton onClick={onClick}>+</StyledSmallButton>}
+
+    
+    {isLoggedIn && <StyledSmallButtonRight onClick={onClick}>+</StyledSmallButtonRight>}
     </div>
     );
 }

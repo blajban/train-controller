@@ -9,6 +9,7 @@ import Style from './style/Style';
 import DelayedTrains from "./components/Delayed/DelayedTrains";
 import TrainMap from "./components/Map/TrainMap";
 import UserConsole from "./components/User/UserConsole";
+import DelayedContext from './contexts/DelayedContext';
 
 const AppContainer = styled.nav`
   height: 100vh;
@@ -35,6 +36,9 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
 
+  const [delayedTrains, setDelayedTrains] = useState(null);
+  const [selectedTrain, setSelectedTrain] = useState(null);
+
   const { theme } = useTheme();
 
   return (
@@ -42,15 +46,17 @@ function App() {
       <StyledThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <Style />
         <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn, userInfo, setUserInfo }}>
-          <AppContainer>
-            <DelayedContainer>
-                <UserConsole />
-            <DelayedTrains />
-            </DelayedContainer>
-            <MapContainer>
-              <TrainMap />
-            </MapContainer>
-          </AppContainer>
+          <DelayedContext.Provider value={{ delayedTrains, setDelayedTrains, selectedTrain, setSelectedTrain }}>
+            <AppContainer>
+              <DelayedContainer>
+                  <UserConsole />
+              <DelayedTrains />
+              </DelayedContainer>
+              <MapContainer>
+                <TrainMap />
+              </MapContainer>
+            </AppContainer>
+          </DelayedContext.Provider>
         </UserContext.Provider>
       </StyledThemeProvider>
     </>

@@ -1,6 +1,5 @@
 const fetch = require('node-fetch');
 const EventSource = require('eventsource');
-const apiKey = require('../auth/apiKey');
 
 async function getSseurl() {
   const query = `<REQUEST>
@@ -27,7 +26,7 @@ function getTrainObject(changedPosition) {
     .reverse();
 
   return {
-    trainnumber: changedPosition.Train.AdvertisedTrainNumber,
+    trainnumber: changedPosition.Train.OperationalTrainNumber,
     position: position,
     timestamp: changedPosition.TimeStamp,
     bearing: changedPosition.Bearing,
