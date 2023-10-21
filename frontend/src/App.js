@@ -36,7 +36,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
 
-  const [delayedTrains, setDelayedTrains] = useState(null);
+  const [delayedTrains, setDelayedTrains] = useState([]);
   const [selectedTrain, setSelectedTrain] = useState(null);
 
   const { theme } = useTheme();

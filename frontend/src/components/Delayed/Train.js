@@ -38,7 +38,6 @@ function TrainItem({ train, onClick, ...restProps }) {
       return;
     }
     setSelectedTrain(train);
-    
   };
 
   return (
