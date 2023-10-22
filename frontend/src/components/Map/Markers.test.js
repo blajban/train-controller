@@ -1,13 +1,13 @@
 import { render } from '@testing-library/react';
 import Markers from './Markers';
-import useMapSocket from '../../utility/mapSocket';
+import useMapSocket from './mapSocket';
 import DelayedContext from '../../contexts/DelayedContext';
 
 jest.mock('react-leaflet', () => ({
   useMap: jest.fn()
 }));
 
-jest.mock("../../utility/mapSocket");
+jest.mock("./mapSocket");
 
 describe('<Markers />', () => {
   afterEach(() => {
