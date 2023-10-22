@@ -1,9 +1,9 @@
 import io from "socket.io-client";
 import L from 'leaflet';
-import { API_KEY, API_URL } from '../config';
+import { API_KEY, API_URL } from '../../config';
 import { useRef } from "react";
 import { useEffect } from "react";
-import { useDelayed } from "../contexts/DelayedContext";
+import { useDelayed } from "../../contexts/DelayedContext";
 
 
 export default function useMapSocket(map, markersRef) {

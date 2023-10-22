@@ -2,9 +2,9 @@ import { useRef, useEffect } from "react";
 
 import { useMap } from "react-leaflet";
 
-import useMapSocket from "../../utility/mapSocket";
+import useMapSocket from "./mapSocket";
 import L from "leaflet";
-import leafletIcons from "../../utility/leafletIcons";
+import leafletIcons from "./leafletIcons";
 
 import { useDelayed } from "../../contexts/DelayedContext";
 
