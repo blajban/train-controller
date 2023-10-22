@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import Train from './Train';
 import UserContext from '../../contexts/UserContext';
+import DelayedContext from '../../contexts/DelayedContext';
 
 jest.mock('./Delay', () => {
   return function MockedDelay() {
@@ -22,9 +23,18 @@ describe('<Train />', () => {
     };
 
     render(
+      <DelayedContext.Provider value={{ 
+        delayedTrains: [], 
+        setDelayedTrains: jest.fn(), 
+        selectedTrain: null, 
+        setSelectedTrain: jest.fn(), 
+        trainsWithPosition: [], 
+        setTrainsWithPosition: jest.fn() 
+      }}>
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <Train train={mockTrainData} onClick={handleClick} />
       </UserContext.Provider>
+      </DelayedContext.Provider>
     );
 
 
@@ -45,9 +55,18 @@ describe('<Train />', () => {
     const mockIsLoggedIn = true;
 
     render(
+      <DelayedContext.Provider value={{ 
+        delayedTrains: [], 
+        setDelayedTrains: jest.fn(), 
+        selectedTrain: null, 
+        setSelectedTrain: jest.fn(), 
+        trainsWithPosition: [], 
+        setTrainsWithPosition: jest.fn() 
+      }}>
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <Train train={mockTrainData} onClick={() => {}} />
       </UserContext.Provider>
+      </DelayedContext.Provider>
     );
 
 
