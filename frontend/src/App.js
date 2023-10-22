@@ -38,6 +38,7 @@ function App() {
 
   const [delayedTrains, setDelayedTrains] = useState([]);
   const [selectedTrain, setSelectedTrain] = useState(null);
+  const [trainsWithPosition, setTrainsWithPosition] = useState([]);
 
   const { theme } = useTheme();
 
@@ -46,7 +47,7 @@ function App() {
       <StyledThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <Style />
         <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn, userInfo, setUserInfo }}>
-          <DelayedContext.Provider value={{ delayedTrains, setDelayedTrains, selectedTrain, setSelectedTrain }}>
+          <DelayedContext.Provider value={{ delayedTrains, setDelayedTrains, selectedTrain, setSelectedTrain, trainsWithPosition, setTrainsWithPosition }}>
             <AppContainer>
               <DelayedContainer>
                   <UserConsole />

@@ -49,12 +49,12 @@ function setupSocket(socket, eventSource) {
 
         if (Object.prototype.hasOwnProperty.call(
           trainPositions,
-          changedPosition.Train.AdvertisedTrainNumber
+          changedPosition.Train.OperationalTrainNumber
         )) {
           socket.emit('message', trainObject);
         }
 
-        trainPositions[changedPosition.Train.AdvertisedTrainNumber] = trainObject;
+        trainPositions[changedPosition.Train.OperationalTrainNumber] = trainObject;
       }
     } catch (error) {
       console.log(error);

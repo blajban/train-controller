@@ -24,6 +24,11 @@ function Markers() {
   useEffect(() => {
     if (selectedTrain) {
       allDelayedTrainsGroup.current.clearLayers();
+      const selectedMarkerPos = markersRef.current.all[selectedTrain.OperationalTrainNumber].getLatLng();
+      const newMarker = L.marker(selectedMarkerPos).bindPopup(selectedTrain.OperationalTrainNumber);
+      newMarker.addTo(selectedTrainGroup.current);
+      markersRef.current.selected = newMarker;
+      markersRef.current.selected.trainnumber = selectedTrain.OperationalTrainNumber;
       selectedTrainGroup.current.addTo(map);
     } else {
       allDelayedTrainsGroup.current.addTo(map);
@@ -33,6 +38,7 @@ function Markers() {
       selectedTrainGroup.current.clearLayers();
     }
   }, [selectedTrain]);
+
 
   return null;
 }
