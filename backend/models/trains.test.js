@@ -81,7 +81,7 @@ describe('fetchTrainPositions', () => {
         WGS84: '45.67890,12.34567'
       },
       Train: {
-        AdvertisedTrainNumber: '1234'
+        OperationalTrainNumber: '1234'
       },
       TimeStamp: '2023-09-23T12:34:56Z',
       Bearing: 90,

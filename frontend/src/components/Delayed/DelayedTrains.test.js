@@ -3,6 +3,7 @@ import DelayedTrains from "./DelayedTrains";
 import { getDelayed, getReasonCodes, getTickets } from '../../models/models';
 
 import UserContext from '../../contexts/UserContext';
+import DelayedContext from "../../contexts/DelayedContext";
 
 
 jest.mock('../../models/models', () => ({
@@ -42,9 +43,18 @@ describe("<DelayedTrains />", () => {
     getDelayed.mockResolvedValue(mockData);
 
     render(
+      <DelayedContext.Provider value={{ 
+        delayedTrains: mockData, 
+        setDelayedTrains: jest.fn(), 
+        selectedTrain: null, 
+        setSelectedTrain: jest.fn(), 
+        trainsWithPosition: [], 
+        setTrainsWithPosition: jest.fn() 
+      }}>
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <DelayedTrains />
       </UserContext.Provider>
+      </DelayedContext.Provider>
     );
 
     await screen.findByText("Start -> End");
@@ -91,9 +101,18 @@ describe("<DelayedTrains />", () => {
     const mockIsLoggedIn = true;
 
     render(
+      <DelayedContext.Provider value={{ 
+        delayedTrains: mockData, 
+        setDelayedTrains: jest.fn(), 
+        selectedTrain: null, 
+        setSelectedTrain: jest.fn(), 
+        trainsWithPosition: [], 
+        setTrainsWithPosition: jest.fn() 
+      }}>
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <DelayedTrains />
       </UserContext.Provider>
+      </DelayedContext.Provider>
     );
 
     const clickableElement = await screen.findByText("+");
@@ -149,9 +168,18 @@ describe("<DelayedTrains />", () => {
     const mockIsLoggedIn = true;
 
     render(
+      <DelayedContext.Provider value={{ 
+        delayedTrains: mockData, 
+        setDelayedTrains: jest.fn(), 
+        selectedTrain: null, 
+        setSelectedTrain: jest.fn(), 
+        trainsWithPosition: [], 
+        setTrainsWithPosition: jest.fn() 
+      }}>
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <DelayedTrains />
       </UserContext.Provider>
+      </DelayedContext.Provider>
     );
 
     const clickableElement = await screen.findByText("+");
@@ -179,9 +207,18 @@ describe("<DelayedTrains />", () => {
     const mockIsLoggedIn = true;
 
     render(
+      <DelayedContext.Provider value={{ 
+        delayedTrains: [], 
+        setDelayedTrains: jest.fn(), 
+        selectedTrain: null, 
+        setSelectedTrain: jest.fn(), 
+        trainsWithPosition: [], 
+        setTrainsWithPosition: jest.fn() 
+      }}>
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <DelayedTrains />
       </UserContext.Provider>
+      </DelayedContext.Provider>
     );
 
     await waitFor(() => {

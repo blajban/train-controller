@@ -8,6 +8,7 @@ import Ticket from '../Ticket/Ticket';
 import { getDelayed } from '../../models/models';
 
 import { TicketProvider } from '../Ticket/TicketProvider';
+import { useDelayed } from '../../contexts/DelayedContext';
 
 const DelayedTrainsList = styled.div`
   display: flex;
@@ -16,9 +17,10 @@ const DelayedTrainsList = styled.div`
 
 
 function DelayedTrains() {
-  const [delayedTrains, setDelayedTrains] = useState(null);
   const [isTicketOpen, setIsTicketOpen] = useState(false);
   const [currentTrain, setCurrentTrain] = useState(null);
+
+  const { delayedTrains, setDelayedTrains, selectedTrain } = useDelayed();
 
   const handleTrainClick = (trainData) => {
     setCurrentTrain(trainData);
@@ -58,16 +60,25 @@ function DelayedTrains() {
       }
 
       <h1>Försenade tåg</h1>
-      <DelayedTrainsList>
-        {delayedTrains.map((train, index) => (
-          <Train 
-            key={index}
-            train={train}
-            onClick={() => handleTrainClick(train)}
-          />
-        ))}
-        
-      </DelayedTrainsList>
+      
+      {selectedTrain
+      ? (
+        <Train 
+          train={selectedTrain}
+          onClick={() => handleTrainClick(selectedTrain)}
+        />
+      ) : (
+        <DelayedTrainsList>
+          {delayedTrains.map((train, index) => (
+            <Train 
+              key={index}
+              train={train}
+              onClick={() => handleTrainClick(train)}
+            />
+          ))}
+        </DelayedTrainsList>
+      )
+      }
   </>
   );
 }
