@@ -69,6 +69,8 @@ const tickets = {
       }
     );
 
+    await db.client.close();
+
     return result;
   },
 

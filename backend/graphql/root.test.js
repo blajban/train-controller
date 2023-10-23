@@ -1,7 +1,10 @@
 const request = require('supertest');
 const app = require('../app');
+const database = require('../db/db');
 
-
+afterAll(async () => {
+  await database.closeDb();
+});
 
 describe('GET /graphQl', () => {
   afterEach(() => {

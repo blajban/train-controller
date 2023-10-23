@@ -1,7 +1,10 @@
 const request = require('supertest');
 const app = require('../app');
+const database = require('../db/db');
 
-
+afterAll(async () => {
+  await database.closeDb();
+});
 
 describe('GET /verify-token', () => {
   afterEach(() => {
@@ -14,7 +17,7 @@ describe('GET /verify-token', () => {
     const mockUser = {
       firstName: 'testFirstName',
       lastName: 'testLastName',
-      email: 'test@test.se',
+      email: 'test@testing.se',
       password: 'testPassword'
     };
 
@@ -23,13 +26,13 @@ describe('GET /verify-token', () => {
       .send(mockUser);
     
     const validToken = registerRes.body.data.token;
+
     const res = await request(app)
       .post('/verify-token')
       .set('x-access-token', validToken);
     expect(res.statusCode).toEqual(200);
     expect(res.body.data).toHaveProperty('description');
   });
-
 
   it('should return 403 on missing token', async () => {
     const res = await request(app).post('/verify-token');
@@ -43,4 +46,5 @@ describe('GET /verify-token', () => {
       .set('x-access-token', invalidToken);
     expect(res.statusCode).toEqual(401);
   });
+
 });

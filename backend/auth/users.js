@@ -112,9 +112,10 @@ const users = {
         email: lowerEmail,
         password: encryptedPassword
       });
-      await db.client.close();
 
       const token = users.addToken(lowerEmail);
+
+      await db.client.close();
 
       return res.json({
         data: {
