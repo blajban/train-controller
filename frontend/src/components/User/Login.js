@@ -8,7 +8,7 @@ import StyledInput from '../ui/StyledInput';
 import { getUserToken, loginUser } from './util';
 
 function Login({ isOpen, onClose, setUserName }) {
-  const { isLoggedIn, setIsLoggedIn, setUserInfo } = useContext(UserContext);
+  const { setIsLoggedIn, setUserInfo } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(false);
 

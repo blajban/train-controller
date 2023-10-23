@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import styled, { ThemeProvider as StyledThemeProvider} from "styled-components";
-import { ThemeProvider, useTheme } from './style/ThemeProvider';
+import { useTheme } from './style/ThemeProvider';
 import { lightTheme, darkTheme } from './style/themes';
 
 import UserContext from './contexts/UserContext';

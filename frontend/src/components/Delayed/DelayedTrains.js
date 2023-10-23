@@ -43,6 +43,7 @@ function DelayedTrains() {
     };
 
     fetchDelayedTrains();
+    //eslint-disable-next-line
   }, []);
 
   if (!delayedTrains) return "Loading...";

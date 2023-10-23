@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
 import styled from "styled-components";
 
@@ -27,7 +27,7 @@ const StyledSmallButtonLeft = styled(SmallButton)`
 `;
 
 function TrainItem({ train, onClick, ...restProps }) {
-  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  const { isLoggedIn } = useContext(UserContext);
   const { selectedTrain, setSelectedTrain, trainsWithPosition } = useDelayed();
 
   const isFocused = selectedTrain === train;

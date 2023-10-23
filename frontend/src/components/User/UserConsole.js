@@ -54,9 +54,7 @@ function UserConsole() {
     }
 
     verifyToken();
-  }, []);
-
-
+  }, [setIsLoggedIn, setUserInfo]);
 
   return (
     <UserConsoleContainer>

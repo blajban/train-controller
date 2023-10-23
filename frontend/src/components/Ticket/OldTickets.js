@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { updateTicket } from "../../models/models";
 import TicketRow from "./TicketRow";
-import { TBody, THead, Table, Th, Tr, Td } from "../ui/StyledTable";
+import { TBody, THead, Table, Th, Tr } from "../ui/StyledTable";
 import useTicketSocket from "./ticketSocket";
 
 import UserContext from "../../contexts/UserContext";
@@ -40,6 +40,7 @@ function OldTickets({ reasonCodes}) {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     }
+    //eslint-disable-next-line
   }, [editingTicket]); 
 
   const startEditing = (ticketId, currentCode) => {

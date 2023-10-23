@@ -19,7 +19,7 @@ export default function useMapSocket(map, markersRef) {
     });
 
     socket.on("message", (data) => {
-      if (markersRef.current.selected && markersRef.current.selected.trainnumber == data.trainnumber) {
+      if (markersRef.current.selected && markersRef.current.selected.trainnumber === data.trainnumber) {
         markersRef.current.selected.setLatLng(data.position);
       }
 
@@ -48,10 +48,12 @@ export default function useMapSocket(map, markersRef) {
         marker.remove();
       }
       if(markersRef.current.selected) {
-          markersRef.current.selected.remove();
+        //eslint-disable-next-line
+        markersRef.current.selected.remove();
       }
       socket.disconnect();
     };
+    //eslint-disable-next-line
   }, [map, delayedTrains, selectedTrain, markersRef]);
 
   return { allDelayedTrainsGroup, selectedTrainGroup };

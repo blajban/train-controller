@@ -1,12 +1,11 @@
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import * as React from 'react';
 import Ticket from './Ticket';
-import { getDelayed, getReasonCodes, getTickets } from '../../models/models';
+import { getReasonCodes, getTickets } from '../../models/models';
 
 import { TicketProvider } from './TicketProvider';
 
-const API_KEY = "testkey";
-
+// eslint-disable-next-line
 let mockNewTicketProps;
 
 jest.mock('./NewTicket', () => {

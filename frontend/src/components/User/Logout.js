@@ -6,7 +6,7 @@ import Foldout from './Foldout';
 import { logoutUser } from './util';
 
 function Logout({ isOpen, onClose }) {
-  const { isLoggedIn, setIsLoggedIn, setUserInfo } = useContext(UserContext);
+  const { setIsLoggedIn, setUserInfo } = useContext(UserContext);
 
   const handleLogout = () => {
     logoutUser(setIsLoggedIn, setUserInfo);
