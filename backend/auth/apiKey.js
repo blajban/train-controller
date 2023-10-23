@@ -7,9 +7,7 @@ const scryptAsync = promisify(scrypt);
 const collectionName = 'apiKeys';
 
 const apiKey = {
-  newKey: () => {
-    return randomBytes(32).toString('base64');
-  },
+  newKey: () => randomBytes(32).toString('base64'),
 
   newHash: async (key) => {
     const salt = randomBytes(8).toString('hex');
@@ -48,7 +46,9 @@ const apiKey = {
 
   isValid: async (suppliedKey) => {
     const storedKeys = await apiKey.getAllStoredKeys();
+    // eslint-disable-next-line
     for (const storedKey of storedKeys) {
+      // eslint-disable-next-line
       const same = await apiKey.compareKeys(storedKey.keyHash, suppliedKey);
       if (same) {
         return true;

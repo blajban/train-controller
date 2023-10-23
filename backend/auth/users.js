@@ -7,7 +7,6 @@ const {
   NotEnoughCredentialsError,
   UserExistsError
 } = require('../errors');
-const { checkToken } = require('../middleware/checkToken');
 
 const collectionName = 'users';
 
@@ -16,9 +15,10 @@ const users = {
     const payload = { email };
     const secret = process.env.JWT_SECRET;
 
-    return jwt.sign(payload, secret, { expiresIn: '1h'});
+    return jwt.sign(payload, secret, { expiresIn: '1h' });
   },
 
+  // eslint-disable-next-line
   verify: async (req, res, next) => {
     try {
       const db = await database.getDb(collectionName);
@@ -35,12 +35,12 @@ const users = {
           }
         }
       });
-      
     } catch (error) {
       next(error);
     }
   },
 
+  // eslint-disable-next-line
   login: async (req, res, next) => {
     try {
       const db = await database.getDb(collectionName);
@@ -79,11 +79,17 @@ const users = {
     }
   },
 
+  // eslint-disable-next-line
   register: async (req, res, next) => {
     try {
       const db = await database.getDb(collectionName);
 
-      const { firstName, lastName, email, password } = req.body;
+      const {
+        firstName,
+        lastName,
+        email,
+        password
+      } = req.body;
 
       if (!(firstName && lastName && email && password)) {
         await db.client.close();

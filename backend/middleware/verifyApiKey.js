@@ -1,7 +1,7 @@
 const apiKey = require('../auth/apiKey');
 const { NoApiKeyError, WrongApiKeyError } = require('../errors');
 
-
+// eslint-disable-next-line
 const verifyApiKey = async (req, res, next) => {
   try {
     const key = req.get('x-api-key');
@@ -14,7 +14,6 @@ const verifyApiKey = async (req, res, next) => {
     }
 
     return next(new WrongApiKeyError());
-    
   } catch (err) {
     next(err);
   }

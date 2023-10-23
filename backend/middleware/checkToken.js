@@ -2,17 +2,6 @@ const jwt = require('jsonwebtoken');
 
 const { NoTokenError, InvalidTokenError } = require('../errors');
 
-
-const checkTokenHttp = (req, res, next) => {
-  try {
-    const decoded = checkToken(req);
-    req.decoded = decoded;
-    return next();
-  } catch (error) {
-    next(error);
-  }
-}
-
 const checkToken = (req) => {
   const token = req.headers['x-access-token'];
   if (!token) {
@@ -26,7 +15,18 @@ const checkToken = (req) => {
   } catch (error) {
     throw new InvalidTokenError();
   }
-}
+};
+
+// eslint-disable-next-line
+const checkTokenHttp = (req, res, next) => {
+  try {
+    const decoded = checkToken(req);
+    req.decoded = decoded;
+    return next();
+  } catch (error) {
+    next(error);
+  }
+};
 
 const checkTokenGraphQL = (req) => {
   try {
@@ -34,6 +34,6 @@ const checkTokenGraphQL = (req) => {
   } catch (error) {
     return null;
   }
-}
+};
 
 module.exports = { checkTokenHttp, checkToken, checkTokenGraphQL };

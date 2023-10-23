@@ -28,7 +28,6 @@ describe('POST /register', () => {
     expect(res.statusCode).toEqual(200);
   });
 
-
   it('should return 409 if user already exists', async () => {
     const mockUser = {
       firstName: 'testFirstName',
@@ -59,7 +58,6 @@ describe('POST /register', () => {
   });
 
   it('should return 500 if other error', async () => {
-
     database.getDb = jest.fn(() => {
       throw new Error('Database error');
     });
@@ -69,5 +67,4 @@ describe('POST /register', () => {
 
     expect(res.statusCode).toEqual(500);
   });
-  
 });

@@ -60,7 +60,6 @@ function setupSocket(socket, eventSource) {
       console.log(error);
     }
   };
-
 }
 
 function setupEventSource(sseurl) {

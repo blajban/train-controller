@@ -22,7 +22,6 @@ const codes = {
       const result = await response.json();
 
       return result.RESPONSE.RESULT[0].ReasonCode;
-
     } catch (error) {
       throw new Error('Failed fetching reason codes');
     }

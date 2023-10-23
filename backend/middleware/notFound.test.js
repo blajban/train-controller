@@ -2,14 +2,10 @@ const request = require('supertest');
 const express = require('express');
 const notFound = require('./notFound');
 
-
-
 const app = express();
 app.use(notFound);
 
-
 describe('verifyApiKey middleware', () => {
-
   afterAll(() => {
     jest.restoreAllMocks();
   });
