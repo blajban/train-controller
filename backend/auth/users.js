@@ -108,7 +108,6 @@ const users = {
       });
       await db.client.close();
 
-      // Add token and send to user
       const token = users.addToken(lowerEmail);
 
       return res.json({
