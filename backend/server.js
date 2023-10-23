@@ -2,6 +2,7 @@ const http = require('http');
 const app = require('./app');
 const { fetchTrainPositions } = require('./models/trains');
 const tickets = require('./models/tickets');
+const apiKey = require('./auth/apiKey');
 
 const httpServer = http.createServer(app);
 
@@ -33,10 +34,6 @@ io.on('connection', async (socket) => {
     }
   }
 
-
   fetchTrainPositions(socket);
   tickets.lockTicketsSocketConnection(socket, io);
 });
-
-
-

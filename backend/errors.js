@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 class InvalidCredentialsError extends Error {
   constructor() {
     super('Invalid credentials');
@@ -79,4 +80,3 @@ module.exports = {
   NoApiKeyError,
   AuthorizationError
 };
-

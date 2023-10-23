@@ -1,18 +1,3 @@
-const blueColors = {
-  primary: '#0062CC',
-  secondary: '#7D919E',
-  primaryDarker: '#004699',
-  secondaryDarker: '#607883',
-  placeholderText: '#666',
-  tableNthRow: '#eee',
-  background: '#fff',
-  backgroundDarker: '#f9f9f9',
-  white: '#fff',
-  text: '#000',
-  alertBackground: '#FFF8E1',
-  alertText: '#616161'
-};
-
 export const lightTheme = {
   primary: '#00796B', 
   secondary: '#78909C',

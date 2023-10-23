@@ -37,6 +37,7 @@ function Markers() {
       });
       selectedTrainGroup.current.clearLayers();
     }
+    //eslint-disable-next-line
   }, [selectedTrain]);
 
 

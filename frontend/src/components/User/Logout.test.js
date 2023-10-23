@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react';
+import { render, fireEvent, act, screen } from '@testing-library/react';
 import Logout from './Logout';
 import UserContext from '../../contexts/UserContext';
 import { logoutUser } from './util';
@@ -14,28 +14,28 @@ describe('<Logout />', () => {
     const mockIsLoggedIn = true;
     const mockSetIsLoggedIn = jest.fn();
 
-    const { getByText } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Logout isOpen={true} />
       </UserContext.Provider>
     );
 
-    expect(getByText('Vill du logga ut?')).toBeInTheDocument();
-    expect(getByText('Ja, logga ut')).toBeInTheDocument();
+    expect(screen.getByText('Vill du logga ut?')).toBeInTheDocument();
+    expect(screen.getByText('Ja, logga ut')).toBeInTheDocument();
   });
 
   it('does not render the logout confirmation when isOpen is false', () => {
     const mockIsLoggedIn = true;
     const mockSetIsLoggedIn = jest.fn();
 
-    const { queryByText } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Logout isOpen={false} />
       </UserContext.Provider>
     );
 
-    expect(queryByText('Vill du logga ut?')).toBeNull();
-    expect(queryByText('Ja, logga ut')).toBeNull();
+    expect(screen.queryByText('Vill du logga ut?')).toBeNull();
+    expect(screen.queryByText('Ja, logga ut')).toBeNull();
   });
 
   it('calls the logout function and onClose callback on logout', () => {
@@ -43,14 +43,15 @@ describe('<Logout />', () => {
     const mockSetIsLoggedIn = jest.fn();
     const mockOnClose = jest.fn();
 
-    const { getByText } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Logout isOpen={true} onClose={mockOnClose} />
       </UserContext.Provider>
     );
 
-    const logoutButton = getByText('Ja, logga ut');
+    const logoutButton = screen.getByText('Ja, logga ut');
 
+    // eslint-disable-next-line
     act(() => {
       fireEvent.click(logoutButton);
     });

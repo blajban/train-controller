@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import TicketContext from '../../contexts/TicketContext';
 import { getTickets, addTicket } from '../../models/models';
 

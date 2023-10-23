@@ -1,12 +1,11 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import OldTickets from './OldTickets';
-import ticketSocket from './ticketSocket';
-import { getTickets, addTicket } from '../../models/models';
+
 
 import TicketContext from '../../contexts/TicketContext';
 
-const mockDisconnect = jest.fn();
+
 
 jest.mock('./ticketSocket', () => {
   return {

@@ -1,5 +1,4 @@
 const request = require('supertest');
-const fetch = require('node-fetch');
 const app = require('../app');
 
 const apiKey = require('../auth/apiKey');
@@ -9,7 +8,6 @@ const database = require('../db/db');
 afterAll(async () => {
   await database.closeDb();
 });
-
 
 describe('GET /api-key', () => {
   afterEach(() => {

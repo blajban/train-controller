@@ -1,4 +1,4 @@
-import { getUserName, getUserToken, loginUser, logoutUser } from './util';
+import { getUserToken, loginUser, logoutUser } from './util';
 
 const localStorageMock = (function () {
   let store = {};

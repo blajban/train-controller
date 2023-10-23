@@ -41,10 +41,8 @@ app.get('/', (req, res) => {
   });
 });
 
-
-
 // Generate API key
-app.use('/api-key', apiKey)
+app.use('/api-key', apiKey);
 
 // Check API key
 if (ENV === 'production') {
@@ -65,19 +63,17 @@ app.use('/graphql', (req, res, next) => {
   next();
 }, createHandler({
   schema: schema,
+  // eslint-disable-next-line
   context: (req, res) => {
     return { user: req.raw.user };
   }
 }));
 
-
 if (ENV !== 'production') {
-  app.get('/playground', graphQlPlayground({ 
+  app.get('/playground', graphQlPlayground({
     endpoint: '/graphql'
   }));
 }
-
-
 
 // Handle not found
 app.use(notFound);

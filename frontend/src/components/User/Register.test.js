@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react';
+import { render, fireEvent, act, screen } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
 import Register from './Register';
 import UserContext from '../../contexts/UserContext';
@@ -21,33 +21,34 @@ describe('<Register />', () => {
     const mockIsLoggedIn = false;
     const mockSetIsLoggedIn = jest.fn();
 
-    const { getByPlaceholderText } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Register isOpen={true} />
       </UserContext.Provider>
     );
 
-    expect(getByPlaceholderText('Förnamn')).toBeInTheDocument();
-    expect(getByPlaceholderText('Efternamn')).toBeInTheDocument();
-    expect(getByPlaceholderText('E-post')).toBeInTheDocument();
-    expect(getByPlaceholderText('Lösenord')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Förnamn')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Efternamn')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('E-post')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Lösenord')).toBeInTheDocument();
   });
 
   it('updates form fields when typing', () => {
     const mockIsLoggedIn = false;
     const mockSetIsLoggedIn = jest.fn();
 
-    const { getByPlaceholderText } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Register isOpen={true} />
       </UserContext.Provider>
     );
 
-    const firstNameInput = getByPlaceholderText('Förnamn');
-    const lastNameInput = getByPlaceholderText('Efternamn');
-    const emailInput = getByPlaceholderText('E-post');
-    const passwordInput = getByPlaceholderText('Lösenord');
+    const firstNameInput = screen.getByPlaceholderText('Förnamn');
+    const lastNameInput = screen.getByPlaceholderText('Efternamn');
+    const emailInput = screen.getByPlaceholderText('E-post');
+    const passwordInput = screen.getByPlaceholderText('Lösenord');
 
+    // eslint-disable-next-line
     act(() => {
       UserEvent.type(firstNameInput, 'Testare');
       UserEvent.type(lastNameInput, 'Testaresson');
@@ -71,18 +72,19 @@ describe('<Register />', () => {
     };
     fetch.mockResolvedValueOnce(response);
     
-    const { getByText, getByRole } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Register isOpen={true} />
       </UserContext.Provider>
     );
-    const button = getByRole('button', { name: /Registrera/i });
+    const button = screen.getByRole('button', { name: /Registrera/i });
 
+    // eslint-disable-next-line
     await act(async () => {
       fireEvent.click(button);
     });
 
-    expect(getByText('Fyll i all information för att registrera dig')).toBeInTheDocument();
+    expect(screen.getByText('Fyll i all information för att registrera dig')).toBeInTheDocument();
   });
 
   it('handles error when status is 409', async () => {
@@ -95,18 +97,19 @@ describe('<Register />', () => {
     };
     fetch.mockResolvedValueOnce(response);
     
-    const { getByText, getByRole } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Register isOpen={true} />
       </UserContext.Provider>
     );
-    const button = getByRole('button', { name: /Registrera/i });
+    const button = screen.getByRole('button', { name: /Registrera/i });
 
+    // eslint-disable-next-line
     await act(async () => {
       fireEvent.click(button);
     });
 
-    expect(getByText('En användare med den här e-postadressen finns redan registrerad')).toBeInTheDocument();
+    expect(screen.getByText('En användare med den här e-postadressen finns redan registrerad')).toBeInTheDocument();
   });
 
   it('handles successful registration', async () => {
@@ -129,13 +132,14 @@ describe('<Register />', () => {
     };
     fetch.mockResolvedValueOnce(response);
 
-    const { getByRole } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Register isOpen={true} setUserName={mockSetUserName} />
       </UserContext.Provider>
     );
-    const button = getByRole('button', { name: /Registrera/i });
+    const button = screen.getByRole('button', { name: /Registrera/i });
 
+    // eslint-disable-next-line
     await act(async () => {
       fireEvent.click(button);
     });

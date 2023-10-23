@@ -28,9 +28,9 @@ describe('POST /login', () => {
 
   it('should return 200 on success', async () => {
     const userInfo = {
-      email: "loginTest@test.se",
-      password: "testPassword"
-    }
+      email: 'loginTest@test.se',
+      password: 'testPassword'
+    };
     const res = await request(app)
       .post('/login')
       .send(userInfo);
@@ -40,8 +40,8 @@ describe('POST /login', () => {
 
   it('should return 400 if email or pw not included', async () => {
     const userInfo = {
-      email: "loginTest@test.se"
-    }
+      email: 'loginTest@test.se'
+    };
     const res = await request(app)
       .post('/login')
       .send(userInfo);
@@ -51,9 +51,9 @@ describe('POST /login', () => {
 
   it('should return 401 if wrong email or pw', async () => {
     const userInfo = {
-      email: "loginTest@test.se",
-      password: "wrongPassword"
-    }
+      email: 'loginTest@test.se',
+      password: 'wrongPassword'
+    };
     const res = await request(app)
       .post('/login')
       .send(userInfo);
@@ -62,7 +62,6 @@ describe('POST /login', () => {
   });
 
   it('should return 500 if other error', async () => {
-
     database.getDb = jest.fn(() => {
       throw new Error('Database error');
     });

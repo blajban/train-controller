@@ -117,6 +117,7 @@ describe("<DelayedTrains />", () => {
 
     const clickableElement = await screen.findByText("+");
 
+    //eslint-disable-next-line
     await act(async () => {
       fireEvent.click(clickableElement);
     });
@@ -183,6 +184,8 @@ describe("<DelayedTrains />", () => {
     );
 
     const clickableElement = await screen.findByText("+");
+
+    //eslint-disable-next-line
     await act(async () => {
       fireEvent.click(clickableElement);
     });

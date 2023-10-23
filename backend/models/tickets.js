@@ -1,6 +1,5 @@
-const database = require('../db/db');
 const { ObjectId } = require('mongodb');
-
+const database = require('../db/db');
 
 const collectionName = 'tickets';
 
@@ -14,7 +13,6 @@ const tickets = {
     await db.client.close();
 
     return allTickets;
-
   },
   // eslint-disable-next-line
   getTickets: async (req, res, next) => {
@@ -44,7 +42,7 @@ const tickets = {
       code: data.code,
       trainnumber: data.trainnumber,
       traindate: data.traindate,
-    }
+    };
   },
   // eslint-disable-next-line
   createTicket: async (req, res, next) => {
@@ -71,6 +69,8 @@ const tickets = {
       }
     );
 
+    await db.client.close();
+
     return result;
   },
 
@@ -83,7 +83,7 @@ const tickets = {
     });
 
     socket.on('unlockTicket', async (data) => {
-      currentLockedTickets = currentLockedTickets.filter(ticket => ticket.ticketId !== data);
+      currentLockedTickets = currentLockedTickets.filter((ticket) => ticket.ticketId !== data);
       socket.broadcast.emit('ticketUnlocked', data);
       const db = await database.getDb(collectionName);
       const result = await db.collection.findOne({ _id: new ObjectId(data) });

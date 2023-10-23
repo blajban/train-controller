@@ -1,13 +1,10 @@
 const jwt = require('jsonwebtoken');
-const { checkToken, checkTokenHttp } = require('./checkToken');
+const { checkTokenHttp } = require('./checkToken');
 const { NoTokenError, InvalidTokenError } = require('../errors');
-
 
 jest.mock('jsonwebtoken');
 
-
 describe('checkToken middleware', () => {
-
   afterAll(() => {
     jest.restoreAllMocks();
   });
@@ -18,7 +15,7 @@ describe('checkToken middleware', () => {
     const mockNext = jest.fn();
 
     checkTokenHttp(mockReq, mockRes, mockNext);
-    
+
     expect(mockNext).toHaveBeenCalledWith(new NoTokenError());
   });
 
@@ -32,7 +29,7 @@ describe('checkToken middleware', () => {
     const mockNext = jest.fn();
 
     checkTokenHttp(mockReq, mockRes, mockNext);
-    
+
     expect(mockNext).toHaveBeenCalledWith(new InvalidTokenError());
   });
 
@@ -44,7 +41,7 @@ describe('checkToken middleware', () => {
     const mockNext = jest.fn();
 
     checkTokenHttp(mockReq, mockRes, mockNext);
-    
+
     expect(mockNext).toHaveBeenCalledWith();
   });
 });

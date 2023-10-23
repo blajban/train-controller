@@ -79,6 +79,7 @@ const useTicketSocket = (onTicketUpdated) => {
     return () => {
       disconnectSocket();
     };
+    // eslint-disable-next-line
   }, []);
 
   return {

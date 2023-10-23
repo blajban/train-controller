@@ -16,7 +16,6 @@ const LocationType = new GraphQLObjectType({
   }),
 });
 
-
 const DelayedTrainType = new GraphQLObjectType({
   name: 'Train',
   description: 'Represents a delayed train',

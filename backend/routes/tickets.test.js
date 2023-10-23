@@ -1,11 +1,11 @@
 const request = require('supertest');
+const jwt = require('jsonwebtoken');
 const app = require('../app');
 const database = require('../db/db');
-const jwt = require('jsonwebtoken');
 
 const payload = { email: 'test@test.se' };
 const secret = process.env.JWT_SECRET;
-const validToken = jwt.sign(payload, secret, { expiresIn: '1h'});
+const validToken = jwt.sign(payload, secret, { expiresIn: '1h' });
 
 afterAll(async () => {
   await database.closeDb();

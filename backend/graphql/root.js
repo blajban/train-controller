@@ -1,10 +1,7 @@
 const {
   GraphQLObjectType,
-  GraphQLString,
   GraphQLList
 } = require('graphql');
-
-const { checkToken } = require('../middleware/checkToken');
 
 const ReasonCodeType = require('./codes');
 const codes = require('../models/codes');
@@ -20,17 +17,15 @@ const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
   fields: () => ({
-    codes: { 
+    codes: {
       type: new GraphQLList(ReasonCodeType),
-      resolve: async () => {
-        return await codes.getData();
-      }
+      // eslint-disable-next-line
+      resolve: async () => await codes.getData()
     },
     delayed: {
       type: new GraphQLList(DelayedTrainType),
-      resolve: async () => {
-        return await delayed.getData();
-      }
+      // eslint-disable-next-line
+      resolve: async () => await delayed.getData()
     },
     tickets: {
       type: new GraphQLList(TicketType),
@@ -38,6 +33,7 @@ const RootQueryType = new GraphQLObjectType({
         if (!context.user) {
           throw new AuthorizationError();
         }
+        // eslint-disable-next-line
         return await tickets.getData();
       }
     }
@@ -59,6 +55,7 @@ const RootMutationType = new GraphQLObjectType({
           throw new AuthorizationError();
         }
         const newTicket = args.input;
+        // eslint-disable-next-line
         return await tickets.insertTicketData(newTicket);
       }
     },
@@ -73,11 +70,11 @@ const RootMutationType = new GraphQLObjectType({
           throw new AuthorizationError();
         }
         const { _id, code } = args.input;
+        // eslint-disable-next-line
         return await tickets.updateTicketCodeData({ _id, code });
       }
     }
   })
 });
-
 
 module.exports = { RootQueryType, RootMutationType };

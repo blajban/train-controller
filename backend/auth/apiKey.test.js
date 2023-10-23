@@ -1,4 +1,4 @@
-const apiKey  = require('./apiKey');
+const apiKey = require('./apiKey');
 const database = require('../db/db');
 
 afterAll(async () => {
@@ -18,7 +18,7 @@ describe('apiKey', () => {
 
   it('compareKeys should return true for matching key', async () => {
     const testKey = 'abcdef';
-    const storedKey = await apiKey.newHash(testKey); 
+    const storedKey = await apiKey.newHash(testKey);
 
     const result = await apiKey.compareKeys(storedKey, testKey);
     expect(result).toBe(true);
@@ -26,7 +26,7 @@ describe('apiKey', () => {
 
   it('should return false for non-matching keys', async () => {
     const testKey = 'abcdef';
-    const storedKey = await apiKey.newHash('anotherKey'); 
+    const storedKey = await apiKey.newHash('anotherKey');
 
     const result = await apiKey.compareKeys(storedKey, testKey);
     expect(result).toBe(false);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import UserConsole from './UserConsole';
 import UserContext from '../../contexts/UserContext';
 import * as util from './util';
@@ -23,14 +23,14 @@ describe('<UserConsole />', () => {
       lastName: "testare",
       email: "test@test.se"
     };
-    const { getByText } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, userInfo: mockUserInfo}}>
         <UserConsole />
       </UserContext.Provider>
     , { wrapper: AllProviders });
 
-    expect(getByText(/Välkommen/)).toBeInTheDocument();
-    expect(getByText(/Logga ut/)).toBeInTheDocument();
+    expect(screen.getByText(/Välkommen/)).toBeInTheDocument();
+    expect(screen.getByText(/Logga ut/)).toBeInTheDocument();
   });
 
   it('renders login and register when not logged in', () => {
@@ -40,43 +40,43 @@ describe('<UserConsole />', () => {
       lastName: "testare",
       email: "test@test.se"
     };
-    const { getByText } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, userInfo: mockUserInfo}}>
         <UserConsole />
       </UserContext.Provider>
     , { wrapper: AllProviders });
 
-    expect(getByText('Logga in eller registrera dig för att hantera ärenden.')).toBeInTheDocument();
-    expect(getByText('Logga in')).toBeInTheDocument();
-    expect(getByText('Registrera dig')).toBeInTheDocument();
+    expect(screen.getByText('Logga in eller registrera dig för att hantera ärenden.')).toBeInTheDocument();
+    expect(screen.getByText('Logga in')).toBeInTheDocument();
+    expect(screen.getByText('Registrera dig')).toBeInTheDocument();
   });
 
   it('shows the Login when the login button is clicked', () => {
     const mockIsLoggedIn = false;
-    const { getByText } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <UserConsole />
       </UserContext.Provider>
     , { wrapper: AllProviders });
 
-    const loginButton = getByText('Logga in');
+    const loginButton = screen.getByText('Logga in');
     fireEvent.click(loginButton);
 
-    expect(getByText('Tillbaka')).toBeInTheDocument();
+    expect(screen.getByText('Tillbaka')).toBeInTheDocument();
   });
 
   it('shows the Register component when the register button is clicked', () => {
     const mockIsLoggedIn = false;
-    const { getByText } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <UserConsole />
       </UserContext.Provider>
     , { wrapper: AllProviders });
 
-    const registerButton = getByText('Registrera dig');
+    const registerButton = screen.getByText('Registrera dig');
     fireEvent.click(registerButton);
 
-    expect(getByText('Tillbaka')).toBeInTheDocument();
+    expect(screen.getByText('Tillbaka')).toBeInTheDocument();
   });
 
   it('verifies the user token on component mount', async () => {
@@ -112,20 +112,20 @@ describe('<UserConsole />', () => {
 
   it('closes the Register component when the Tillbaka button is clicked', () => {
     const mockIsLoggedIn = false;
-    const { getByText, queryByText } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn }}>
         <UserConsole />
       </UserContext.Provider>
     , { wrapper: AllProviders });
 
-    const registerButton = getByText('Registrera dig');
+    const registerButton = screen.getByText('Registrera dig');
     fireEvent.click(registerButton);
     
-    const backButton = getByText('Tillbaka');
+    const backButton = screen.getByText('Tillbaka');
     fireEvent.click(backButton);
 
-    expect(queryByText('Tillbaka')).toBeNull();
-    expect(getByText('Registrera dig')).toBeInTheDocument();
+    expect(screen.queryByText('Tillbaka')).toBeNull();
+    expect(screen.getByText('Registrera dig')).toBeInTheDocument();
   });
 
 });

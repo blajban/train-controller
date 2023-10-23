@@ -1,7 +1,7 @@
 import React from 'react';
 import StyledSelect from '../ui/StyledSelect';
 import SmallButton from '../ui/SmallButton';
-import { TBody, THead, Table, Th, Tr, Td } from "../ui/StyledTable";
+import { Tr, Td } from "../ui/StyledTable";
 
 function TicketRow({
   ticket,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react';
+import { render, fireEvent, act, screen } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
 import Login from './Login';
 import UserContext from '../../contexts/UserContext';
@@ -22,14 +22,14 @@ describe('<Login />', () => {
     const mockIsLoggedIn = false;
     const mockSetIsLoggedIn = jest.fn();
 
-    const { getByPlaceholderText } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Login isOpen={true} />
       </UserContext.Provider>
     );
 
-    expect(getByPlaceholderText('E-post')).toBeInTheDocument();
-    expect(getByPlaceholderText('Lösenord')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('E-post')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Lösenord')).toBeInTheDocument();
 });
 
 
@@ -37,15 +37,16 @@ describe('<Login />', () => {
     const mockIsLoggedIn = false;
     const mockSetIsLoggedIn = jest.fn();
 
-    const { getByPlaceholderText } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Login isOpen={true} />
       </UserContext.Provider>
     );
 
-    const emailInput = getByPlaceholderText('E-post');
-    const passwordInput = getByPlaceholderText('Lösenord');
+    const emailInput = screen.getByPlaceholderText('E-post');
+    const passwordInput = screen.getByPlaceholderText('Lösenord');
 
+    // eslint-disable-next-line
     act(() => {
       UserEvent.type(emailInput, 'test@test.se');
       UserEvent.type(passwordInput, 'password');
@@ -65,17 +66,18 @@ describe('<Login />', () => {
     };
     fetch.mockResolvedValueOnce(response);
     
-    const { getByText, getByRole } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Login isOpen={true} />
       </UserContext.Provider>);
-    const button = getByRole('button', { name: /Logga in/i });
+    const button = screen.getByRole('button', { name: /Logga in/i });
 
+    // eslint-disable-next-line
     await act(async () => {
       fireEvent.click(button);
     });
 
-    expect(getByText('Användarnamn eller lösenord saknas')).toBeInTheDocument();
+    expect(screen.getByText('Användarnamn eller lösenord saknas')).toBeInTheDocument();
   });
 
   it('handles error when status is 401', async () => {
@@ -88,18 +90,19 @@ describe('<Login />', () => {
     };
     fetch.mockResolvedValueOnce(response);
     
-    const { getByText, getByRole } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Login isOpen={true} />
       </UserContext.Provider>
     );
-    const button = getByRole('button', { name: /Logga in/i });
+    const button = screen.getByRole('button', { name: /Logga in/i });
 
+    // eslint-disable-next-line
     await act(async () => {
       fireEvent.click(button);
     });
 
-    expect(getByText('Felaktigt användarnamn eller lösenord')).toBeInTheDocument();
+    expect(screen.getByText('Felaktigt användarnamn eller lösenord')).toBeInTheDocument();
   });
 
   it('handles successful login', async () => {
@@ -122,14 +125,15 @@ describe('<Login />', () => {
     };
     fetch.mockResolvedValueOnce(response);
 
-    const { getByRole } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Login isOpen={true} setUserName={mockSetUserName} />
       </UserContext.Provider>
     );
 
-    const button = getByRole('button', { name: /Logga in/i });
+    const button = screen.getByRole('button', { name: /Logga in/i });
 
+    // eslint-disable-next-line
     await act(async () => {
       fireEvent.click(button);
     });
@@ -143,18 +147,19 @@ describe('<Login />', () => {
 
     fetch.mockRejectedValueOnce(new Error('Generic Error'));
     
-    const { getByText, getByRole } = render(
+    render(
       <UserContext.Provider value={{ isLoggedIn: mockIsLoggedIn, setIsLoggedIn: mockSetIsLoggedIn }}>
         <Login isOpen={true} />
       </UserContext.Provider>
     );
-    const button = getByRole('button', { name: /Logga in/i });
+    const button = screen.getByRole('button', { name: /Logga in/i });
 
+    // eslint-disable-next-line
     await act(async () => {
       fireEvent.click(button);
     });
 
-    expect(getByText('Generic Error')).toBeInTheDocument();
+    expect(screen.getByText('Generic Error')).toBeInTheDocument();
   });
 
 });

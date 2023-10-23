@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import Delay from '../Delayed/Delay';
 import Button from '../ui/Button';

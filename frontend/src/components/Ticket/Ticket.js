@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import styled from "styled-components";
 import NewTicket from './NewTicket';
 import OldTickets from './OldTickets';
-import { getTickets, addTicket, getReasonCodes } from '../../models/models';
+import { getReasonCodes } from '../../models/models';
 import SmallButton from '../ui/SmallButton';
 import { useTickets } from '../../contexts/TicketContext';
 
@@ -51,6 +51,7 @@ function Ticket({invokeMock, isOpen, onClose, trainData}) {
 
   useEffect(() => {
     fetchOldTickets();
+    // eslint-disable-next-line
   }, []);
 
   if (!oldTickets || !reasonCodes) return "Loading tickets...";

@@ -8,7 +8,7 @@ import UserContext from '../../contexts/UserContext';
 import { loginUser } from './util';
 
 function Register({ isOpen, onClose }) {
-  const { isLoggedIn, setIsLoggedIn, setUserInfo } = useContext(UserContext);
+  const { setIsLoggedIn, setUserInfo } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(false);
 

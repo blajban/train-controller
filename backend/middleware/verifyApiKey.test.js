@@ -4,15 +4,14 @@ const verifyApiKey = require('./verifyApiKey');
 const apiKey = require('../auth/apiKey');
 
 jest.mock('../auth/apiKey', () => ({
-    isValid: jest.fn()
-  }));
+  isValid: jest.fn()
+}));
 
 const app = express();
 app.use(verifyApiKey);
 app.get('/test', (req, res) => res.status(200).send('Success'));
 
 describe('verifyApiKey middleware', () => {
-
   afterAll(() => {
     jest.restoreAllMocks();
   });
