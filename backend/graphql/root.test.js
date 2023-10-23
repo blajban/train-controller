@@ -1,6 +1,9 @@
 const request = require('supertest');
+const fetch = require('node-fetch');
 const app = require('../app');
 const database = require('../db/db');
+
+jest.mock('node-fetch');
 
 afterAll(async () => {
   await database.closeDb();
@@ -14,6 +17,19 @@ describe('GET /graphQl', () => {
   });
 
   it('should return delayed', async () => {
+    const mockResponseData = [
+      {
+        TrainAnnouncement: [{
+          ActivityId: "an id"
+        }]
+      }
+    ];
+
+    const mockResolvedData = {
+      json: async () => ({ RESPONSE: { RESULT: mockResponseData } })
+    };
+
+    fetch.mockResolvedValueOnce(mockResolvedData);
     const res = await request(app)
       .post('/graphql')
       .send({
@@ -31,20 +47,28 @@ describe('GET /graphQl', () => {
   });
 
   it('should return codes', async () => {
+    const mockResponseData = [{ ReasonCode: [{ Code: '1', Level1Description: 'Test' }] }];
+
+    const mockResolvedData = {
+      json: async () => ({ RESPONSE: { RESULT: mockResponseData } })
+    };
+
+    fetch.mockResolvedValueOnce(mockResolvedData);
+
     const res = await request(app)
       .post('/graphql')
       .send({
         query: `
           {
             codes {
-              Level2Description
+              Level1Description
             }
           }
         `
     });
 
     expect(res.body.data).toHaveProperty('codes');
-    expect(res.body.data.codes[0]).toHaveProperty('Level2Description');
+    expect(res.body.data.codes[0]).toHaveProperty('Level1Description');
   });
 
   it('should add ticket', async () => {
