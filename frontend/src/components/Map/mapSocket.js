@@ -28,6 +28,8 @@ export default function useMapSocket(map, markersRef) {
         return;
       }
 
+      if (markersRef.current.selected) return;
+
       const isDelayed = delayedTrains && delayedTrains.some(train => train.OperationalTrainNumber === data.trainnumber);
       if (!isDelayed) return;
 
