@@ -9,7 +9,7 @@ import { useTickets } from "../../contexts/TicketContext";
 
 
 
-function OldTickets({ reasonCodes}) {
+function OldTickets({ reasonCodes }) {
   const [ editingTicket, setEditingTicket ] = useState(null);
   const [ selectedReasonCode, setSelectedReasonCode ] = useState('');
   const { userInfo } = useContext(UserContext);
