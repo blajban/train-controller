@@ -14,7 +14,37 @@ describe('<NewTicket />', () => {
   afterEach(() => {
     jest.resetAllMocks();
   });
-  
+
+  it('should render placeholder if no reason codes', async () => {
+    const mockTrainData = { 
+      OperationalTrainNumber: "12345",
+      LocationSignature: "AA", 
+      FromLocation: [
+        { LocationName: "Start" 
+      }],
+      ToLocation: [
+        { LocationName: "End" }
+      ] 
+    };
+
+    const mockCodesData = null;
+
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await act(async () => {
+      render(
+        <TicketContext.Provider value={{ addNewTicket: () => {} }}>
+        <NewTicket 
+          trainData={mockTrainData}
+          reasonCodes={mockCodesData}
+        />
+        </TicketContext.Provider>
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Loading reason codes.../)).toBeInTheDocument();
+    });
+  });
 
   it('should render location string correctly', async () => {
     const mockTrainData = { 

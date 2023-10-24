@@ -1,22 +1,63 @@
 import { render } from '@testing-library/react';
 import Markers from './Markers';
-import useMapSocket from './mapSocket';
-import DelayedContext from '../../contexts/DelayedContext';
+import { useDelayed } from "../../contexts/DelayedContext";
+import { useMap } from "react-leaflet";
+import useMapSocket from "./mapSocket";
 
 jest.mock('react-leaflet', () => ({
-  useMap: jest.fn()
+  useMap: jest.fn(),
 }));
 
-jest.mock("./mapSocket");
+jest.mock('./mapSocket', () => jest.fn());
 
-describe('<Markers />', () => {
+jest.mock("../../contexts/DelayedContext", () => ({
+  useDelayed: jest.fn(),
+}));
+
+describe('Markers component', () => {
+  const mockMap = {
+    on: jest.fn(),
+    off: jest.fn(),
+    hasLayer: jest.fn(),
+    removeLayer: jest.fn(),
+    addLayer: jest.fn(),
+  };
+
+  const mockDelayedTrainsGroup = {
+    current: {
+      clearLayers: jest.fn(),
+      addTo: jest.fn(),
+      addLayer: jest.fn(),
+    }
+  };
+
+  const mockSelectedTrainGroup = {
+    current: {
+      clearLayers: jest.fn(),
+      addTo: jest.fn(),
+      addLayer: jest.fn(),
+    }
+  };
+
+  beforeEach(() => {
+    useMap.mockReturnValue(mockMap);
+    useMapSocket.mockReturnValue({
+      allDelayedTrainsGroup: mockDelayedTrainsGroup,
+      selectedTrainGroup: mockSelectedTrainGroup
+    });
+  });
+
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllTimers();
-    jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
 
-  it('test test', () => {
-    expect(true).toBe(true);
+  it('should render without crashing', () => {
+    useDelayed.mockReturnValue({
+      selectedTrain: null
+    });
+
+    render(<Markers />);
   });
+
+
 });
