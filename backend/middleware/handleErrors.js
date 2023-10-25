@@ -1,4 +1,4 @@
-const handleErrors = (err, req, res) => {
+const handleErrors = (err, req, res, next) => {
   const statusCode = err.status || 500;
   res.status(statusCode);
   res.json({
