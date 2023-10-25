@@ -1,4 +1,4 @@
-import { getReasonCodes, getDelayed, getTickets, addTicket } from './models';
+import { getReasonCodes, getDelayed, getTickets, addTicket, updateTicket } from './models';
 
 global.fetch = jest.fn();
 
@@ -184,4 +184,48 @@ describe('Models', () => {
 
     expect(console.error).toHaveBeenCalledTimes(1);
   });
+
+  it('updateTicket fetches and returns data correctly', async () => {
+    const mockTicketId = 1;
+    const mockTicketNewCode = "someCode";
+
+    const mockData = {
+      data: {
+        updateTicket: {
+          _id: 1,
+          code: "someCode",
+          trainnumber: "123",
+          traindate: "2023-01-01"
+        }
+      }
+    };
+
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(mockData),
+      })
+    );
+
+    const result = await updateTicket(mockTicketId, mockTicketNewCode);
+
+    expect(result).toEqual(mockData.data.updateTicket);
+  });
+
+  it('updateTicket handles fetch error', async () => {
+    const mockTicketId = 1;
+    const mockTicketNewCode = "someCode";
+
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(new Error('API error')),
+      })
+    );
+
+    console.error = jest.fn();
+
+    await expect(updateTicket(mockTicketId, mockTicketNewCode)).resolves.toBeUndefined();
+
+    expect(console.error).toHaveBeenCalledTimes(1);
+  });
+
 });
