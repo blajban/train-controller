@@ -24,7 +24,7 @@ describe('GET /verify-token', () => {
     const registerRes = await request(app)
       .post('/register')
       .send(mockUser);
-    
+
     const validToken = registerRes.body.data.token;
 
     const res = await request(app)
@@ -40,11 +40,10 @@ describe('GET /verify-token', () => {
   });
 
   it('should return 401 on invalid token', async () => {
-    const invalidToken = "InvalidToken";
+    const invalidToken = 'InvalidToken';
     const res = await request(app)
       .post('/verify-token')
       .set('x-access-token', invalidToken);
     expect(res.statusCode).toEqual(401);
   });
-
 });

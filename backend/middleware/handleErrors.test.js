@@ -14,10 +14,9 @@ beforeEach(() => {
 });
 
 describe('handleErrors middleware', () => {
-
   it('should handle errors', () => {
     const error = new Error('An error');
-    
+
     handleErrors(error, mockRequest, mockResponse, mockNext);
 
     expect(mockResponse.status).toHaveBeenCalledWith(500);
@@ -31,7 +30,7 @@ describe('handleErrors middleware', () => {
   it('should handle specific errors', () => {
     const error = new Error('Not found');
     error.status = 404;
-    
+
     handleErrors(error, mockRequest, mockResponse, mockNext);
 
     expect(mockResponse.status).toHaveBeenCalledWith(404);
@@ -46,7 +45,7 @@ describe('handleErrors middleware', () => {
     process.env.NODE_ENV = 'production';
 
     const error = new Error('Some error');
-    
+
     handleErrors(error, mockRequest, mockResponse, mockNext);
 
     expect(mockResponse.status).toHaveBeenCalledWith(500);

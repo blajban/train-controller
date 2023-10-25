@@ -1,15 +1,10 @@
+const { ObjectId } = require('mongodb');
 const tickets = require('./tickets');
 const database = require('../db/db');
-const { ObjectId } = require('mongodb');
-
-//afterAll(async () => {
-//  await database.closeDb();
-//});
 
 jest.mock('../db/db', () => ({
   getDb: jest.fn()
 }));
-
 
 const socketMock = {
   emit: jest.fn(),
@@ -46,14 +41,12 @@ describe('lockTicketsSocketConnection', () => {
 
     database.getDb.mockResolvedValueOnce({
       collection: {
-          findOne: jest.fn().mockResolvedValueOnce(mockedTicketFromDb)
+        findOne: jest.fn().mockResolvedValueOnce(mockedTicketFromDb)
       }
     });
     await tickets.lockTicketsSocketConnection(socketMock, ioMock);
-    socketMock.on.mock.calls.find(call => call[0] === 'unlockTicket')[1](ticketId);
+    socketMock.on.mock.calls.find((call) => call[0] === 'unlockTicket')[1](ticketId);
 
     expect(socketMock.broadcast.emit).toHaveBeenCalledWith('ticketUnlocked', ticketId);
   });
-
-
 });
