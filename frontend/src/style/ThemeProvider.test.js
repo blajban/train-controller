@@ -30,12 +30,14 @@ describe('ThemeProvider', () => {
       </ThemeProvider>
     );
 
+    // eslint-disable-next-line
     act(() => {
       userEvent.click(screen.getByText('Toggle Theme'));
     });
 
     expect(screen.getByText('dark')).toBeInTheDocument();
 
+    // eslint-disable-next-line
     act(() => {
       userEvent.click(screen.getByText('Toggle Theme'));
     });
