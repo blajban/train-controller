@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen, waitFor, act, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import OldTickets from './OldTickets';
-import { updateTicket } from '../../models/models';
 
 import TicketContext from '../../contexts/TicketContext';
 
@@ -103,7 +102,8 @@ describe('<OldTickets />', () => {
   
     const editBtn = screen.getByText(/Redigera/);
     expect(editBtn).toBeInTheDocument();
-    
+
+    // eslint-disable-next-line
     act(() => {
       userEvent.click(editBtn);
     });
@@ -111,11 +111,12 @@ describe('<OldTickets />', () => {
     const saveBtn = screen.getByText(/Spara/);
     expect(saveBtn).toBeInTheDocument();
 
+    // eslint-disable-next-line
     act(() => {
       userEvent.click(saveBtn);
     });
 
-    waitFor(() => {
+    await waitFor(() => {
       const newEditBtn = screen.getByText(/Redigera/);
       expect(newEditBtn).toBeInTheDocument();
     });
@@ -146,7 +147,8 @@ describe('<OldTickets />', () => {
   
     const editBtn = screen.getByText(/Redigera/);
     expect(editBtn).toBeInTheDocument();
-    
+
+    // eslint-disable-next-line
     act(() => {
       userEvent.click(editBtn);
     });
@@ -154,10 +156,12 @@ describe('<OldTickets />', () => {
     const cancelBtn = screen.getByText(/Ångra/);
     expect(cancelBtn).toBeInTheDocument();
 
+    // eslint-disable-next-line
     act(() => {
       userEvent.click(cancelBtn);
     });
 
+    // eslint-disable-next-line
     waitFor(() => {
       const newEditBtn = screen.getByText(/Redigera/);
       expect(newEditBtn).toBeInTheDocument();
@@ -193,7 +197,8 @@ describe('<OldTickets />', () => {
   
     const editBtn = screen.getByText(/Redigera/);
     expect(editBtn).toBeInTheDocument();
-    
+
+    // eslint-disable-next-line
     act(() => {
       userEvent.click(editBtn);
     });
@@ -230,7 +235,8 @@ describe('<OldTickets />', () => {
   
     const editBtn = screen.getByText(/Redigera/);
     expect(editBtn).toBeInTheDocument();
-    
+
+    // eslint-disable-next-line
     act(() => {
       userEvent.click(editBtn);
     });
@@ -238,6 +244,7 @@ describe('<OldTickets />', () => {
     const cancelBtn = screen.getByText(/Ångra/);
     expect(cancelBtn).toBeInTheDocument();
 
+    // eslint-disable-next-line
     act(() => {
       userEvent.click(cancelBtn);
     });
@@ -270,7 +277,8 @@ describe('<OldTickets />', () => {
   
     const editBtn = screen.getByText(/Redigera/);
     expect(editBtn).toBeInTheDocument();
-    
+
+    // eslint-disable-next-line
     act(() => {
       userEvent.click(editBtn);
     });
@@ -278,6 +286,7 @@ describe('<OldTickets />', () => {
     const saveBtn = screen.getByText(/Spara/);
     expect(saveBtn).toBeInTheDocument();
 
+    // eslint-disable-next-line
     await act(async () => {
       userEvent.click(saveBtn);
       expect(consoleSpy).toHaveBeenCalledWith('Error:', new Error('Mocked updateTicket error'));
@@ -310,7 +319,8 @@ describe('<OldTickets />', () => {
   
     const editBtn = screen.getByText(/Redigera/);
     expect(editBtn).toBeInTheDocument();
-    
+
+    // eslint-disable-next-line
     act(() => {
       userEvent.click(editBtn);
     });

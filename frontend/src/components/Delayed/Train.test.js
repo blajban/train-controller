@@ -1,9 +1,8 @@
 import React from 'react';
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import Train from './Train';
 import UserContext from '../../contexts/UserContext';
 import DelayedContext from '../../contexts/DelayedContext';
-import { act } from 'react-dom/test-utils';
 
 jest.mock('./Delay', () => {
   return function MockedDelay() {

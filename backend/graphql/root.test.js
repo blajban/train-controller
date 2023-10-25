@@ -20,7 +20,7 @@ describe('GET /graphQl', () => {
     const mockResponseData = [
       {
         TrainAnnouncement: [{
-          ActivityId: "an id"
+          ActivityId: 'an id'
         }]
       }
     ];
@@ -40,7 +40,7 @@ describe('GET /graphQl', () => {
             }
           }
         `
-    });
+      });
 
     expect(res.body.data).toHaveProperty('delayed');
     expect(res.body.data.delayed[0]).toHaveProperty('ActivityId');
@@ -65,7 +65,7 @@ describe('GET /graphQl', () => {
             }
           }
         `
-    });
+      });
 
     expect(res.body.data).toHaveProperty('codes');
     expect(res.body.data.codes[0]).toHaveProperty('Level1Description');
@@ -82,9 +82,9 @@ describe('GET /graphQl', () => {
     const registerRes = await request(app)
       .post('/register')
       .send(mockUser);
-    
+
     const validToken = registerRes.body.data.token;
-    
+
     const res = await request(app)
       .post('/graphql')
       .set('x-access-token', validToken)
@@ -108,8 +108,8 @@ describe('GET /graphQl', () => {
   });
 
   it('should return error when trying add ticket if not logged in', async () => {
-    const invalidToken = "InvalidToken"
-    
+    const invalidToken = 'InvalidToken';
+
     const res = await request(app)
       .post('/graphql')
       .set('x-access-token', invalidToken)
@@ -141,7 +141,7 @@ describe('GET /graphQl', () => {
     const loginRes = await request(app)
       .post('/login')
       .send(mockUser);
-    
+
     const validToken = loginRes.body.data.token;
 
     const res = await request(app)
@@ -155,7 +155,7 @@ describe('GET /graphQl', () => {
             }
           }
         `
-    });
+      });
 
     expect(res.statusCode).toEqual(200);
     expect(res.body.data).toHaveProperty('tickets');
@@ -163,7 +163,7 @@ describe('GET /graphQl', () => {
   });
 
   it('should return error when not logged in when getting tickets', async () => {
-    const invalidToken = "InvalidToken"
+    const invalidToken = 'InvalidToken';
 
     const res = await request(app)
       .post('/graphql')
@@ -176,7 +176,7 @@ describe('GET /graphQl', () => {
             }
           }
         `
-    });
+      });
 
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('errors');
@@ -192,7 +192,7 @@ describe('GET /graphQl', () => {
     const loginRes = await request(app)
       .post('/login')
       .send(mockUser);
-    
+
     const validToken = loginRes.body.data.token;
 
     const getTicketsRes = await request(app)
@@ -206,8 +206,9 @@ describe('GET /graphQl', () => {
             }
           }
         `
-    });
+      });
 
+    // eslint-disable-next-line
     const ticketId = getTicketsRes.body.data.tickets[0]._id;
 
     const res = await request(app)
@@ -242,7 +243,7 @@ describe('GET /graphQl', () => {
     const loginRes = await request(app)
       .post('/login')
       .send(mockUser);
-    
+
     const validToken = loginRes.body.data.token;
 
     const getTicketsRes = await request(app)
@@ -256,11 +257,12 @@ describe('GET /graphQl', () => {
             }
           }
         `
-    });
+      });
 
+    // eslint-disable-next-line
     const ticketId = getTicketsRes.body.data.tickets[0]._id;
 
-    const invalidToken = "InvalidToken"
+    const invalidToken = 'InvalidToken';
 
     const res = await request(app)
       .post('/graphql')

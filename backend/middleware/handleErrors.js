@@ -1,4 +1,5 @@
-const handleErrors = (err, req, res) => {
+// eslint-disable-next-line
+const handleErrors = (err, req, res, next) => {
   const statusCode = err.status || 500;
   res.status(statusCode);
   res.json({
